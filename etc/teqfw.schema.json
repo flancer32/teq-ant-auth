@@ -1,0 +1,90 @@
+{
+  "package": {
+    "fl32": {
+      "package": {
+        "auth": {
+          "entity": {
+            "attest": {
+              "comment": "Attested public keys to authenticate users.",
+              "attr": {
+                "bid": {"type": "id", "comment": "Internal ID cause a user can have many keys."},
+                "user_ref": {"type": "ref"},
+                "date_created": {
+                  "comment": "Date-time when record was created.",
+                  "type": "datetime",
+                  "default": "current"
+                },
+                "attestation_id": {"type": "string", "comment": "Base64url encoded binary received from device."},
+                "public_key": {"type": "text"}
+              },
+              "relation": {
+                "user": {
+                  "attrs": ["user_ref"],
+                  "ref": {
+                    "path": "/user", "attrs": ["bid"]
+                  }
+                }
+              }
+            }
+          },
+          "package": {
+            "assert": {
+              "entity": {
+                "challenge": {
+                  "comment": "Challenge to sign in users (WebAuthn API).",
+                  "attr": {
+                    "attest_ref": {"type": "ref"},
+                    "challenge": {"type": "string"},
+                    "date_created": {
+                      "comment": "Date-time when record was created.",
+                      "type": "datetime",
+                      "default": "current"
+                    }
+                  },
+                  "index": {
+                    "PK": {"type": "primary", "attrs": ["challenge"]}
+                  },
+                  "relation": {
+                    "user": {
+                      "attrs": ["attest_ref"],
+                      "ref": {
+                        "path": "/fl32/auth/attest", "attrs": ["bid"]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "attest": {
+              "entity": {
+                "challenge": {
+                  "comment": "Challenge to attest users (WebAuthn API).",
+                  "attr": {
+                    "user_ref": {"type": "ref"},
+                    "challenge": {"type": "string"},
+                    "date_created": {
+                      "comment": "Date-time when record was created.",
+                      "type": "datetime",
+                      "default": "current"
+                    }
+                  },
+                  "index": {
+                    "PK": {"type": "primary", "attrs": ["challenge"]}
+                  },
+                  "relation": {
+                    "user": {
+                      "attrs": ["user_ref"],
+                      "ref": {
+                        "path": "/user", "attrs": ["bid"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
