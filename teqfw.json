@@ -1,0 +1,11 @@
+{
+  "@teqfw/di": {
+    "autoload": {
+      "ns": "Fl32_Auth",
+      "path": "./src"
+    }
+  },
+  "@teqfw/web-api": {
+    "services": []
+  }
+}
