@@ -6,6 +6,9 @@
     }
   },
   "@teqfw/web-api": {
-    "services": []
+    "services": [
+      "Fl32_Auth_Back_Web_Api_Assert_Challenge",
+      "Fl32_Auth_Back_Web_Api_Attest"
+    ]
   }
 }

@@ -1,7 +1,6 @@
 /**
  * Model to store attestation data on the front.
  * @namespace Fl32_Auth_Front_Mod_Store_Attestation
- * TODO: move it to WebAuthn plugin
  */
 // MODULE'S VARS
 const NS = 'Fl32_Auth_Front_Mod_Store_Attestation';
