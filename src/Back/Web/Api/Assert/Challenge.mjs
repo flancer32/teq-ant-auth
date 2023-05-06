@@ -58,6 +58,8 @@ export default class Fl32_Auth_Back_Web_Api_Assert_Challenge {
                     // compose response
                     res.attestationId = attestationId;
                     res.challenge = challenge;
+                } else {
+                    logger.info(`Cannot find attestation '${attestationId}'.`);
                 }
                 await trx.commit();
                 logger.info(`${this.constructor.name}: ${JSON.stringify(res)}'.`);

@@ -74,6 +74,7 @@ function binToB64Url(data) {
  * @param {ArrayBuffer} data
  * @returns {string}
  * @memberOf Fl32_Auth_Front_Util_Codec
+ * @deprecated use TeqFw_Core_Shared_Util_Codec.binToHex
  */
 function binToHex(data) {
     const uint = new Uint8Array(data);

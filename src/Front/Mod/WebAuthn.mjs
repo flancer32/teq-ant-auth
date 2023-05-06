@@ -36,6 +36,20 @@ export default class Fl32_Auth_Front_Mod_WebAuthn {
 
         // INSTANCE METHODS
 
+        this.assertChallenge = async function (attestationId) {
+            try {
+                // parse input data
+                const req = apiSignInChl.createReq();
+                req.attestationId = attestationId;
+                // noinspection JSValidateTypes
+                return await connApi.send(req, apiSignInChl);
+            } catch (e) {
+                // timeout or error
+                logger.error(`Cannot create a new sign in challenge on the backend. Error: ${e?.message}`);
+            }
+            return null;
+        };
+
         /**
          * Validate the new attestation on the backend and save the user's public key if it is validated.
          *
@@ -135,21 +149,6 @@ export default class Fl32_Auth_Front_Mod_WebAuthn {
          */
         this.isPublicKeyAvailable = async function () {
             return await window?.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-        };
-
-
-        this.signInChallenge = async function (attestationId) {
-            try {
-                // parse input data
-                const req = apiSignInChl.createReq();
-                req.attestationId = attestationId;
-                // noinspection JSValidateTypes
-                return await connApi.send(req, apiSignInChl);
-            } catch (e) {
-                // timeout or error
-                logger.error(`Cannot create a new sign in challenge on the backend. Error: ${e?.message}`);
-            }
-            return null;
         };
 
     }
