@@ -1,12 +1,12 @@
 /**
  * A model to aggregate functionality related to user authentication with password.
- * @namespace Fl32_Auth_Front_Mod_Auth_Password
+ * @namespace Fl32_Auth_Front_Mod_Password
  */
 // MODULE'S VARS
 const ALG = 'SHA-384';
 
 // MODULE'S CLASSES
-export default class Fl32_Auth_Front_Mod_Auth_Password {
+export default class Fl32_Auth_Front_Mod_Password {
     constructor(spec) {
         // DEPS
         /** @type {TeqFw_Core_Shared_Api_Logger} */

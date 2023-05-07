@@ -30,9 +30,9 @@ class Dto {
     static namespace = NS;
     /** @type {Date} */
     date_updated;
-    /** @type {string} */
+    /** @type {Uint8Array} */
     hash;
-    /** @type {string} */
+    /** @type {Uint8Array} */
     salt;
     /** @type {number} */
     user_ref;

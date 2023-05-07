@@ -1,11 +1,12 @@
-import {createHash, subtle} from 'node:crypto';
-import {Buffer} from 'node:buffer';
-
 /**
  * Validate assertion data got from frontend.
  *
  * @namespace Fl32_Auth_Back_Act_Assert_Validate
  */
+// MODULE'S IMPORT
+import {createHash, subtle} from 'node:crypto';
+import {Buffer} from 'node:buffer';
+
 // MODULE'S VARS
 const NS = 'Fl32_Auth_Back_Act_Assert_Validate';
 

@@ -1,6 +1,6 @@
 /**
- * A model to handle events related to user authentication with the WebAuthn API.
- * @namespace Fl32_Auth_Front_Mod_WebAuthn
+ * A model to handle events related to user authentication with public key.
+ * @namespace Fl32_Auth_Front_Mod_PubKey
  */
 // MODULE'S IMPORTS
 import {b64UrlToBin} from '../Util/Codec.mjs';
@@ -13,7 +13,7 @@ const TIMEOUT = 360000;  // 6 minutes
 const TXT_ENCODER = new TextEncoder();
 
 // MODULE'S CLASSES
-export default class Fl32_Auth_Front_Mod_WebAuthn {
+export default class Fl32_Auth_Front_Mod_PubKey {
     constructor(spec) {
         // DEPS
         /** @type {TeqFw_Core_Shared_Api_Logger} */
