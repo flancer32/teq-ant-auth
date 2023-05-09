@@ -49,6 +49,28 @@
                   }
                 }
               }
+            },
+            "session": {
+              "comment": "Established users sessions.",
+              "attr": {
+                "code": {"type": "string"},
+                "user_ref": {"type": "ref"},
+                "date_created": {
+                  "type": "datetime",
+                  "default": "current",
+                  "comment": "UTC date when user session was established."
+                }
+              },
+              "index": {
+                "PK": {"type": "primary", "attrs": ["code"]}
+              },
+              "relation": {
+                "user": {
+                  "attrs": ["user_ref"],
+                  "ref": {"path": "/user", "attrs": ["bid"]},
+                  "action": {"delete": "cascade", "update": "cascade"}
+                }
+              }
             }
           },
           "package": {
