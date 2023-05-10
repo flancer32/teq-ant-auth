@@ -3,6 +3,16 @@
     "autoload": {
       "ns": "Fl32_Auth",
       "path": "./src"
+    },
+    "replace": {
+      "Fl32_Auth_Back_Api_Session_Data": {"back": "Fl32_Auth_Back_Mod_Session_Data"}
+    }
+  },
+  "@teqfw/web": {
+    "handlers": {
+      "Fl32_Auth_Back_Web_Handler_Session": {
+        "before": ["TeqFw_Web_Api_Back_Web_Handler_Service"]
+      }
     }
   },
   "@teqfw/web-api": {
