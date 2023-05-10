@@ -17,8 +17,9 @@ export default class Fl32_Auth_Back_Mod_Session_Store {
         // VARS
 
         // INSTANCE METHODS
+
         /**
-         * Clea session data related to an HTTP request.
+         * Clear session data related to an HTTP request.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} request
          */
         this.clearData = function (request) {
