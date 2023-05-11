@@ -41,8 +41,8 @@ class Dto {
  */
 export default class Fl32_Auth_Back_RDb_Schema_Assert_Challenge {
     constructor(spec) {
-        /** @type {Svelters_Back_Defaults} */
-        const DEF = spec['Svelters_Back_Defaults$'];
+        /** @type {Fl32_Auth_Back_Defaults} */
+        const DEF = spec['Fl32_Auth_Back_Defaults$'];
         /** @type {TeqFw_Db_Back_RDb_Schema_EntityBase} */
         const base = spec['TeqFw_Db_Back_RDb_Schema_EntityBase$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castDate|function} */

@@ -21,8 +21,8 @@ export class Dto {
 export class Store {
     constructor(spec) {
         // DEPS
-        /** @type {Svelters_Front_Defaults} */
-        const DEF = spec['Svelters_Front_Defaults$'];
+        /** @type {Fl32_Auth_Front_Defaults} */
+        const DEF = spec['Fl32_Auth_Front_Defaults$'];
 
         // VARS
         const STORE_KEY = `${DEF.SHARED.NAME}/user/attestation`;
