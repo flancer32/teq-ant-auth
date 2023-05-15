@@ -80,7 +80,10 @@
                   "comment": "Challenge to sign in users (WebAuthn API).",
                   "attr": {
                     "attest_ref": {"type": "ref"},
-                    "challenge": {"type": "string"},
+                    "challenge": {
+                      "type": "binary",
+                      "options": {"length": 32}
+                    },
                     "date_created": {
                       "comment": "Date-time when record was created.",
                       "type": "datetime",
@@ -107,7 +110,10 @@
                   "comment": "Challenge to attest users (WebAuthn API).",
                   "attr": {
                     "user_ref": {"type": "ref"},
-                    "challenge": {"type": "string"},
+                    "challenge": {
+                      "type": "binary",
+                      "options": {"length": 32}
+                    },
                     "date_created": {
                       "comment": "Date-time when record was created.",
                       "type": "datetime",

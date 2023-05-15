@@ -12,10 +12,10 @@ await conn.init(config.getLocal('@teqfw/db'));
 // SETUP TEST INPUT
 
 // GET OBJECT FROM CONTAINER AND RUN TESTS
-/** @type {Fl32_Auth_Back_Act_Session_Open.act|function} */
-const act = await container.get('Fl32_Auth_Back_Act_Session_Open$');
+/** @type {Fl32_Auth_Back_Act_Session_Create.act|function} */
+const act = await container.get('Fl32_Auth_Back_Act_Session_Create$');
 
-describe('Fl32_Auth_Back_Act_Session_Open', function () {
+describe('Fl32_Auth_Back_Act_Session_Create', function () {
     it('can create action', async () => {
         assert(typeof act === 'function');
     });

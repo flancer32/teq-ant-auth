@@ -1,7 +1,11 @@
 /**
- * A model to aggregate functionality related to user authentication with password.
+ * A model for aggregating functionality related to user authentication using passwords.
+ * All binary values (salts, hashes, random values, etc.) are converted to HEX strings for input/output
+ * (parameters and results).
+ *
  * @namespace Fl32_Auth_Front_Mod_Password
  */
+
 // MODULE'S VARS
 const ALG = 'SHA-384';
 
@@ -13,6 +17,15 @@ export default class Fl32_Auth_Front_Mod_Password {
         const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
         /** @type {TeqFw_Core_Shared_Util_Codec.binToHex|function} */
         const binToHex = spec['TeqFw_Core_Shared_Util_Codec.binToHex'];
+        /** @type {TeqFw_Web_Api_Front_Web_Connect} */
+        const connApi = spec['TeqFw_Web_Api_Front_Web_Connect$'];
+        /** @type {Fl32_Auth_Shared_Web_Api_Password_Salt_Read} */
+        const apiSaltRead = spec['Fl32_Auth_Shared_Web_Api_Password_Salt_Read$'];
+        /** @type {Fl32_Auth_Shared_Web_Api_Password_Validate} */
+        const apiValid = spec['Fl32_Auth_Shared_Web_Api_Password_Validate$'];
+        /** @type {Fl32_Auth_Front_Mod_Session} */
+        const modSess = spec['Fl32_Auth_Front_Mod_Session$'];
+
 
         // MAIN
         logger.setNamespace(this.constructor.name);
@@ -26,13 +39,40 @@ export default class Fl32_Auth_Front_Mod_Password {
          * Create SHA-256 hash for `password` using `salt` and encode as HEX string.
          *
          * @param {string} password plain password
-         * @param {string} salt
-         * @returns {Promise<string>}
+         * @param {string} salt HEX string representation of a salt
+         * @returns {Promise<string>} HEX string representation of the SHA-256 hash
          */
-        this.hash = async function (password, salt) {
+        this.hashCompose = async function (password, salt) {
             const data = encoder.encode(`${salt}${password}`);
             const hash = await crypto.subtle.digest(ALG, data);
             return binToHex(hash);
+        };
+
+        /**
+         * Creates password hash using salt from backend and validates the user's password on the backend.
+         * @param {string} userRef - App-specific identifier for the user.
+         * @param {string} password - The plain password.
+         * @returns {Promise<Fl32_Auth_Shared_Web_Api_Password_Validate.Response>}
+         */
+        this.passwordValidate = async function (userRef, password) {
+            try {
+                // retrieve the password salt and compose the password's hash
+                const salt = await this.saltRead(userRef);
+                const hash = await this.hashCompose(password, salt);
+                //
+                const req = apiValid.createReq();
+                req.passwordHash = hash;
+                req.userRef = userRef;
+                // noinspection JSValidateTypes
+                /** @type {Fl32_Auth_Shared_Web_Api_Password_Validate.Response} */
+                const res = await connApi.send(req, apiValid);
+                // set session data to the session model
+                if (res?.success) modSess.setData(res?.sessionData);
+                return res;
+            } catch (e) {
+                // timeout or error
+                logger.error(`Cannot validate user password. Error: ${e?.message}`);
+            }
         };
 
         /**
@@ -40,10 +80,29 @@ export default class Fl32_Auth_Front_Mod_Password {
          * @param {number} bytes number of bytes in random binary
          * @return {string}
          */
-        this.salt = function (bytes) {
+        this.saltNew = function (bytes) {
             const bin = new Uint8Array(bytes);
             window.crypto.getRandomValues(bin);
             return binToHex(bin);
+        };
+
+        /**
+         * Reads the password salt for the given user from the backend.
+         * @param {string} userRef - Application-specific identifier for the user (email, login, UUID, etc.).
+         * @return {Promise<string>} HEX string representation of binary values
+         */
+        this.saltRead = async function (userRef) {
+            try {
+                const req = apiSaltRead.createReq();
+                req.userRef = userRef;
+                // noinspection JSValidateTypes
+                /** @type {Fl32_Auth_Shared_Web_Api_Password_Salt_Read.Response} */
+                const res = await connApi.send(req, apiSaltRead);
+                if (res?.salt) return res?.salt;
+            } catch (e) {
+                // timeout or error
+                logger.error(`Cannot initialize user session. Error: ${e?.message}`);
+            }
         };
     }
 }

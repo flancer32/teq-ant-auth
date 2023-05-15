@@ -25,8 +25,8 @@ export default class Fl32_Auth_Back_Web_Handler_Session {
         const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
         /** @type {TeqFw_Web_Back_Util_Cookie.get|function} */
         const cookieGet = spec['TeqFw_Web_Back_Util_Cookie.get'];
-        /** @type {Fl32_Auth_Back_Mod_Session_Store} */
-        const modStore = spec['Fl32_Auth_Back_Mod_Session_Store$'];
+        /** @type {Fl32_Auth_Back_Mod_Session} */
+        const modSess = spec['Fl32_Auth_Back_Mod_Session$'];
 
         // MAIN
         logger.setNamespace(this.constructor.name);
@@ -49,7 +49,7 @@ export default class Fl32_Auth_Back_Web_Handler_Session {
                 const sessionId = cookieGet({request: req, cookie: DEF.SESSION_COOKIE_NAME});
                 if (sessionId) {
                     // store cookie ID in the request
-                    await modStore.putId(req, sessionId);
+                    await modSess.putId(req, sessionId);
                 }
             }
         }

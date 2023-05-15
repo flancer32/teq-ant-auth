@@ -5,7 +5,7 @@
 // MODULE'S IMPORTS
 import {decode} from 'cbor';
 import {randomBytes} from 'node:crypto';
-import {b64UrlToBin, binToB64Url} from './Codec.mjs';
+import {b64UrlToBin} from './Codec.mjs';
 
 // MODULE'S VARS
 const NS = 'Fl32_Auth_Back_Util_WebAuthn';
@@ -33,11 +33,11 @@ function asn1toRaw(buf) {
 
 /**
  * Generate challenge for WebAuthn processes (32 bytes 'base64url' encoded).
- * @returns {string}
+ * @returns {Buffer}
  * @memberOf Fl32_Auth_Back_Util_WebAuthn
  */
 function createChallenge() {
-    return binToB64Url(randomBytes(SIZE_CHALLENGE));
+    return randomBytes(SIZE_CHALLENGE);
 }
 
 /**

@@ -48,8 +48,8 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
         const DEF = spec['Fl32_Auth_Back_Defaults$'];
         /** @type {TeqFw_Db_Back_RDb_Schema_EntityBase} */
         const base = spec['TeqFw_Db_Back_RDb_Schema_EntityBase$'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castBin|function} */
-        const castBin = spec['TeqFw_Core_Shared_Util_Cast.castBin'];
+        /** @type {TeqFw_Core_Back_Util_Cast.castBuffer|function} */
+        const castBuffer = spec['TeqFw_Core_Back_Util_Cast.castBuffer'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castDate|function} */
         const castDate = spec['TeqFw_Core_Shared_Util_Cast.castDate'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
@@ -63,8 +63,8 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
         this.createDto = function (data) {
             const res = new Dto();
             res.date_updated = castDate(data?.date_updated);
-            res.hash = castBin(data?.hash);
-            res.salt = castBin(data?.salt);
+            res.hash = castBuffer(data?.hash);
+            res.salt = castBuffer(data?.salt);
             res.user_ref = castInt(data?.user_ref);
             return res;
         };

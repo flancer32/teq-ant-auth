@@ -1,13 +1,13 @@
 /**
- * Establish a new session for the given user.
+ * Create a unique ID for a new session for the given user in RDB.
  *
- * @namespace Fl32_Auth_Back_Act_Session_Open
+ * @namespace Fl32_Auth_Back_Act_Session_Create
  */
 // MODULE'S IMPORT
 import {randomUUID} from 'node:crypto';
 
 // MODULE'S VARS
-const NS = 'Fl32_Auth_Back_Act_Session_Open';
+const NS = 'Fl32_Auth_Back_Act_Session_Create';
 
 // MODULE'S FUNCTIONS
 export default function (spec) {
@@ -29,7 +29,7 @@ export default function (spec) {
      * @param {TeqFw_Db_Back_RDb_ITrans} trx
      * @param {number} userBid
      * @return {Promise<{code: string}>}
-     * @memberOf Fl32_Auth_Back_Act_Session_Open
+     * @memberOf Fl32_Auth_Back_Act_Session_Create
      */
     async function act({trx, userBid}) {
         let code, found;

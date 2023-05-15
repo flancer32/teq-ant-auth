@@ -4,3 +4,5 @@
 |---|
 
 Use WebAuthn API in TeqFW to authenticate users.
+
+Depends on `@teqfw/web-api`.

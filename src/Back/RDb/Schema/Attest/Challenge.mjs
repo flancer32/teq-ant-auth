@@ -27,7 +27,7 @@ Object.freeze(ATTR);
  */
 class Dto {
     static namespace = NS;
-    /** @type {string} */
+    /** @type {Buffer} */
     challenge;
     /** @type {Date} */
     date_created;
@@ -45,12 +45,12 @@ export default class Fl32_Auth_Back_RDb_Schema_Attest_Challenge {
         const DEF = spec['Fl32_Auth_Back_Defaults$'];
         /** @type {TeqFw_Db_Back_RDb_Schema_EntityBase} */
         const base = spec['TeqFw_Db_Back_RDb_Schema_EntityBase$'];
+        /** @type {TeqFw_Core_Back_Util_Cast.castBuffer|function} */
+        const castBuffer = spec['TeqFw_Core_Back_Util_Cast.castBuffer'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castDate|function} */
         const castDate = spec['TeqFw_Core_Shared_Util_Cast.castDate'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
         const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
         // INSTANCE METHODS
         /**
@@ -59,7 +59,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Attest_Challenge {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.challenge = castString(data?.challenge);
+            res.challenge = castBuffer(data?.challenge);
             res.date_created = castDate(data?.date_created);
             res.user_ref = castInt(data?.user_ref);
             return res;
