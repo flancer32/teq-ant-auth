@@ -3,6 +3,44 @@
 Session cookie authentication is used in this plugin. Each authenticated instance has a `sessionId` in the session
 cookie, which is added to every request sent to the backend.
 
+## Session Validation
+
+### On the frontend
+
+The `Fl32_Auth_Front_Mod_Session` model requests session initialization by calling the `init` method during the frontend
+application startup:
+
+```javascript
+export default class Demo_Front_App {
+    constructor(spec) {
+        /** @type {Fl32_Auth_Front_Mod_Session} */
+        const modSess = spec['Fl32_Auth_Front_Mod_Session$'];
+
+        this.init = async function (fnPrintout) {
+            await modSess.init();
+        };
+    }
+}
+```
+
+This method uses the `Fl32_Auth_Back_Web_Api_Session_Init` service to validate the established session and retrieve
+session data. Session data is loaded into the service using the app-specific implementation of
+the `Fl32_Auth_Back_Api_Mole`.
+
+The `Fl32_Auth_Front_Mod_Session` model stores the app-specific session data in its inner cache, which indicates that
+the session is established and active:
+
+```javascript
+const isAuth = modSess.isValid();
+const sessData = modSess.getData();
+```
+
+### On the back
+
+Class `Fl32_Auth_Back_Web_Handler_Session` (`session handler`) is a handler that extracts `sessionId` from HTTP header
+and saves it with `Fl32_Auth_Back_Mod_Session` (`session manager`) in HTTP request before any API-service is
+processed. Any handler after `session handler` can access session data using `session manager` and HTTP request.
+
 ## Session Establishment
 
 New session can be established when:
@@ -26,19 +64,4 @@ and return session data to the frontend.
 It is possible to close the established session with `Fl32_Auth_Front_Mod_Session.close` from the frontend. This
 method requests the `Fl32_Auth_Back_Web_Api_Session_Close` service that uses the `Fl32_Auth_Back_Mod_Session` model to
 clear the session data in the model, RDB, and cookies.
-
-## Session stores
-
-### On the frontend
-
-The `Fl32_Auth_Front_Mod_Session` model requests session initialization by calling the `init` method during the frontend
-application startup. This method uses the `Fl32_Auth_Back_Web_Api_Session_Init` service to validate the established
-session and retrieve session data. Session data is loaded into the service using the app-specific implementation of
-the `Fl32_Auth_Back_Api_Mole`. The `Fl32_Auth_Front_Mod_Session` model stores the app-specific session data in its inner
-cache, which indicates that the session is established and active.
-
-### On the back
-
-Class `Fl32_Auth_Back_Web_Handler_Session` (`session handler`) is a handler that extracts `sessionId` from HTTP header
-and saves it with `Fl32_Auth_Back_Mod_Session` (`session manager`) in HTTP request before any API-service is
-processed. Any handler after `session handler` can access session data using `session manager` and HTTP request.
+ 

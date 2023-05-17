@@ -3,9 +3,6 @@
  *
  * @namespace Fl32_Auth_Front_Mod_Session
  */
-
-// MODULE'S VARS
-
 // MODULE'S CLASSES
 export default class Fl32_Auth_Front_Mod_Session {
     constructor(spec) {
@@ -27,8 +24,6 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         let _store;
 
-        // FUNCS
-
         // INSTANCE METHODS
 
         /**
@@ -49,6 +44,12 @@ export default class Fl32_Auth_Front_Mod_Session {
                 logger.error(`Cannot close user session. Error: ${e?.message}`);
             }
         };
+
+        /**
+         * Get session data.
+         * @return {Object}
+         */
+        this.getData = () => _store;
 
         /**
          * Initialize established user session (load session data from backend).

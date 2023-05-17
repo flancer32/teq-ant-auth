@@ -73,7 +73,7 @@ export default class Fl32_Auth_Back_Mod_Session {
         this.establish = async function ({request, response, trx, userBid}) {
             const {code: sessionId} = await actSessCreate({trx, userBid});
             actSessPlant({request, response, sessionId});
-            const sessionData = await moleApp.sessionDataRead({trx, userBid});
+            const {sessionData} = await moleApp.sessionDataRead({trx, userBid});
             request[DEF.REQ_HTTP_SESS_ID] = sessionId;
             _cache[sessionId] = sessionData;
             return {sessionId, sessionData};
@@ -114,12 +114,14 @@ export default class Fl32_Auth_Back_Mod_Session {
                 const trx = await conn.startTransaction();
                 try {
                     /** @type {Fl32_Auth_Back_RDb_Schema_Session.Dto} */
-                    const sessRec = await crud.readOne(trx, rdbSess, sessionId);
-                    const {sessionData} = await moleApp.sessionDataRead({trx, userBid: sessRec.user_ref});
-                    _cache[sessionId] = sessionData;
-                    await trx.commit();
-                    request[DEF.REQ_HTTP_SESS_ID] = sessionId;
-                    logger.info(`Session data is cached for session #${sessionId}.`);
+                    const found = await crud.readOne(trx, rdbSess, sessionId);
+                    if (found?.user_ref) {
+                        const {sessionData} = await moleApp.sessionDataRead({trx, userBid: found.user_ref});
+                        _cache[sessionId] = sessionData;
+                        await trx.commit();
+                        request[DEF.REQ_HTTP_SESS_ID] = sessionId;
+                        logger.info(`Session data is cached for session #${sessionId}.`);
+                    }
                 } catch (error) {
                     logger.error(error);
                     await trx.rollback();
