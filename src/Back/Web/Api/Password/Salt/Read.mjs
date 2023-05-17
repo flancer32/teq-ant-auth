@@ -53,7 +53,7 @@ export default class Fl32_Auth_Back_Web_Api_Password_Salt_Read {
                 // get and normalize input data
                 const userRef = req.userRef;
                 //
-                const {userBid} = await moleUser.load({trx, userRef});
+                const {userBid} = await moleUser.userRead({trx, userRef});
                 res.salt = await readPasswordSalt(trx, userBid);
                 await trx.commit();
                 logger.info(JSON.stringify(res));

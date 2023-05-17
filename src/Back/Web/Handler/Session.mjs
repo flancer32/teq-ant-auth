@@ -49,7 +49,7 @@ export default class Fl32_Auth_Back_Web_Handler_Session {
                 const sessionId = cookieGet({request: req, cookie: DEF.SESSION_COOKIE_NAME});
                 if (sessionId) {
                     // store cookie ID in the request
-                    await modSess.putId(req, sessionId);
+                    await modSess.putId({req, sessionId});
                 }
             }
         }

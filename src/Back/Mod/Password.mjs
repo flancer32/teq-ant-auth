@@ -50,7 +50,7 @@ export default class Fl32_Auth_Back_Mod_Password {
          * @return {Promise<{success: boolean, userBid:number}>}
          */
         this.validateHash = async function ({trx, userRef, hashHex}) {
-            const {userBid} = await moleApp.load({trx, userRef});
+            const {userBid} = await moleApp.userRead({trx, userRef});
             const {success} = await actPassValid({trx, userBid, hashHex});
             return {success, userBid};
         };

@@ -70,18 +70,6 @@ function binToB64Url(data) {
 }
 
 /**
- * Convert binary data to hex string.
- * @param {ArrayBuffer} data
- * @returns {string}
- * @memberOf Fl32_Auth_Front_Util_Codec
- * @deprecated use TeqFw_Core_Shared_Util_Codec.binToHex
- */
-function binToHex(data) {
-    const uint = new Uint8Array(data);
-    return Array.prototype.map.call(uint, x => ('00' + x.toString(16)).slice(-2)).join('');
-}
-
-/**
  * Convert JSON data encoded as a binary to JS Object.
  * @param {ArrayBuffer} data
  * @returns {Object}
@@ -109,7 +97,6 @@ Object.defineProperty(base64ToB64Url, 'namespace', {value: NS});
 Object.defineProperty(base64ToBin, 'namespace', {value: NS});
 Object.defineProperty(binToB64Url, 'namespace', {value: NS});
 Object.defineProperty(binToBase64, 'namespace', {value: NS});
-Object.defineProperty(binToHex, 'namespace', {value: NS});
 Object.defineProperty(binToJson, 'namespace', {value: NS});
 Object.defineProperty(binToUtf8, 'namespace', {value: NS});
 
@@ -121,7 +108,6 @@ export {
     base64ToBin,
     binToB64Url,
     binToBase64,
-    binToHex,
     binToJson,
     binToUtf8,
-}
+};

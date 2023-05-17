@@ -73,7 +73,7 @@ export default class Fl32_Auth_Back_Mod_Session {
         this.establish = async function ({request, response, trx, userBid}) {
             const {code: sessionId} = await actSessCreate({trx, userBid});
             actSessPlant({request, response, sessionId});
-            const sessionData = await moleApp.readSessionData({trx, userBid});
+            const sessionData = await moleApp.sessionDataRead({trx, userBid});
             request[DEF.REQ_HTTP_SESS_ID] = sessionId;
             _cache[sessionId] = sessionData;
             return {sessionId, sessionData};
@@ -100,13 +100,12 @@ export default class Fl32_Auth_Back_Mod_Session {
         };
 
         /**
-         * Save session ID to an HTTP request and load session data to internal cache.
+         * Save session ID to an HTTP request and load session data from RDb to internal cache.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} request
          * @param {string} sessionId
          * @returns {Promise<void>}
-         * @deprecated remove this warning or use `establish()` method
          */
-        this.putId = async function (request, sessionId) {
+        this.putId = async function ({request, sessionId}) {
             if (_cache[sessionId]) {
                 // just put sessionId to request if session data was loaded before
                 request[DEF.REQ_HTTP_SESS_ID] = sessionId;
@@ -116,7 +115,7 @@ export default class Fl32_Auth_Back_Mod_Session {
                 try {
                     /** @type {Fl32_Auth_Back_RDb_Schema_Session.Dto} */
                     const sessRec = await crud.readOne(trx, rdbSess, sessionId);
-                    const {sessionData} = await moleApp.readSessionData({trx, userBid: sessRec.user_ref});
+                    const {sessionData} = await moleApp.sessionDataRead({trx, userBid: sessRec.user_ref});
                     _cache[sessionId] = sessionData;
                     await trx.commit();
                     request[DEF.REQ_HTTP_SESS_ID] = sessionId;
