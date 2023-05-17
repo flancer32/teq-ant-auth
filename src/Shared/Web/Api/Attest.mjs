@@ -29,6 +29,11 @@ class Response {
     attestationId;
     /** @type {number} */
     publicKeyBid;
+    /**
+     * App-specific data for the newly established session.
+     * @type {Object}
+     */
+    sessionData;
 }
 
 /**
@@ -68,6 +73,7 @@ export default class Fl32_Auth_Shared_Web_Api_Attest {
             // cast known attributes
             res.attestationId = castString(data?.attestationId);
             res.publicKeyBid = castInt(data?.publicKeyBid);
+            res.sessionData = structuredClone(data?.sessionData);
             return res;
         };
     }

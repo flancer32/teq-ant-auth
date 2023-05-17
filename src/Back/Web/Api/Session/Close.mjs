@@ -37,7 +37,7 @@ export default class Fl32_Auth_Back_Web_Api_Session_Close {
             try {
                 res.success = await modSess.close({trx, request: context.request, response: context.response});
                 await trx.commit();
-                logger.info(`${this.constructor.name}: ${JSON.stringify(res)}'.`);
+                logger.info(JSON.stringify(res));
             } catch (error) {
                 logger.error(error);
                 await trx.rollback();

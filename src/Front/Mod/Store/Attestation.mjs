@@ -1,6 +1,7 @@
 /**
  * Model to store attestation data on the front.
  * @namespace Fl32_Auth_Front_Mod_Store_Attestation
+ * @deprecated use Fl32_Auth_Front_Mod_PubKey
  */
 // MODULE'S VARS
 const NS = 'Fl32_Auth_Front_Mod_Store_Attestation';

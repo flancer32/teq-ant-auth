@@ -2,9 +2,6 @@
  * A model to handle events related to user authentication with public key.
  * @namespace Fl32_Auth_Front_Mod_PubKey
  */
-// MODULE'S IMPORTS
-import {b64UrlToBin} from '../Util/Codec.mjs';
-
 // MODULE'S VARS
 const CRED_ALG = -7; // 'ES256' as registered in the IANA COSE Algorithms registry
 const CRED_TRANS_INT = 'internal';
@@ -16,8 +13,12 @@ const TXT_ENCODER = new TextEncoder();
 export default class Fl32_Auth_Front_Mod_PubKey {
     constructor(spec) {
         // DEPS
+        /** @type {Fl32_Auth_Front_Defaults} */
+        const DEF = spec['Fl32_Auth_Front_Defaults$'];
         /** @type {TeqFw_Core_Shared_Api_Logger} */
         const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
+        /** @type {Fl32_Auth_Front_Util_Codec.b64UrlToBin|function} */
+        const b64UrlToBin = spec['Fl32_Auth_Front_Util_Codec.b64UrlToBin'];
         /** @type {Fl32_Auth_Front_Util_Codec.binToB64Url|function} */
         const binToB64Url = spec['Fl32_Auth_Front_Util_Codec.binToB64Url'];
         /** @type {TeqFw_Web_Api_Front_Web_Connect} */
@@ -27,25 +28,54 @@ export default class Fl32_Auth_Front_Mod_PubKey {
         /** @type {Fl32_Auth_Shared_Web_Api_Attest} */
         const apiAttest = spec['Fl32_Auth_Shared_Web_Api_Attest$'];
         /** @type {Fl32_Auth_Shared_Web_Api_Assert_Challenge} */
-        const apiSignInChl = spec['Fl32_Auth_Shared_Web_Api_Assert_Challenge$'];
+        const apiAssertChl = spec['Fl32_Auth_Shared_Web_Api_Assert_Challenge$'];
+        /** @type {Fl32_Auth_Shared_Web_Api_Assert_Validate} */
+        const apiAssertValid = spec['Fl32_Auth_Shared_Web_Api_Assert_Validate$'];
+        /** @type {Fl32_Auth_Front_Mod_Session} */
+        const modSess = spec['Fl32_Auth_Front_Mod_Session$'];
 
         // MAIN
         logger.setNamespace(this.constructor.name);
+        const STORE_KEY = `${DEF.SHARED.NAME}/attestation`;
 
         // FUNCS
+        /**
+         * Read attestation ID from local storage.
+         * @return {string}
+         */
+        function attestIdRead() {
+            const stored = window.localStorage.getItem(STORE_KEY);
+            if (stored) {
+                const json = JSON.parse(stored);
+                return json?.id ? json.id : null;
+            }
+            return null;
+        }
+
+        /**
+         * Write attestation ID to local storage.
+         * @param {string} id
+         */
+        function attestIdWrite(id) {
+            window.localStorage.setItem(STORE_KEY, JSON.stringify({id}));
+        }
 
         // INSTANCE METHODS
 
-        this.assertChallenge = async function (attestationId) {
+        /**
+         * Get assertion challenge from backend.
+         * @return {Promise<Fl32_Auth_Shared_Web_Api_Assert_Challenge.Response>}
+         */
+        this.assertChallenge = async function () {
             try {
                 // parse input data
-                const req = apiSignInChl.createReq();
-                req.attestationId = attestationId;
+                const req = apiAssertChl.createReq();
+                req.attestationId = attestIdRead();
                 // noinspection JSValidateTypes
-                return await connApi.send(req, apiSignInChl);
+                return await connApi.send(req, apiAssertChl);
             } catch (e) {
                 // timeout or error
-                logger.error(`Cannot create a new sign in challenge on the backend. Error: ${e?.message}`);
+                logger.error(`Cannot create a new assertion challenge on the backend. Error: ${e?.message}`);
             }
             return null;
         };
@@ -56,7 +86,7 @@ export default class Fl32_Auth_Front_Mod_PubKey {
          * @param {PublicKeyCredential} attestation
          * @returns {Promise<Fl32_Auth_Shared_Web_Api_Attest.Response>}
          */
-        this.attest = async function (attestation) {
+        this.attest = async function ({attestation}) {
             try {
                 // parse input data
                 // noinspection JSValidateTypes
@@ -72,7 +102,11 @@ export default class Fl32_Auth_Front_Mod_PubKey {
                 const req = apiAttest.createReq();
                 req.cred = cred;
                 // noinspection JSValidateTypes
-                return await connApi.send(req, apiAttest);
+                /** @type {Fl32_Auth_Shared_Web_Api_Attest.Response} */
+                const res = await connApi.send(req, apiAttest);
+                if (res?.attestationId) attestIdWrite(res.attestationId);
+                if (res?.sessionData) modSess.setData(res?.sessionData);
+                return res;
             } catch (e) {
                 // timeout or error
                 logger.error(`Cannot register attestation for a new user on the backend. Error: ${e?.message}`);
@@ -149,6 +183,30 @@ export default class Fl32_Auth_Front_Mod_PubKey {
          */
         this.isPublicKeyAvailable = async function () {
             return await window?.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+        };
+
+        /**
+         * Validate the user's assertion using the public key.
+         * @param {AuthenticatorAssertionResponse} assert
+         * @returns {Promise<Fl32_Auth_Shared_Web_Api_Assert_Validate.Response>}
+         */
+        this.validate = async function (assert) {
+            try {
+                const req = apiAssertValid.createReq();
+                req.authenticatorData = binToB64Url(assert.authenticatorData);
+                req.clientData = binToB64Url(assert.clientDataJSON);
+                req.signature = binToB64Url(assert.signature);
+                // noinspection JSValidateTypes
+                /** @type {Fl32_Auth_Shared_Web_Api_Assert_Validate.Response} */
+                const res = await connApi.send(req, apiAssertValid);
+                // set session data to the session model
+                if (res?.success) modSess.setData(res?.sessionData);
+                return res;
+            } catch (e) {
+                // timeout or error
+                logger.error(`Cannot get validate public key assertion on backend. Error: ${e?.message}`);
+            }
+            return null;
         };
 
     }

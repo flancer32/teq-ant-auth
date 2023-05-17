@@ -1,5 +1,6 @@
 /**
  * DTO to represent public key credentials for assertion process.
+ * TODO: remove it
  */
 // MODULE'S VARS
 const NS = 'Fl32_Auth_Shared_Dto_Assert';

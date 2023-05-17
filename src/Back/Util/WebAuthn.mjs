@@ -88,12 +88,13 @@ function decodeAuthData(data) {
 /**
  * Convert client data JSON from base64url to JS object.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/AuthenticatorResponse/clientDataJSON
- * @param {string} b64url
+ * @param {string|Buffer} data - Base64 URL encoded or binary
+ * @param {boolean} isBinary
  * @returns {{tokenBindingId: *, origin: *, challenge: *, type: *}}
  * @memberOf Fl32_Auth_Back_Util_WebAuthn
  */
-function decodeClientDataJSON(b64url) {
-    const bin = b64UrlToBin(b64url);
+function decodeClientDataJSON(data, isBinary = false) {
+    const bin = (isBinary) ? data : b64UrlToBin(data);
     const str = bin.toString();
     const {type, challenge, origin, tokenBindingId} = JSON.parse(str);
     return {type, challenge, origin, tokenBindingId};

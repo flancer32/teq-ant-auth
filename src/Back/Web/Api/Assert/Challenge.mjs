@@ -14,19 +14,11 @@ export default class Fl32_Auth_Back_Web_Api_Assert_Challenge {
         const endpoint = spec['Fl32_Auth_Shared_Web_Api_Assert_Challenge$'];
         /** @type {TeqFw_Db_Back_RDb_IConnect} */
         const conn = spec['TeqFw_Db_Back_RDb_IConnect$'];
-        /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
-        const crud = spec['TeqFw_Db_Back_Api_RDb_CrudEngine$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} */
-        const rdbChallenge = spec['Fl32_Auth_Back_RDb_Schema_Assert_Challenge$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Attest} */
-        const rdbPk = spec['Fl32_Auth_Back_RDb_Schema_Attest$'];
-        /** @type {Fl32_Auth_Back_Util_WebAuthn.createChallenge|function} */
-        const createChallenge = spec['Fl32_Auth_Back_Util_WebAuthn.createChallenge'];
+        /** @type {Fl32_Auth_Back_Mod_PubKey} */
+        const modPubKey = spec['Fl32_Auth_Back_Mod_PubKey$'];
 
         // VARS
         logger.setNamespace(this.constructor.name);
-        // const A_ID_EMAIL = rdbIdEmail.getAttributes();
-        const A_PK = rdbPk.getAttributes();
 
         // INSTANCE METHODS
 
@@ -44,25 +36,15 @@ export default class Fl32_Auth_Back_Web_Api_Assert_Challenge {
             const trx = await conn.startTransaction();
             try {
                 // get and normalize input data
-                const attestationId = req.attestationId;
+                const attestRef = req.attestationId;
                 //
-                /** @type {Fl32_Auth_Back_RDb_Schema_Attest.Dto} */
-                const found = await crud.readOne(trx, rdbPk, {[A_PK.ATTESTATION_ID]: attestationId});
-                if (found) {
-                    // generate challenge and save it to RDb
-                    const challenge = createChallenge();
-                    const dtoChallenge = rdbChallenge.createDto();
-                    dtoChallenge.attest_ref = found.bid;
-                    dtoChallenge.challenge = challenge;
-                    await crud.create(trx, rdbChallenge, dtoChallenge);
-                    // compose response
-                    res.attestationId = attestationId;
-                    res.challenge = challenge;
-                } else {
-                    logger.info(`Cannot find attestation '${attestationId}'.`);
-                }
+                // generate challenge and save it to RDb
+                const {challenge} = await modPubKey.assertChallengeCreate({trx, attestRef});
                 await trx.commit();
-                logger.info(`${this.constructor.name}: ${JSON.stringify(res)}'.`);
+                // compose response
+                res.attestationId = attestRef;
+                res.challenge = challenge;
+                logger.info(JSON.stringify(res));
             } catch (error) {
                 logger.error(error);
                 await trx.rollback();

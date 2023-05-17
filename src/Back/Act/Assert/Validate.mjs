@@ -1,5 +1,5 @@
 /**
- * Validate assertion data got from frontend.
+ * Validate the user's assertion using the public key.
  *
  * @namespace Fl32_Auth_Back_Act_Assert_Validate
  */
@@ -17,8 +17,6 @@ export default function (spec) {
     const logger = spec['TeqFw_Core_Shared_Api_Logger$']; // instance
     /** @type {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} */
     const b64UrlToBin = spec['Fl32_Auth_Back_Util_Codec.b64UrlToBin'];
-    /** @type {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} */
-    const decodeClientDataJSON = spec['Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON'];
     /** @type {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} */
     const asn1toRaw = spec['Fl32_Auth_Back_Util_WebAuthn.asn1toRaw'];
     /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
@@ -38,16 +36,15 @@ export default function (spec) {
      * Return a base64 URL-encoded challenge.
 
      * @param {TeqFw_Db_Back_RDb_ITrans} trx
-     * @param {Fl32_Auth_Shared_Dto_Assert.Dto} assertion
+     * @param {Buffer} authenticatorData
+     * @param {Buffer} clientData
+     * @param {Buffer} signature
      * @return {Promise<{attestation: Fl32_Auth_Back_RDb_Schema_Attest.Dto,success: boolean}>}
      * @memberOf Fl32_Auth_Back_Act_Assert_Validate
      */
-    async function act({trx, assertion}) {
+    async function act({trx, authenticatorData, clientData, signature}) {
         let attestation, success = false;
-        const authenticatorData = b64UrlToBin(assertion.authenticatorData);
-        const clientData = decodeClientDataJSON(assertion.clientData);
-        const getClientDataJSON = b64UrlToBin(assertion.clientData);
-        const signature = b64UrlToBin(assertion.signature);
+        const getClientDataJSON = b64UrlToBin(clientData);
         // load corresponded challenge
         const challenge = clientData.challenge;
         /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge.Dto} */

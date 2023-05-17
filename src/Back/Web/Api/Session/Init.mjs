@@ -34,7 +34,7 @@ export default class Fl32_Auth_Back_Web_Api_Session_Init {
             // load session data from HTTP request (see Fl32_Auth_Back_Web_Handler_Session)
             res.sessionData = modSess.getCachedData({request: context.request});
             res.success = Boolean(res.sessionData);
-            logger.info(`${this.constructor.name}: ${JSON.stringify(res)}'.`);
+            logger.info(JSON.stringify(res));
         };
     }
 
