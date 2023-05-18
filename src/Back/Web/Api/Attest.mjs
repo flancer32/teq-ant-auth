@@ -17,6 +17,8 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
         const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
         /** @type {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} */
         const b64UrlToBin = spec['Fl32_Auth_Back_Util_Codec.b64UrlToBin'];
+        /** @type {Fl32_Auth_Back_Util_Codec.binToB64Url|function} */
+        const binToB64Url = spec['Fl32_Auth_Back_Util_Codec.binToB64Url'];
         /** @type {Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj|function} */
         const decodeAttestationObj = spec['Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj'];
         /** @type {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} */
@@ -83,7 +85,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
                     logger.info(`New public key is registered for user #${userBid} and attestation '${cred.attestationId}'.`);
                     // remove used challenge
                     await crud.deleteOne(trx, rdbChlng, found);
-                    logger.info(`Attestation challenge '${challenge}' is deleted.`);
+                    logger.info(`Attestation challenge '${binToB64Url(challenge)}' is deleted.`);
                     const {sessionData} = await modSess.establish({
                         trx,
                         userBid,
@@ -92,7 +94,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
                     });
                     if (sessionData) res.sessionData = sessionData;
                 } else {
-                    logger.info(`Cannot find attestation challenge '${challenge}.`);
+                    logger.info(`Cannot find attestation challenge '${binToB64Url(challenge)}.`);
                 }
                 await trx.commit();
                 logger.info(JSON.stringify(res));
