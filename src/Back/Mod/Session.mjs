@@ -3,8 +3,6 @@
  * app-specific data related to the session. The model uses an interface `Fl32_Auth_Back_Api_Mole` to load data
  * for the current session by its ID and stores this data internally (in the HTTP request or internal cache).
  */
-// MODULE'S VARS
-
 // MODULE'S CLASSES
 export default class Fl32_Auth_Back_Mod_Session {
     constructor(spec) {
@@ -85,7 +83,7 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @returns {*} session data
          */
         this.getCachedData = function ({request}) {
-            const sessionId = this.getId(request);
+            const sessionId = this.getId({request});
             if (sessionId && _cache[sessionId]) return _cache[sessionId];
             else return null;
         };
@@ -95,7 +93,7 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} request
          * @returns {string} sessionId
          */
-        this.getId = function (request) {
+        this.getId = function ({request}) {
             return request[DEF.REQ_HTTP_SESS_ID];
         };
 
