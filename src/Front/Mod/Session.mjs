@@ -61,8 +61,10 @@ export default class Fl32_Auth_Front_Mod_Session {
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Session_Init.Response} */
                 const res = await connApi.send(req, apiInit);
-                if (res?.success) _store = res?.sessionData;
-                else _store = undefined;
+                if (res?.success) {
+                    _store = res?.sessionData;
+                    logger.info(`Session is initialized.`);
+                } else _store = undefined;
             } catch (e) {
                 // timeout or error
                 logger.error(`Cannot initialize user session. Error: ${e?.message}`);

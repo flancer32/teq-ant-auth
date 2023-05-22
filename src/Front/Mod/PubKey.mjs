@@ -118,16 +118,17 @@ export default class Fl32_Auth_Front_Mod_PubKey {
          * Compose `publicKey` options for CredentialsContainer.create() method.
          * @param {string} challenge base64 url encoded binary (32 bytes)
          * @param {string} rpName relying party name
-         * @param {string} userName
-         * @param {string} userUuid
+         * @param {string} userName - a human-friendly user display name (example: "John Doe").
+         * @param {ArrayBuffer} userId - a unique ID for the user account (less than 64 bytes).
+         * @param {string} userUuid - a human-friendly identifier for the user's account (email, phone, login, ...).
          * @returns {Object}
          * @see https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create (publicKey)
          */
-        this.composeOptPkCreate = function ({challenge, rpName, userName, userUuid}) {
-            const userIdBytes = TXT_ENCODER.encode(userUuid);
+        this.composeOptPkCreate = function ({challenge, rpName, userName, userId, userUuid}) {
+            const userIdBytes = (userId) ? userId : TXT_ENCODER.encode(userUuid);
             const user = {
                 id: userIdBytes,
-                name: userName,
+                name: userUuid ? userUuid : userName,
                 displayName: userName,
             };
             const challengeBin = b64UrlToBin(challenge);
