@@ -125,7 +125,16 @@ export default class Fl32_Auth_Front_Mod_PubKey {
          * @see https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create (publicKey)
          */
         this.composeOptPkCreate = function ({challenge, rpName, userName, userId, userUuid}) {
-            const userIdBytes = (userId) ? userId : TXT_ENCODER.encode(userUuid);
+            // FUNCS
+
+            function userIdToBytes(userId, userUuid) {
+                const initBytes = (userId) ? userId : TXT_ENCODER.encode(userUuid);
+                const uint8 = new Uint8Array(initBytes);
+                return uint8.subarray(0, 64);
+            }
+
+            // MAIN
+            const userIdBytes = userIdToBytes(userId, userUuid);
             const user = {
                 id: userIdBytes,
                 name: userUuid ? userUuid : userName,
