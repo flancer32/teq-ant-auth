@@ -41,7 +41,7 @@ export default class Fl32_Auth_Front_Mod_PubKey {
         // FUNCS
         /**
          * Read attestation ID from local storage.
-         * @return {string}
+         * @return {string|null}
          */
         function attestIdRead() {
             const stored = window.localStorage.getItem(STORE_KEY);
@@ -177,6 +177,14 @@ export default class Fl32_Auth_Front_Mod_PubKey {
                 }],
             };
 
+        };
+
+        /**
+         * Return 'true' if attestation ID exist in the local storage.
+         * @return {boolean}
+         */
+        this.isAttestationExist = function () {
+            return Boolean(attestIdRead());
         };
 
         /**
