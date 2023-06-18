@@ -168,7 +168,7 @@ export default class Fl32_Auth_Front_Mod_PubKey {
         };
 
         /**
-         * Compose `publicKey` options for CredentialsContainer.create() method.
+         * Compose `publicKey` options for CredentialsContainer.get() method.
          * @param {string} challenge base64 url encoded binary (32 bytes)
          * @param {string} attestationId
          * @returns {Object}

@@ -2,6 +2,7 @@
  * Validate the user's assertion using the public key.
  *
  * @namespace Fl32_Auth_Back_Act_Assert_Validate
+ * @deprecated TODO: remove it or use it
  */
 // MODULE'S IMPORT
 import {createHash, subtle} from 'node:crypto';
