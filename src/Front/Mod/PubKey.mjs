@@ -3,7 +3,8 @@
  * @namespace Fl32_Auth_Front_Mod_PubKey
  */
 // MODULE'S VARS
-const CRED_ALG = -7; // 'ES256' as registered in the IANA COSE Algorithms registry
+const CRED_ALG_ES256 = -7; // 'ES256' as registered in the IANA COSE Algorithms registry
+const CRED_ALG_RS256 = -257; // 'RS256' as registered in the IANA COSE Algorithms registry
 const CRED_TRANS_INT = 'internal';
 const CRED_TYPE = 'public-key';
 const TIMEOUT = 360000;  // 6 minutes
@@ -151,17 +152,16 @@ export default class Fl32_Auth_Front_Mod_PubKey {
                 user,
                 challenge: challengeBin, // The challenge is produced by the server
                 pubKeyCredParams: [  // This Relying Party will accept an ES256 credential
-                    {
-                        type: CRED_TYPE,
-                        alg: CRED_ALG,
-                    }
+                    {type: CRED_TYPE, alg: CRED_ALG_ES256},
+                    {type: CRED_TYPE, alg: CRED_ALG_RS256},
                 ],
                 timeout: TIMEOUT,
                 excludeCredentials: [],
                 authenticatorSelection: {
-                    authenticatorAttachment: 'platform',
-                    // Try to use UV if possible. This is also the default.
-                    userVerification: 'preferred'
+                    authenticatorAttachment: 'platform', // platform | cross-platform
+                    // requireResidentKey: false,
+                    // residentKey: 'discouraged|preferred|required',
+                    userVerification: 'preferred', // required | preferred | discouraged
                 },
             };
 
