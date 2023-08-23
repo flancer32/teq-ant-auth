@@ -12,10 +12,14 @@ application startup:
 
 ```javascript
 export default class Demo_Front_App {
-    constructor(spec) {
-        /** @type {Fl32_Auth_Front_Mod_Session} */
-        const modSess = spec['Fl32_Auth_Front_Mod_Session$'];
-
+    /**
+     * @param {Fl32_Auth_Front_Mod_Session} modSess
+     */
+    constructor(
+        {
+            Fl32_Auth_Front_Mod_Session$: modSess,
+        }
+    ) {
         this.init = async function (fnPrintout) {
             await modSess.init();
         };

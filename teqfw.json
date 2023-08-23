@@ -2,9 +2,9 @@
   "@teqfw/di": {
     "autoload": {
       "ns": "Fl32_Auth",
-      "path": "./src"
-    },
-    "replace": {  }
+      "path": "./src",
+      "ext": "mjs"
+    }
   },
   "@teqfw/web": {
     "handlers": {

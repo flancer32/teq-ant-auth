@@ -8,9 +8,16 @@ export default class Fl32_Auth_Shared_Defaults {
     /** @type {TeqFw_Web_Api_Shared_Defaults} */
     MOD_WEB_API;
 
-    constructor(spec) {
+    /**
+     * @param {TeqFw_Web_Api_Shared_Defaults} MOD_WEB_API
+     */
+    constructor(
+        {
+            TeqFw_Web_Api_Shared_Defaults$: MOD_WEB_API,
+        }
+    ) {
         // DEPS
-        this.MOD_WEB_API = spec['TeqFw_Web_Api_Shared_Defaults$'];
+        this.MOD_WEB_API = MOD_WEB_API;
 
         Object.freeze(this);
     }

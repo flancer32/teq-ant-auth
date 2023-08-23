@@ -14,10 +14,19 @@ export default class Fl32_Auth_Back_Defaults {
     /** @type {Fl32_Auth_Shared_Defaults} */
     SHARED;
 
-    constructor(spec) {
+    /**
+     * @param {TeqFw_Web_Back_Defaults} MOD_WEB
+     * @param {Fl32_Auth_Shared_Defaults} SHARED
+     */
+    constructor(
+        {
+            TeqFw_Web_Back_Defaults$: MOD_WEB,
+            Fl32_Auth_Shared_Defaults$: SHARED,
+        }
+    ) {
         // DEPS
-        this.MOD_WEB = spec['TeqFw_Web_Back_Defaults$'];
-        this.SHARED = spec['Fl32_Auth_Shared_Defaults$'];
+        this.MOD_WEB = MOD_WEB;
+        this.SHARED = SHARED;
         // MAIN
         Object.freeze(this);
     }
