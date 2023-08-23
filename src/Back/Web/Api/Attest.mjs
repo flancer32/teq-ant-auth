@@ -11,35 +11,37 @@ import cosekey from 'parse-cosekey';
  * @implements TeqFw_Web_Api_Back_Api_Service
  */
 export default class Fl32_Auth_Back_Web_Api_Attest {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} */
-        const b64UrlToBin = spec['Fl32_Auth_Back_Util_Codec.b64UrlToBin'];
-        /** @type {Fl32_Auth_Back_Util_Codec.binToB64Url|function} */
-        const binToB64Url = spec['Fl32_Auth_Back_Util_Codec.binToB64Url'];
-        /** @type {Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj|function} */
-        const decodeAttestationObj = spec['Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj'];
-        /** @type {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} */
-        const decodeClientDataJSON = spec['Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON'];
-        /** @type {Fl32_Auth_Back_Util_WebAuthn.decodeAuthData|function} */
-        const decodeAuthData = spec['Fl32_Auth_Back_Util_WebAuthn.decodeAuthData'];
-        /** @type {TeqFw_Core_Back_Util_Cast.castBuffer|function} */
-        const castBuffer = spec['TeqFw_Core_Back_Util_Cast.castBuffer'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Attest} */
-        const endpoint = spec['Fl32_Auth_Shared_Web_Api_Attest$'];
-        /** @type {TeqFw_Db_Back_RDb_IConnect} */
-        const conn = spec['TeqFw_Db_Back_RDb_IConnect$'];
-        /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
-        const crud = spec['TeqFw_Db_Back_Api_RDb_CrudEngine$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Attest_Challenge} */
-        const rdbChlng = spec['Fl32_Auth_Back_RDb_Schema_Attest_Challenge$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Attest} */
-        const rdbPk = spec['Fl32_Auth_Back_RDb_Schema_Attest$'];
-        /** @type {Fl32_Auth_Back_Mod_Session} */
-        const modSess = spec['Fl32_Auth_Back_Mod_Session$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} b64UrlToBin
+     * @param {Fl32_Auth_Back_Util_Codec.binToB64Url|function} binToB64Url
+     * @param {Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj|function} decodeAttestationObj
+     * @param {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} decodeClientDataJSON
+     * @param {Fl32_Auth_Back_Util_WebAuthn.decodeAuthData|function} decodeAuthData
+     * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
+     * @param {Fl32_Auth_Shared_Web_Api_Attest} endpoint
+     * @param {TeqFw_Db_Back_RDb_IConnect} conn
+     * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
+     * @param {Fl32_Auth_Back_RDb_Schema_Attest_Challenge} rdbChlng
+     * @param {Fl32_Auth_Back_RDb_Schema_Attest} rdbPk
+     * @param {Fl32_Auth_Back_Mod_Session} modSess
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            'Fl32_Auth_Back_Util_Codec.b64UrlToBin': b64UrlToBin,
+            'Fl32_Auth_Back_Util_Codec.binToB64Url': binToB64Url,
+            'Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj': decodeAttestationObj,
+            'Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON': decodeClientDataJSON,
+            'Fl32_Auth_Back_Util_WebAuthn.decodeAuthData': decodeAuthData,
+            'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
+            Fl32_Auth_Shared_Web_Api_Attest$: endpoint,
+            TeqFw_Db_Back_RDb_IConnect$: conn,
+            TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
+            Fl32_Auth_Back_RDb_Schema_Attest_Challenge$: rdbChlng,
+            Fl32_Auth_Back_RDb_Schema_Attest$: rdbPk,
+            Fl32_Auth_Back_Mod_Session$: modSess,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
         const A_PK = rdbPk.getAttributes();

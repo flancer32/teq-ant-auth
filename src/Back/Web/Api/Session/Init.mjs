@@ -6,15 +6,17 @@
  * @implements TeqFw_Web_Api_Back_Api_Service
  */
 export default class Fl32_Auth_Back_Web_Api_Session_Init {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {Fl32_Auth_Shared_Web_Api_Session_Init} */
-        const endpoint = spec['Fl32_Auth_Shared_Web_Api_Session_Init$'];
-        /** @type {Fl32_Auth_Back_Mod_Session} */
-        const modSess = spec['Fl32_Auth_Back_Mod_Session$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Fl32_Auth_Shared_Web_Api_Session_Init} endpoint
+     * @param {Fl32_Auth_Back_Mod_Session} modSess
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            Fl32_Auth_Shared_Web_Api_Session_Init$: endpoint,
+            Fl32_Auth_Back_Mod_Session$: modSess,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
 

@@ -6,21 +6,23 @@
  * @implements TeqFw_Web_Api_Back_Api_Service
  */
 export default class Fl32_Auth_Back_Web_Api_Assert_Validate {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} */
-        const b64UrlToBin = spec['Fl32_Auth_Back_Util_Codec.b64UrlToBin'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Assert_Validate} */
-        const endpoint = spec['Fl32_Auth_Shared_Web_Api_Assert_Validate$'];
-        /** @type {TeqFw_Db_Back_RDb_IConnect} */
-        const conn = spec['TeqFw_Db_Back_RDb_IConnect$'];
-        /** @type {Fl32_Auth_Back_Mod_PubKey} */
-        const modPubKey = spec['Fl32_Auth_Back_Mod_PubKey$'];
-        /** @type {Fl32_Auth_Back_Mod_Session} */
-        const modSess = spec['Fl32_Auth_Back_Mod_Session$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} b64UrlToBin
+     * @param {Fl32_Auth_Shared_Web_Api_Assert_Validate} endpoint
+     * @param {TeqFw_Db_Back_RDb_IConnect} conn
+     * @param {Fl32_Auth_Back_Mod_PubKey} modPubKey
+     * @param {Fl32_Auth_Back_Mod_Session} modSess
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            'Fl32_Auth_Back_Util_Codec.b64UrlToBin': b64UrlToBin,
+            Fl32_Auth_Shared_Web_Api_Assert_Validate$: endpoint,
+            TeqFw_Db_Back_RDb_IConnect$: conn,
+            Fl32_Auth_Back_Mod_PubKey$: modPubKey,
+            Fl32_Auth_Back_Mod_Session$: modSess,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
 

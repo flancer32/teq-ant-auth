@@ -40,18 +40,21 @@ class Dto {
  * @implements TeqFw_Db_Back_RDb_Meta_IEntity
  */
 export default class Fl32_Auth_Back_RDb_Schema_Assert_Challenge {
-    constructor(spec) {
-        /** @type {Fl32_Auth_Back_Defaults} */
-        const DEF = spec['Fl32_Auth_Back_Defaults$'];
-        /** @type {TeqFw_Db_Back_RDb_Schema_EntityBase} */
-        const base = spec['TeqFw_Db_Back_RDb_Schema_EntityBase$'];
-        /** @type {TeqFw_Core_Back_Util_Cast.castBuffer|function} */
-        const castBuffer = spec['TeqFw_Core_Back_Util_Cast.castBuffer'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castDate|function} */
-        const castDate = spec['TeqFw_Core_Shared_Util_Cast.castDate'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
-        const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
-
+    /**
+     * @param {Fl32_Auth_Back_Defaults} DEF
+     * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
+     * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
+     * @param {TeqFw_Core_Shared_Util_Cast.castDate|function} castDate
+     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
+     */
+    constructor(
+        {
+            Fl32_Auth_Back_Defaults$: DEF,
+            TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
+            'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
+            'TeqFw_Core_Shared_Util_Cast.castDate': castDate,
+            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
+        }) {
         // INSTANCE METHODS
         /**
          * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge.Dto} [data]

@@ -48,13 +48,15 @@ class Response {
  * @implements TeqFw_Web_Api_Shared_Api_Endpoint
  */
 export default class Fl32_Auth_Shared_Web_Api_Assert_Validate {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Util_Cast.castBoolean|function} */
-        const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     */
+    constructor(
+        {
+            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
+        }) {
         // INSTANCE METHODS
 
         /**

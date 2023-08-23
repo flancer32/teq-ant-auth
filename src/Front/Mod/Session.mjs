@@ -5,17 +5,19 @@
  */
 // MODULE'S CLASSES
 export default class Fl32_Auth_Front_Mod_Session {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Web_Api_Front_Web_Connect} */
-        const connApi = spec['TeqFw_Web_Api_Front_Web_Connect$'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Session_Close} */
-        const apiClose = spec['Fl32_Auth_Shared_Web_Api_Session_Close$'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Session_Init} */
-        const apiInit = spec['Fl32_Auth_Shared_Web_Api_Session_Init$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
+     * @param {Fl32_Auth_Shared_Web_Api_Session_Close} apiClose
+     * @param {Fl32_Auth_Shared_Web_Api_Session_Init} apiInit
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            TeqFw_Web_Api_Front_Web_Connect$: connApi,
+            Fl32_Auth_Shared_Web_Api_Session_Close$: apiClose,
+            Fl32_Auth_Shared_Web_Api_Session_Init$: apiInit,
+        }) {
         // MAIN
         logger.setNamespace(this.constructor.name);
         /**

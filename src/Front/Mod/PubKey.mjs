@@ -12,29 +12,31 @@ const TXT_ENCODER = new TextEncoder();
 
 // MODULE'S CLASSES
 export default class Fl32_Auth_Front_Mod_PubKey {
-    constructor(spec) {
-        // DEPS
-        /** @type {Fl32_Auth_Front_Defaults} */
-        const DEF = spec['Fl32_Auth_Front_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {Fl32_Auth_Front_Util_Codec.b64UrlToBin|function} */
-        const b64UrlToBin = spec['Fl32_Auth_Front_Util_Codec.b64UrlToBin'];
-        /** @type {Fl32_Auth_Front_Util_Codec.binToB64Url|function} */
-        const binToB64Url = spec['Fl32_Auth_Front_Util_Codec.binToB64Url'];
-        /** @type {TeqFw_Web_Api_Front_Web_Connect} */
-        const connApi = spec['TeqFw_Web_Api_Front_Web_Connect$'];
-        /** @type {Fl32_Auth_Shared_Dto_Attest} */
-        const dtoCred = spec['Fl32_Auth_Shared_Dto_Attest$'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Attest} */
-        const apiAttest = spec['Fl32_Auth_Shared_Web_Api_Attest$'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Assert_Challenge} */
-        const apiAssertChl = spec['Fl32_Auth_Shared_Web_Api_Assert_Challenge$'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Assert_Validate} */
-        const apiAssertValid = spec['Fl32_Auth_Shared_Web_Api_Assert_Validate$'];
-        /** @type {Fl32_Auth_Front_Mod_Session} */
-        const modSess = spec['Fl32_Auth_Front_Mod_Session$'];
-
+    /**
+     * @param {Fl32_Auth_Front_Defaults} DEF
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Fl32_Auth_Front_Util_Codec.b64UrlToBin|function} b64UrlToBin
+     * @param {Fl32_Auth_Front_Util_Codec.binToB64Url|function} binToB64Url
+     * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
+     * @param {Fl32_Auth_Shared_Dto_Attest} dtoCred
+     * @param {Fl32_Auth_Shared_Web_Api_Attest} apiAttest
+     * @param {Fl32_Auth_Shared_Web_Api_Assert_Challenge} apiAssertChl
+     * @param {Fl32_Auth_Shared_Web_Api_Assert_Validate} apiAssertValid
+     * @param {Fl32_Auth_Front_Mod_Session} modSess
+     */
+    constructor(
+        {
+            Fl32_Auth_Front_Defaults$: DEF,
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            'Fl32_Auth_Front_Util_Codec.b64UrlToBin': b64UrlToBin,
+            'Fl32_Auth_Front_Util_Codec.binToB64Url': binToB64Url,
+            TeqFw_Web_Api_Front_Web_Connect$: connApi,
+            Fl32_Auth_Shared_Dto_Attest$: dtoCred,
+            Fl32_Auth_Shared_Web_Api_Attest$: apiAttest,
+            Fl32_Auth_Shared_Web_Api_Assert_Challenge$: apiAssertChl,
+            Fl32_Auth_Shared_Web_Api_Assert_Validate$: apiAssertValid,
+            Fl32_Auth_Front_Mod_Session$: modSess,
+        }) {
         // MAIN
         logger.setNamespace(this.constructor.name);
         const STORE_KEY = `${DEF.SHARED.NAME}/attestation`;

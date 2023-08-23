@@ -12,21 +12,23 @@ import {Buffer} from 'node:buffer';
 const NS = 'Fl32_Auth_Back_Act_Assert_Validate';
 
 // MODULE'S FUNCTIONS
-export default function (spec) {
-    // DEPS
-    /** @type {TeqFw_Core_Shared_Api_Logger} */
-    const logger = spec['TeqFw_Core_Shared_Api_Logger$']; // instance
-    /** @type {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} */
-    const b64UrlToBin = spec['Fl32_Auth_Back_Util_Codec.b64UrlToBin'];
-    /** @type {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} */
-    const asn1toRaw = spec['Fl32_Auth_Back_Util_WebAuthn.asn1toRaw'];
-    /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
-    const crud = spec['TeqFw_Db_Back_Api_RDb_CrudEngine$'];
-    /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} */
-    const rdbChallenge = spec['Fl32_Auth_Back_RDb_Schema_Assert_Challenge$'];
-    /** @type {Fl32_Auth_Back_RDb_Schema_Attest} */
-    const rdbPk = spec['Fl32_Auth_Back_RDb_Schema_Attest$'];
-
+/**
+ * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+ * @param {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} b64UrlToBin
+ * @param {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} asn1toRaw
+ * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
+ * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} rdbChallenge
+ * @param {Fl32_Auth_Back_RDb_Schema_Attest} rdbPk
+ */
+export default function (
+    {
+        TeqFw_Core_Shared_Api_Logger$: logger,
+        'Fl32_Auth_Back_Util_Codec.b64UrlToBin': b64UrlToBin,
+        'Fl32_Auth_Back_Util_WebAuthn.asn1toRaw': asn1toRaw,
+        TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
+        Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbChallenge,
+        Fl32_Auth_Back_RDb_Schema_Attest$: rdbPk,
+    }) {
     // VARS
     logger.setNamespace(NS);
     const A_CHALLENGE = rdbChallenge.getAttributes();

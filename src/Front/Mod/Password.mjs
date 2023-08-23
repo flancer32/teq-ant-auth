@@ -11,21 +11,23 @@ const ALG = 'SHA-384';
 
 // MODULE'S CLASSES
 export default class Fl32_Auth_Front_Mod_Password {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Core_Shared_Util_Codec.binToHex|function} */
-        const binToHex = spec['TeqFw_Core_Shared_Util_Codec.binToHex'];
-        /** @type {TeqFw_Web_Api_Front_Web_Connect} */
-        const connApi = spec['TeqFw_Web_Api_Front_Web_Connect$'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Password_Salt_Read} */
-        const apiSaltRead = spec['Fl32_Auth_Shared_Web_Api_Password_Salt_Read$'];
-        /** @type {Fl32_Auth_Shared_Web_Api_Password_Validate} */
-        const apiValid = spec['Fl32_Auth_Shared_Web_Api_Password_Validate$'];
-        /** @type {Fl32_Auth_Front_Mod_Session} */
-        const modSess = spec['Fl32_Auth_Front_Mod_Session$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Core_Shared_Util_Codec.binToHex|function} binToHex
+     * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
+     * @param {Fl32_Auth_Shared_Web_Api_Password_Salt_Read} apiSaltRead
+     * @param {Fl32_Auth_Shared_Web_Api_Password_Validate} apiValid
+     * @param {Fl32_Auth_Front_Mod_Session} modSess
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            'TeqFw_Core_Shared_Util_Codec.binToHex': binToHex,
+            TeqFw_Web_Api_Front_Web_Connect$: connApi,
+            Fl32_Auth_Shared_Web_Api_Password_Salt_Read$: apiSaltRead,
+            Fl32_Auth_Shared_Web_Api_Password_Validate$: apiValid,
+            Fl32_Auth_Front_Mod_Session$: modSess,
+        }) {
 
         // MAIN
         logger.setNamespace(this.constructor.name);

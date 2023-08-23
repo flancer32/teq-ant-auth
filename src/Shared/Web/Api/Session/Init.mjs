@@ -33,11 +33,13 @@ class Response {
  * @implements TeqFw_Web_Api_Shared_Api_Endpoint
  */
 export default class Fl32_Auth_Shared_Web_Api_Session_Init {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Util_Cast.castBoolean|function} */
-        const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
+     */
+    constructor(
+        {
+            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
+        }) {
         // INSTANCE METHODS
 
         /**

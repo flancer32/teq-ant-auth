@@ -6,21 +6,23 @@ import {Buffer} from 'node:buffer';
 
 // MODULE'S CLASSES
 export default class Fl32_Auth_Back_Mod_Password {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {Fl32_Auth_Back_Act_Password_Validate.act|function} */
-        const actPassValid = spec['Fl32_Auth_Back_Act_Password_Validate$'];
-        /** @type {Fl32_Auth_Back_Api_Mole} */
-        const moleApp = spec['Fl32_Auth_Back_Api_Mole$'];
-        /** @type {TeqFw_Core_Back_Util_Cast.castBuffer|function} */
-        const castBuffer = spec['TeqFw_Core_Back_Util_Cast.castBuffer'];
-        /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
-        const crud = spec['TeqFw_Db_Back_Api_RDb_CrudEngine$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Password} */
-        const rdbPass = spec['Fl32_Auth_Back_RDb_Schema_Password$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Fl32_Auth_Back_Act_Password_Validate.act|function} actPassValid
+     * @param {Fl32_Auth_Back_Api_Mole} moleApp
+     * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
+     * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
+     * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            Fl32_Auth_Back_Act_Password_Validate$: actPassValid,
+            Fl32_Auth_Back_Api_Mole$: moleApp,
+            'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
+            TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
+            Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
 

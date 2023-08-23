@@ -17,17 +17,19 @@ const {
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class Fl32_Auth_Back_Web_Handler_Session {
-    constructor(spec) {
-        // DEPS
-        /** @type {Fl32_Auth_Back_Defaults} */
-        const DEF = spec['Fl32_Auth_Back_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Web_Back_Util_Cookie.get|function} */
-        const cookieGet = spec['TeqFw_Web_Back_Util_Cookie.get'];
-        /** @type {Fl32_Auth_Back_Mod_Session} */
-        const modSess = spec['Fl32_Auth_Back_Mod_Session$'];
-
+    /**
+     * @param {Fl32_Auth_Back_Defaults} DEF
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Web_Back_Util_Cookie.get|function} cookieGet
+     * @param {Fl32_Auth_Back_Mod_Session} modSess
+     */
+    constructor(
+        {
+            Fl32_Auth_Back_Defaults$: DEF,
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            'TeqFw_Web_Back_Util_Cookie.get': cookieGet,
+            Fl32_Auth_Back_Mod_Session$: modSess,
+        }) {
         // MAIN
         logger.setNamespace(this.constructor.name);
 

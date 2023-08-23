@@ -40,15 +40,17 @@ class Response {
  * @implements TeqFw_Web_Api_Shared_Api_Endpoint
  */
 export default class Fl32_Auth_Shared_Web_Api_Attest {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
-        const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
-        /** @type {Fl32_Auth_Shared_Dto_Attest} */
-        const dtoCred = spec['Fl32_Auth_Shared_Dto_Attest$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {Fl32_Auth_Shared_Dto_Attest} dtoCred
+     */
+    constructor(
+        {
+            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
+            Fl32_Auth_Shared_Dto_Attest$: dtoCred,
+        }) {
         // INSTANCE METHODS
 
         /**

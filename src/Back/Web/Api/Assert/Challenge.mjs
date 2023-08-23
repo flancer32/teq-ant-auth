@@ -6,17 +6,19 @@
  * @implements TeqFw_Web_Api_Back_Api_Service
  */
 export default class Fl32_Auth_Back_Web_Api_Assert_Challenge {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {Fl32_Auth_Shared_Web_Api_Assert_Challenge} */
-        const endpoint = spec['Fl32_Auth_Shared_Web_Api_Assert_Challenge$'];
-        /** @type {TeqFw_Db_Back_RDb_IConnect} */
-        const conn = spec['TeqFw_Db_Back_RDb_IConnect$'];
-        /** @type {Fl32_Auth_Back_Mod_PubKey} */
-        const modPubKey = spec['Fl32_Auth_Back_Mod_PubKey$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Fl32_Auth_Shared_Web_Api_Assert_Challenge} endpoint
+     * @param {TeqFw_Db_Back_RDb_IConnect} conn
+     * @param {Fl32_Auth_Back_Mod_PubKey} modPubKey
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            Fl32_Auth_Shared_Web_Api_Assert_Challenge$: endpoint,
+            TeqFw_Db_Back_RDb_IConnect$: conn,
+            Fl32_Auth_Back_Mod_PubKey$: modPubKey,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
 

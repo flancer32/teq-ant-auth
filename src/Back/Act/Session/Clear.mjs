@@ -7,17 +7,19 @@
 const NS = 'Fl32_Auth_Back_Act_Session_Clear';
 
 // MODULE'S FUNCTIONS
-export default function (spec) {
-    // DEPS
-    /** @type {Fl32_Auth_Back_Defaults} */
-    const DEF = spec['Fl32_Auth_Back_Defaults$'];
-    /** @type {TeqFw_Web_Back_Util_Cookie.set|function} */
-    const cookieSet = spec['TeqFw_Web_Back_Util_Cookie.set'];
-    /** @type {TeqFw_Web_Back_Util_Cookie.clear|function} */
-    const cookieClear = spec['TeqFw_Web_Back_Util_Cookie.clear'];
-    /** @type {TeqFw_Web_Back_Mod_Address} */
-    const mAddr = spec['TeqFw_Web_Back_Mod_Address$'];
-
+/**
+ * @param {Fl32_Auth_Back_Defaults} DEF
+ * @param {TeqFw_Web_Back_Util_Cookie.set|function} cookieSet
+ * @param {TeqFw_Web_Back_Util_Cookie.clear|function} cookieClear
+ * @param {TeqFw_Web_Back_Mod_Address} mAddr
+ */
+export default function (
+    {
+        Fl32_Auth_Back_Defaults$: DEF,
+        'TeqFw_Web_Back_Util_Cookie.set': cookieSet,
+        'TeqFw_Web_Back_Util_Cookie.clear': cookieClear,
+        TeqFw_Web_Back_Mod_Address$: mAddr,
+    }) {
     // FUNCS
     /**
      * Set HTTP header to clear session cookie.

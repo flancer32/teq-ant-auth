@@ -10,19 +10,21 @@
  * @implements TeqFw_Web_Api_Back_Api_Service
  */
 export default class Fl32_Auth_Back_Web_Api_Password_Validate {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {Fl32_Auth_Shared_Web_Api_Password_Validate} */
-        const endpoint = spec['Fl32_Auth_Shared_Web_Api_Password_Validate$'];
-        /** @type {TeqFw_Db_Back_RDb_IConnect} */
-        const conn = spec['TeqFw_Db_Back_RDb_IConnect$'];
-        /** @type {Fl32_Auth_Back_Mod_Password} */
-        const modPass = spec['Fl32_Auth_Back_Mod_Password$'];
-        /** @type {Fl32_Auth_Back_Mod_Session} */
-        const modSess = spec['Fl32_Auth_Back_Mod_Session$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Fl32_Auth_Shared_Web_Api_Password_Validate} endpoint
+     * @param {TeqFw_Db_Back_RDb_IConnect} conn
+     * @param {Fl32_Auth_Back_Mod_Password} modPass
+     * @param {Fl32_Auth_Back_Mod_Session} modSess
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            Fl32_Auth_Shared_Web_Api_Password_Validate$: endpoint,
+            TeqFw_Db_Back_RDb_IConnect$: conn,
+            Fl32_Auth_Back_Mod_Password$: modPass,
+            Fl32_Auth_Back_Mod_Session$: modSess,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
 

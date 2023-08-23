@@ -8,17 +8,19 @@
 const NS = 'Fl32_Auth_Back_Act_Password_Salt_Read';
 
 // MODULE'S FUNCTIONS
-export default function (spec) {
-    // DEPS
-    /** @type {TeqFw_Core_Shared_Api_Logger} */
-    const logger = spec['TeqFw_Core_Shared_Api_Logger$']; // instance
-    /** @type {TeqFw_Core_Shared_Util_Codec.binToHex|function} */
-    const binToHex = spec['TeqFw_Core_Shared_Util_Codec.binToHex'];
-    /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
-    const crud = spec['TeqFw_Db_Back_Api_RDb_CrudEngine$'];
-    /** @type {Fl32_Auth_Back_RDb_Schema_Password} */
-    const rdbPass = spec['Fl32_Auth_Back_RDb_Schema_Password$'];
-
+/**
+ * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+ * @param {TeqFw_Core_Shared_Util_Codec.binToHex|function} binToHex
+ * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
+ * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
+ */
+export default function (
+    {
+        TeqFw_Core_Shared_Api_Logger$: logger,
+        'TeqFw_Core_Shared_Util_Codec.binToHex': binToHex,
+        TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
+        Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
+    }) {
     // VARS
     logger.setNamespace(NS);
 

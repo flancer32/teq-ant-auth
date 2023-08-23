@@ -42,10 +42,13 @@ class Dto {
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
 export default class Fl32_Auth_Shared_Dto_Attest {
-    constructor(spec) {
-        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     */
+    constructor(
+        {
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
+        }) {
         /**
          * @param {Fl32_Auth_Shared_Dto_Attest.Dto} [data]
          * @return {Fl32_Auth_Shared_Dto_Attest.Dto}

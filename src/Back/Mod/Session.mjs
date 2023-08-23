@@ -5,27 +5,29 @@
  */
 // MODULE'S CLASSES
 export default class Fl32_Auth_Back_Mod_Session {
-    constructor(spec) {
-        // DEPS
-        /** @type {Fl32_Auth_Back_Defaults} */
-        const DEF = spec['Fl32_Auth_Back_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Db_Back_RDb_IConnect} */
-        const conn = spec['TeqFw_Db_Back_RDb_IConnect$'];
-        /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
-        const crud = spec['TeqFw_Db_Back_Api_RDb_CrudEngine$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Session} */
-        const rdbSess = spec['Fl32_Auth_Back_RDb_Schema_Session$'];
-        /** @type {Fl32_Auth_Back_Api_Mole} */
-        const moleApp = spec['Fl32_Auth_Back_Api_Mole$'];
-        /** @type {Fl32_Auth_Back_Act_Session_Create.act|function} */
-        const actSessCreate = spec['Fl32_Auth_Back_Act_Session_Create$'];
-        /** @type {Fl32_Auth_Back_Act_Session_Plant.act|function} */
-        const actSessPlant = spec['Fl32_Auth_Back_Act_Session_Plant$'];
-        /** @type {Fl32_Auth_Back_Act_Session_Clear.act|function} */
-        const actSessClear = spec['Fl32_Auth_Back_Act_Session_Clear$'];
-
+    /**
+     * @param {Fl32_Auth_Back_Defaults} DEF
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Db_Back_RDb_IConnect} conn
+     * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
+     * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
+     * @param {Fl32_Auth_Back_Api_Mole} moleApp
+     * @param {Fl32_Auth_Back_Act_Session_Create.act|function} actSessCreate
+     * @param {Fl32_Auth_Back_Act_Session_Plant.act|function} actSessPlant
+     * @param {Fl32_Auth_Back_Act_Session_Clear.act|function} actSessClear
+     */
+    constructor(
+        {
+            Fl32_Auth_Back_Defaults$: DEF,
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            TeqFw_Db_Back_RDb_IConnect$: conn,
+            TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
+            Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
+            Fl32_Auth_Back_Api_Mole$: moleApp,
+            Fl32_Auth_Back_Act_Session_Create$: actSessCreate,
+            Fl32_Auth_Back_Act_Session_Plant$: actSessPlant,
+            Fl32_Auth_Back_Act_Session_Clear$: actSessClear,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
         /**

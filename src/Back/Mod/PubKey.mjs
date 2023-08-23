@@ -7,31 +7,33 @@ import {Buffer} from 'node:buffer';
 
 // MODULE'S CLASSES
 export default class Fl32_Auth_Back_Mod_PubKey {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} */
-        const b64UrlToBin = spec['Fl32_Auth_Back_Util_Codec.b64UrlToBin'];
-        /** @type {Fl32_Auth_Back_Util_Codec.binToB64Url|function} */
-        const binToB64Url = spec['Fl32_Auth_Back_Util_Codec.binToB64Url'];
-        /** @type {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} */
-        const decodeClientDataJSON = spec['Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON'];
-        /** @type {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} */
-        const asn1toRaw = spec['Fl32_Auth_Back_Util_WebAuthn.asn1toRaw'];
-        /** @type {Fl32_Auth_Back_Util_WebAuthn.createChallenge|function} */
-        const createChallenge = spec['Fl32_Auth_Back_Util_WebAuthn.createChallenge'];
-        /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
-        const crud = spec['TeqFw_Db_Back_Api_RDb_CrudEngine$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} */
-        const rdbAssertChl = spec['Fl32_Auth_Back_RDb_Schema_Assert_Challenge$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Attest} */
-        const rdbAttest = spec['Fl32_Auth_Back_RDb_Schema_Attest$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Attest_Challenge} */
-        const rdbAttestChl = spec['Fl32_Auth_Back_RDb_Schema_Attest_Challenge$'];
-        /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} */
-        const rdbChallenge = spec['Fl32_Auth_Back_RDb_Schema_Assert_Challenge$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} b64UrlToBin
+     * @param {Fl32_Auth_Back_Util_Codec.binToB64Url|function} binToB64Url
+     * @param {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} decodeClientDataJSON
+     * @param {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} asn1toRaw
+     * @param {Fl32_Auth_Back_Util_WebAuthn.createChallenge|function} createChallenge
+     * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
+     * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} rdbAssertChl
+     * @param {Fl32_Auth_Back_RDb_Schema_Attest} rdbAttest
+     * @param {Fl32_Auth_Back_RDb_Schema_Attest_Challenge} rdbAttestChl
+     * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} rdbChallenge
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            'Fl32_Auth_Back_Util_Codec.b64UrlToBin': b64UrlToBin,
+            'Fl32_Auth_Back_Util_Codec.binToB64Url': binToB64Url,
+            'Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON': decodeClientDataJSON,
+            'Fl32_Auth_Back_Util_WebAuthn.asn1toRaw': asn1toRaw,
+            'Fl32_Auth_Back_Util_WebAuthn.createChallenge': createChallenge,
+            TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
+            Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbAssertChl,
+            Fl32_Auth_Back_RDb_Schema_Attest$: rdbAttest,
+            Fl32_Auth_Back_RDb_Schema_Attest_Challenge$: rdbAttestChl,
+            Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbChallenge,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
         const A_ATTEST = rdbAttest.getAttributes();

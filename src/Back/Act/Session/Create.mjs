@@ -10,15 +10,17 @@ import {randomUUID} from 'node:crypto';
 const NS = 'Fl32_Auth_Back_Act_Session_Create';
 
 // MODULE'S FUNCTIONS
-export default function (spec) {
-    // DEPS
-    /** @type {TeqFw_Core_Shared_Api_Logger} */
-    const logger = spec['TeqFw_Core_Shared_Api_Logger$']; // instance
-    /** @type {TeqFw_Db_Back_Api_RDb_CrudEngine} */
-    const crud = spec['TeqFw_Db_Back_Api_RDb_CrudEngine$'];
-    /** @type {Fl32_Auth_Back_RDb_Schema_Session} */
-    const rdbSess = spec['Fl32_Auth_Back_RDb_Schema_Session$'];
-
+/**
+ * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+ * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
+ * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
+ */
+export default function (
+    {
+        TeqFw_Core_Shared_Api_Logger$: logger,
+        TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
+        Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
+    }) {
     // VARS
     logger.setNamespace(NS);
 
