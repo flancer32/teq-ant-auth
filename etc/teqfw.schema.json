@@ -21,7 +21,7 @@
                 "user": {
                   "attrs": ["user_ref"],
                   "ref": {
-                    "path": "/user", "attrs": ["bid"]
+                    "path": "/fl32/auth/user", "attrs": ["bid"]
                   }
                 }
               }
@@ -45,7 +45,7 @@
                 "user": {
                   "attrs": ["user_ref"],
                   "ref": {
-                    "path": "/user", "attrs": ["bid"]
+                    "path": "/fl32/auth/user", "attrs": ["bid"]
                   }
                 }
               }
@@ -67,9 +67,30 @@
               "relation": {
                 "user": {
                   "attrs": ["user_ref"],
-                  "ref": {"path": "/user", "attrs": ["bid"]},
+                  "ref": {"path": "/fl32/auth/user", "attrs": ["bid"]},
                   "action": {"delete": "cascade", "update": "cascade"}
                 }
+              }
+            },
+            "user": {
+              "comment": "User registry.",
+              "attr": {
+                "bid": {"type": "id", "comment": "Local ID for the current host."},
+                "uuid": {"type": "string", "comment": "Universal ID among all hosts."},
+                "key_pub": {
+                  "comment": "Public key for encryption and signature verification.",
+                  "type": "string"
+                },
+                "email": {"type": "string", "comment": "Email to restore the access to the user account."},
+                "enabled": {"type": "boolean", "default": true},
+                "date_created": {
+                  "comment": "UTC date-time for user registration.",
+                  "type": "datetime",
+                  "default": "current"
+                }
+              },
+              "index": {
+                "uuid": {"type": "unique", "attrs": ["uuid"]}
               }
             }
           },
@@ -127,7 +148,7 @@
                     "user": {
                       "attrs": ["user_ref"],
                       "ref": {
-                        "path": "/user", "attrs": ["bid"]
+                        "path": "/fl32/auth/user", "attrs": ["bid"]
                       }
                     }
                   }
@@ -139,7 +160,5 @@
       }
     }
   },
-  "refs": {
-    "/user": ["bid"]
-  }
+  "refs": {}
 }
