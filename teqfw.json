@@ -11,6 +11,9 @@
       "Fl32_Auth_Back_Web_Handler_Session": {
         "before": ["TeqFw_Web_Api_Back_Web_Handler_Service"]
       }
+    },
+    "statics": {
+      "/tweetnacl/": "/tweetnacl/"
     }
   },
   "@teqfw/web-api": {

@@ -13,4 +13,7 @@ Contains:
 * The session registry.
 * WebAuthn API credentials to authenticate users.
 
-Depends on `@teqfw/web-api`.
+Depends on:
+
+* @teqfw/db
+* @teqfw/web-api
