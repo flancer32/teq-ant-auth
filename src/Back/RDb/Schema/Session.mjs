@@ -1,5 +1,5 @@
 /**
- *  Metadata for RDB entity: established users sessions.
+ *  Metadata for RDB entity: relations between users and fronts.
  *  @namespace Fl32_Auth_Back_RDb_Schema_Session
  */
 // MODULE'S VARS
@@ -15,8 +15,9 @@ const ENTITY = '/fl32/auth/session';
  * @type {Object}
  */
 const ATTR = {
-    DATE_CREATED: 'date_created',
     CODE: 'code',
+    DATE_CREATED: 'date_created',
+    FRONT_REF: 'front_ref',
     USER_REF: 'user_ref',
 };
 Object.freeze(ATTR);
@@ -27,10 +28,12 @@ Object.freeze(ATTR);
  */
 class Dto {
     static namespace = NS;
-    /** @type {Date} */
-    date_created;
     /** @type {string} */
     code;
+    /** @type {Date} */
+    date_created;
+    /** @type {number} */
+    front_ref;
     /** @type {number} */
     user_ref;
 }
@@ -62,8 +65,9 @@ export default class Fl32_Auth_Back_RDb_Schema_Session {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.date_created = castDate(data?.date_created);
             res.code = castString(data?.code);
+            res.date_created = castDate(data?.date_created);
+            res.front_ref = castInt(data?.front_ref);
             res.user_ref = castInt(data?.user_ref);
             return res;
         };
@@ -78,7 +82,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Session {
         return base.create(this,
             `${DEF.SHARED.NAME}${ENTITY}`,
             ATTR,
-            [ATTR.CODE],
+            [ATTR.USER_REF, ATTR.FRONT_REF],
             Dto
         );
     }

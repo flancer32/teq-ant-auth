@@ -1,19 +1,18 @@
 /**
- * Store asymmetric encryption keys in the localStorage.
- * @deprecated use Fl32_Auth_Front_Store_Local_User
+ * The frontend storage for the frontend application identity.
  */
-export default class Fl32_Auth_Front_Store_Local_User_Keys {
+export default class Fl32_Auth_Front_Store_Local_Identity {
     /**
      * @param {Fl32_Auth_Front_Defaults} DEF
-     * @param {Fl32_Auth_Shared_Dto_Identity_Keys} dtoKeys
+     * @param {Fl32_Auth_Front_Dto_Identity} dtoIdentity
      */
     constructor(
         {
             Fl32_Auth_Front_Defaults$: DEF,
-            Fl32_Auth_Shared_Dto_Identity_Keys$: dtoKeys,
+            Fl32_Auth_Front_Dto_Identity$: dtoIdentity,
         }) {
         // VARS
-        const KEY = `${DEF.SHARED.NAME}/user/keys`;
+        const KEY = `${DEF.SHARED.NAME}/identity`;
 
         // INSTANCE METHODS
 
@@ -22,16 +21,18 @@ export default class Fl32_Auth_Front_Store_Local_User_Keys {
         };
 
         /**
-         * @return {Fl32_Auth_Shared_Dto_Identity_Keys.Dto}
+         * Get current configuration from the local storage.
+         * @return {Fl32_Auth_Front_Dto_Identity.Dto}
          */
         this.get = function () {
             const stored = self.window.localStorage.getItem(KEY);
             const obj = JSON.parse(stored);
-            return dtoKeys.createDto(obj);
+            return dtoIdentity.createDto(obj);
         };
 
         /**
-         * @param {Fl32_Auth_Shared_Dto_Identity_Keys.Dto} data
+         * Save current configuration into the local storage.
+         * @param {Fl32_Auth_Front_Dto_Identity.Dto} data
          */
         this.set = function (data) {
             self.window.localStorage.setItem(KEY, JSON.stringify(data));

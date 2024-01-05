@@ -16,6 +16,7 @@ const ENTITY = '/fl32/auth/password';
  */
 const ATTR = {
     DATE_UPDATED: 'date_updated',
+    EMAIL: 'email',
     HASH: 'hash',
     SALT: 'salt',
     USER_REF: 'user_ref',
@@ -30,6 +31,11 @@ class Dto {
     static namespace = NS;
     /** @type {Date} */
     date_updated;
+    /**
+     * Email to restore the access to the user account.
+     * @type {string}
+     */
+    email;
     /** @type {Uint8Array} */
     hash;
     /** @type {Uint8Array} */
@@ -49,6 +55,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
      * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
      * @param {TeqFw_Core_Shared_Util_Cast.castDate|function} castDate
      * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
      */
     constructor(
         {
@@ -57,6 +64,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
             'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
             'TeqFw_Core_Shared_Util_Cast.castDate': castDate,
             'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
         }) {
         // INSTANCE METHODS
         /**
@@ -66,6 +74,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
         this.createDto = function (data) {
             const res = new Dto();
             res.date_updated = castDate(data?.date_updated);
+            res.email = castString(data?.email);
             res.hash = castBuffer(data?.hash);
             res.salt = castBuffer(data?.salt);
             res.user_ref = castInt(data?.user_ref);

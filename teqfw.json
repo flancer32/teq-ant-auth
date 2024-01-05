@@ -21,6 +21,7 @@
       "Fl32_Auth_Back_Web_Api_Assert_Challenge",
       "Fl32_Auth_Back_Web_Api_Assert_Validate",
       "Fl32_Auth_Back_Web_Api_Attest",
+      "Fl32_Auth_Back_Web_Api_Front_Register",
       "Fl32_Auth_Back_Web_Api_Password_Salt_Read",
       "Fl32_Auth_Back_Web_Api_Password_Validate",
       "Fl32_Auth_Back_Web_Api_Session_Close",

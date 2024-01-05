@@ -1,6 +1,8 @@
 /**
  * A model for aggregating functionality related to user sessions.
  *
+ * This model uses identity & user local stores directly (w/o identity & user models).
+ *
  * @namespace Fl32_Auth_Front_Mod_Session
  */
 // MODULE'S CLASSES
@@ -10,6 +12,9 @@ export default class Fl32_Auth_Front_Mod_Session {
      * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
      * @param {Fl32_Auth_Shared_Web_Api_Session_Close} apiClose
      * @param {Fl32_Auth_Shared_Web_Api_Session_Init} apiInit
+     * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
+     * @param {Fl32_Auth_Front_Store_Local_Identity} storeIdentity
+     * @param {Fl32_Auth_Front_Store_Local_User} storeUser
      */
     constructor(
         {
@@ -17,14 +22,29 @@ export default class Fl32_Auth_Front_Mod_Session {
             TeqFw_Web_Api_Front_Web_Connect$: connApi,
             Fl32_Auth_Shared_Web_Api_Session_Close$: apiClose,
             Fl32_Auth_Shared_Web_Api_Session_Init$: apiInit,
+            Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
+            Fl32_Auth_Front_Store_Local_Identity$: storeIdentity,
+            Fl32_Auth_Front_Store_Local_User$: storeUser,
         }) {
         // MAIN
-        logger.setNamespace(this.constructor.name);
+        /** @type {Fl32_Auth_Front_Dto_User.Dto} */
+        let _user;
         /**
          * Internal store to cache session data for established session.
          * @type {Object}
          */
         let _store;
+
+        // FUNCS
+        async function initUser() {
+            const res = storeUser.get();
+            if (!res?.uuid || !res?.keys?.public) {
+                if (!res?.uuid) res.uuid = self.crypto.randomUUID();
+                if (!res?.keys?.public) res.keys = await modKeyMgr.generateAsyncKeys();
+                storeUser.set(res);
+            }
+            return res;
+        }
 
         // INSTANCE METHODS
 
@@ -52,6 +72,10 @@ export default class Fl32_Auth_Front_Mod_Session {
          * @return {Object}
          */
         this.getData = () => _store;
+        /**
+         * @return {Fl32_Auth_Front_Dto_User.Dto}
+         */
+        this.getUser = () => _user;
 
         /**
          * Initialize established user session (load session data from backend).
@@ -59,14 +83,21 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         this.init = async function () {
             try {
-                const req = apiInit.createReq();
-                // noinspection JSValidateTypes
-                /** @type {Fl32_Auth_Shared_Web_Api_Session_Init.Response} */
-                const res = await connApi.send(req, apiInit);
-                if (res?.success) {
-                    _store = res?.sessionData;
-                    logger.info(`Session is initialized.`);
-                } else _store = undefined;
+                _user = await initUser();
+                if (_user?.bid) {
+                    const req = apiInit.createReq();
+                    req.userUuid = _user.uuid;
+                    // noinspection JSValidateTypes
+                    /** @type {Fl32_Auth_Shared_Web_Api_Session_Init.Response} */
+                    const res = await connApi.send(req, apiInit);
+                    if (res?.success) {
+                        _store = res?.sessionData;
+                        logger.info(`User session is initialized.`);
+                    } else _store = undefined;
+                } else {
+                    _store = undefined;
+                    logger.info(`User is not registered on the back. The session is not initialized.`);
+                }
             } catch (e) {
                 // timeout or error
                 logger.error(`Cannot initialize user session. Error: ${e?.message}`);
@@ -78,6 +109,17 @@ export default class Fl32_Auth_Front_Mod_Session {
          * @returns {boolean}
          */
         this.isValid = () => Boolean(_store);
+
+        /**
+         * @param {number} bid
+         * @return {Fl32_Auth_Front_Dto_User.Dto}
+         */
+        this.setUserBid = function (bid) {
+            _user = storeUser.get();
+            _user.bid = bid;
+            storeUser.set(_user);
+            return _user;
+        };
 
         /**
          * Set session data in this model on sign-in or sign-up.

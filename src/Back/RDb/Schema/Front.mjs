@@ -1,57 +1,44 @@
 /**
- *  Metadata for RDB entity: the user registry.
- *  @namespace Fl32_Auth_Back_RDb_Schema_User
+ * The registry for frontends.
+ *
+ * The front is a separate browser's space with a local stores (localStorage, cache, IDB).
+ * The front can or cannot be bound to a user.
+ *
+ * @namespace Fl32_Auth_Back_RDb_Schema_Front
  */
 // MODULE'S VARS
-const NS = 'Fl32_Auth_Back_RDb_Schema_User';
+const NS = 'Fl32_Auth_Back_RDb_Schema_Front';
 /**
  * Path to the entity in plugin's DEM.
  * @type {string}
  */
-const ENTITY = '/fl32/auth/user';
+const ENTITY = '/fl32/auth/front';
 
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_User
+ * @memberOf Fl32_Auth_Back_RDb_Schema_Front
  * @type {Object}
  */
 const ATTR = {
     BID: 'bid',
     DATE_CREATED: 'date_created',
-    ENABLED: 'enabled',
-    KEY_PUB: 'key_pub',
+    DATE_LAST: 'date_last',
     UUID: 'uuid',
 };
 Object.freeze(ATTR);
 
 // MODULE'S CLASSES
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_User
+ * @memberOf Fl32_Auth_Back_RDb_Schema_Front
  */
 class Dto {
     static namespace = NS;
-    /**
-     * Backend ID for the object.
-     * @type {number}
-     */
+    /** @type {number} */
     bid;
-    /**
-     * UTC date-time for user registration.
-     * @type {Date}
-     */
+    /** @type {Date} */
     date_created;
-    /**
-     * @type {boolean}
-     */
-    enabled;
-    /**
-     * Public key for encryption and signature verification.
-     * @type {string}
-     */
-    key_pub;
-    /**
-     * Universal ID among all hosts.
-     * @type {string}
-     */
+    /** @type {Date} */
+    date_last;
+    /** @type {string} */
     uuid;
 }
 
@@ -59,11 +46,10 @@ class Dto {
 /**
  * @implements TeqFw_Db_Back_RDb_Meta_IEntity
  */
-export default class Fl32_Auth_Back_RDb_Schema_User {
+export default class Fl32_Auth_Back_RDb_Schema_Front {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
-     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
      * @param {TeqFw_Core_Shared_Util_Cast.castDate|function} castDate
      * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
      * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
@@ -72,30 +58,27 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
-            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
             'TeqFw_Core_Shared_Util_Cast.castDate': castDate,
             'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
             'TeqFw_Core_Shared_Util_Cast.castString': castString,
-        }
-    ) {
+        }) {
         // INSTANCE METHODS
         /**
-         * @param {Fl32_Auth_Back_RDb_Schema_User.Dto} [data]
-         * @return {Fl32_Auth_Back_RDb_Schema_User.Dto}
+         * @param {Fl32_Auth_Back_RDb_Schema_Front.Dto} [data]
+         * @return {Fl32_Auth_Back_RDb_Schema_Front.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();
             res.bid = castInt(data?.bid);
             res.date_created = castDate(data?.date_created);
-            res.enabled = castBoolean(data?.enabled);
-            res.key_pub = castString(data?.key_pub);
+            res.date_last = castDate(data?.date_last);
             res.uuid = castString(data?.uuid);
             return res;
         };
 
         /**
          * Set JSDoc return type, real code is in `TeqFw_Db_Back_RDb_Schema_EntityBase`.
-         * @return {typeof Fl32_Auth_Back_RDb_Schema_User.ATTR}
+         * @return {typeof Fl32_Auth_Back_RDb_Schema_Front.ATTR}
          */
         this.getAttributes = function () {};
 
@@ -107,5 +90,5 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
             Dto
         );
     }
-}
 
+}

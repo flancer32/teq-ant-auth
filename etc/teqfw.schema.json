@@ -26,10 +26,33 @@
                 }
               }
             },
+            "front": {
+              "comment": "Common registry for all frontends.",
+              "attr": {
+                "bid": {"type": "id"},
+                "uuid": {"type": "string", "comment": "Universally Unique Identifier."},
+                "date_created": {
+                  "comment": "UTC date-time for the first front registration.",
+                  "type": "datetime",
+                  "default": "current"
+                },
+                "date_last": {
+                  "comment": "UTC date-time for the last front registration.",
+                  "type": "datetime",
+                  "default": "current"
+                }
+              },
+              "index": {
+                "name": {"type": "unique", "attrs": ["uuid"]}
+              }
+            },
             "password": {
               "comment": "Passwords to authenticate users.",
               "attr": {
                 "user_ref": {"type": "ref"},
+                "email": {
+                  "type": "string", "comment": "Email to restore the access to the user account.", "nullable": true
+                },
                 "date_updated": {
                   "comment": "Date-time when record was updated.",
                   "type": "datetime",
@@ -51,10 +74,11 @@
               }
             },
             "session": {
-              "comment": "Established users sessions.",
+              "comment": "Relations between users and fronts.",
               "attr": {
+                "user_ref": {"type": "ref", "comment": "Reference to the user."},
+                "front_ref": {"type": "ref", "comment": "Reference to the front."},
                 "code": {"type": "string"},
-                "user_ref": {"type": "ref"},
                 "date_created": {
                   "type": "datetime",
                   "default": "current",
@@ -62,12 +86,18 @@
                 }
               },
               "index": {
-                "PK": {"type": "primary", "attrs": ["code"]}
+                "pk": {"type": "primary", "attrs": ["user_ref", "front_ref"]},
+                "code": {"type": "unique", "attrs": ["code"]}
               },
               "relation": {
                 "user": {
                   "attrs": ["user_ref"],
                   "ref": {"path": "/fl32/auth/user", "attrs": ["bid"]},
+                  "action": {"delete": "cascade", "update": "cascade"}
+                },
+                "front": {
+                  "attrs": ["front_ref"],
+                  "ref": {"path": "/fl32/auth/front", "attrs": ["bid"]},
                   "action": {"delete": "cascade", "update": "cascade"}
                 }
               }
@@ -81,7 +111,6 @@
                   "comment": "Public key for encryption and signature verification.",
                   "type": "string"
                 },
-                "email": {"type": "string", "comment": "Email to restore the access to the user account."},
                 "enabled": {"type": "boolean", "default": true},
                 "date_created": {
                   "comment": "UTC date-time for user registration.",

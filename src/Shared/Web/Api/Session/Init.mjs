@@ -10,6 +10,10 @@ const NS = 'Fl32_Auth_Shared_Web_Api_Session_Init';
  */
 class Request {
     static namespace = NS;
+    /** @type {string} */
+    frontUuid;
+    /** @type {string} */
+    userUuid;
 }
 
 /**
@@ -35,10 +39,12 @@ class Response {
 export default class Fl32_Auth_Shared_Web_Api_Session_Init {
     /**
      * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
      */
     constructor(
         {
             'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
         }) {
         // INSTANCE METHODS
 
@@ -50,6 +56,8 @@ export default class Fl32_Auth_Shared_Web_Api_Session_Init {
             // create new DTO
             const res = new Request();
             // cast known attributes
+            res.frontUuid = castString(data?.frontUuid);
+            res.userUuid = castString(data?.userUuid);
             return res;
         };
 

@@ -34,7 +34,6 @@ export default class Fl32_Auth_Back_Act_User_Create {
          */
         this.act = async function ({trx, uuid, keyPub, passHash, passSalt, email, enabled}) {
             const dtoUser = rdbUser.createDto();
-            dtoUser.email = email;
             dtoUser.enabled = enabled;
             dtoUser.key_pub = keyPub;
             dtoUser.uuid = uuid;
@@ -42,6 +41,7 @@ export default class Fl32_Auth_Back_Act_User_Create {
             if (passHash && passSalt) {
                 const dtoPass = rdbPass.createDto();
                 dtoPass.date_updated = new Date();
+                dtoPass.email = email;
                 dtoPass.hash = castBuffer(passHash);
                 dtoPass.salt = castBuffer(passSalt);
                 dtoPass.user_ref = bid;
