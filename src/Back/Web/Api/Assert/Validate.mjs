@@ -23,9 +23,6 @@ export default class Fl32_Auth_Back_Web_Api_Assert_Validate {
             Fl32_Auth_Back_Mod_PubKey$: modPubKey,
             Fl32_Auth_Back_Mod_Session$: modSess,
         }) {
-        // VARS
-        logger.setNamespace(this.constructor.name);
-
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;

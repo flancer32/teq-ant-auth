@@ -43,7 +43,6 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
             Fl32_Auth_Back_Mod_Session$: modSess,
         }) {
         // VARS
-        logger.setNamespace(this.constructor.name);
         const A_PK = rdbPk.getAttributes();
 
 

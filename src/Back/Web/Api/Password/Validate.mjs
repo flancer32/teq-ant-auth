@@ -25,9 +25,6 @@ export default class Fl32_Auth_Back_Web_Api_Password_Validate {
             Fl32_Auth_Back_Mod_Password$: modPass,
             Fl32_Auth_Back_Mod_Session$: modSess,
         }) {
-        // VARS
-        logger.setNamespace(this.constructor.name);
-
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;

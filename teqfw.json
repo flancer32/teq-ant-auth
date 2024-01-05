@@ -24,7 +24,8 @@
       "Fl32_Auth_Back_Web_Api_Password_Salt_Read",
       "Fl32_Auth_Back_Web_Api_Password_Validate",
       "Fl32_Auth_Back_Web_Api_Session_Close",
-      "Fl32_Auth_Back_Web_Api_Session_Init"
+      "Fl32_Auth_Back_Web_Api_Session_Init",
+      "Fl32_Auth_Back_Web_Api_User_ReadKey"
     ]
   }
 }

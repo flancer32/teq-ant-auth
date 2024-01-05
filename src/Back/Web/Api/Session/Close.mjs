@@ -19,9 +19,6 @@ export default class Fl32_Auth_Back_Web_Api_Session_Close {
             TeqFw_Db_Back_RDb_IConnect$: conn,
             Fl32_Auth_Back_Mod_Session$: modSess,
         }) {
-        // VARS
-        logger.setNamespace(this.constructor.name);
-
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;

@@ -26,9 +26,6 @@ export default class Fl32_Auth_Back_Web_Api_Password_Salt_Read {
             Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
             Fl32_Auth_Back_Api_Mole$: moleUser,
         }) {
-        // VARS
-        logger.setNamespace(this.constructor.name);
-
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;

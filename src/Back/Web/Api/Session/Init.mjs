@@ -17,9 +17,6 @@ export default class Fl32_Auth_Back_Web_Api_Session_Init {
             Fl32_Auth_Shared_Web_Api_Session_Init$: endpoint,
             Fl32_Auth_Back_Mod_Session$: modSess,
         }) {
-        // VARS
-        logger.setNamespace(this.constructor.name);
-
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;
