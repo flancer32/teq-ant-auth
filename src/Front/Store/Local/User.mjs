@@ -1,5 +1,6 @@
 /**
  * The frontend storage for the user identity.
+ * Don't use the store directly, use it from `Fl32_Auth_Front_Mod_Session`.
  */
 export default class Fl32_Auth_Front_Store_Local_User {
     /**

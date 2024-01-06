@@ -17,3 +17,13 @@ Depends on:
 
 * @teqfw/db
 * @teqfw/web-api
+
+## Front
+
+### `Fl32_Auth_Front_Mod_Session`
+
+Init the session in the frontend app:
+
+```javascript
+await session.init();
+```
