@@ -32,6 +32,12 @@ export default class Fl32_Auth_Front_Store_Local_Identity {
         };
 
         /**
+         * Get the key for the `localStorage`.
+         * @return {string}
+         */
+        this.key = () => KEY;
+
+        /**
          * Save current configuration into the local storage.
          * @param {Fl32_Auth_Front_Dto_Identity.Dto} data
          */
