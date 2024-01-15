@@ -11,18 +11,16 @@ const NS = 'Fl32_Auth_Back_Act_Session_Create';
 
 // MODULE'S FUNCTIONS
 /**
- * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
  * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
  * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
  */
 export default function (
     {
-        TeqFw_Core_Shared_Api_Logger$: logger,
         TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
         Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
     }) {
     // VARS
-    logger.setNamespace(NS);
+    const A_SESS = rdbSess.getAttributes();
 
     // FUNCS
     /**
@@ -30,20 +28,22 @@ export default function (
      *
      * @param {TeqFw_Db_Back_RDb_ITrans} trx
      * @param {number} userBid
+     * @param {number} frontBid
      * @return {Promise<{code: string}>}
      * @memberOf Fl32_Auth_Back_Act_Session_Create
      */
-    async function act({trx, userBid}) {
+    async function act({trx, userBid, frontBid}) {
         let code, found;
         // noinspection JSValidateTypes
         /** @type {Fl32_Auth_Back_RDb_Schema_Password.Dto} */
         do {
             code = randomUUID();
-            found = await crud.readOne(trx, rdbSess, code);
+            found = await crud.readOne(trx, rdbSess, {[A_SESS.CODE]: code});
         } while (found);
         const dto = rdbSess.createDto();
         dto.code = code;
         dto.user_ref = userBid;
+        dto.front_ref = frontBid;
         await crud.create(trx, rdbSess, dto);
         return {code};
     }

@@ -68,10 +68,11 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} response
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {number} userBid backend ID for related user
+         * @param {number} frontBid
          * @returns {Promise<{sessionId: string, sessionData: Object}>}
          */
-        this.establish = async function ({request, response, trx, userBid}) {
-            const {code: sessionId} = await actSessCreate({trx, userBid});
+        this.establish = async function ({request, response, trx, userBid, frontBid}) {
+            const {code: sessionId} = await actSessCreate({trx, userBid, frontBid});
             actSessPlant({request, response, sessionId});
             const {sessionData} = await moleApp.sessionDataRead({trx, userBid});
             request[DEF.REQ_HTTP_SESS_ID] = sessionId;
