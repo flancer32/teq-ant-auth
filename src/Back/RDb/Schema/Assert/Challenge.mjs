@@ -43,18 +43,17 @@ export default class Fl32_Auth_Back_RDb_Schema_Assert_Challenge {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
-     * @param {TeqFw_Core_Shared_Util_Cast.castDate|function} castDate
-     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
      */
     constructor(
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
+            TeqFw_Core_Shared_Util_Cast$: util,
             'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
-            'TeqFw_Core_Shared_Util_Cast.castDate': castDate,
-            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
-        }) {
+        }
+    ) {
         // INSTANCE METHODS
         /**
          * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge.Dto} [data]
@@ -62,9 +61,9 @@ export default class Fl32_Auth_Back_RDb_Schema_Assert_Challenge {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.attest_ref = castInt(data?.attest_ref);
+            res.attest_ref = util.castInt(data?.attest_ref);
             res.challenge = castBuffer(data?.challenge);
-            res.date_created = castDate(data?.date_created);
+            res.date_created = util.castDate(data?.date_created);
             return res;
         };
 

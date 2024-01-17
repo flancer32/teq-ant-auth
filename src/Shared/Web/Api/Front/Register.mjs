@@ -30,13 +30,11 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Front_Register {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      */
     constructor(
         {
-            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
+            TeqFw_Core_Shared_Util_Cast$: util,
         }
     ) {
         // INSTANCE METHODS
@@ -49,7 +47,7 @@ export default class Fl32_Auth_Shared_Web_Api_Front_Register {
             // create new DTO
             const res = new Request();
             // cast known attributes
-            res.frontUuid = castString(data?.frontUuid);
+            res.frontUuid = util.castString(data?.frontUuid);
             return res;
         };
 
@@ -61,8 +59,8 @@ export default class Fl32_Auth_Shared_Web_Api_Front_Register {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.backUuid = castString(data?.backUuid);
-            res.frontBid = castInt(data?.frontBid);
+            res.backUuid = util.castString(data?.backUuid);
+            res.frontBid = util.castInt(data?.frontBid);
             return res;
         };
     }

@@ -28,12 +28,13 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_User_ReadKey {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      */
     constructor(
         {
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
-        }) {
+            TeqFw_Core_Shared_Util_Cast$: util,
+        }
+    ) {
         // INSTANCE METHODS
 
         /**
@@ -44,7 +45,7 @@ export default class Fl32_Auth_Shared_Web_Api_User_ReadKey {
             // create new DTO
             const res = new Request();
             // cast known attributes
-            res.uuid = castString(data?.uuid);
+            res.uuid = util.castString(data?.uuid);
             return res;
         };
 
@@ -56,7 +57,7 @@ export default class Fl32_Auth_Shared_Web_Api_User_ReadKey {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.publicKey = castString(data?.publicKey);
+            res.publicKey = util.castString(data?.publicKey);
             return res;
         };
     }

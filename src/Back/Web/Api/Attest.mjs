@@ -41,7 +41,8 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
             Fl32_Auth_Back_RDb_Schema_Attest_Challenge$: rdbChlng,
             Fl32_Auth_Back_RDb_Schema_Attest$: rdbPk,
             Fl32_Auth_Back_Mod_Session$: modSess,
-        }) {
+        }
+    ) {
         // VARS
         const A_PK = rdbPk.getAttributes();
 

@@ -28,7 +28,8 @@ export default function (
         TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
         Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbChallenge,
         Fl32_Auth_Back_RDb_Schema_Attest$: rdbPk,
-    }) {
+    }
+) {
     // VARS
     logger.setNamespace(NS);
     const A_CHALLENGE = rdbChallenge.getAttributes();

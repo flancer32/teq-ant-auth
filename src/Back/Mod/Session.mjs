@@ -23,7 +23,8 @@ export default class Fl32_Auth_Back_Mod_Session {
             Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
             Fl32_Auth_Back_Api_Mole$: moleApp,
             Fl32_Auth_Back_Mod_Cookie$: modCookie,
-        }) {
+        }
+    ) {
         // VARS
         const A_SESS = rdbSess.getAttributes();
         /**

@@ -22,7 +22,8 @@ export default class Fl32_Auth_Back_Mod_Password {
             'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
-        }) {
+        }
+    ) {
         // VARS
         logger.setNamespace(this.constructor.name);
 

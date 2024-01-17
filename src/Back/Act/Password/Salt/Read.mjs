@@ -20,7 +20,8 @@ export default function (
         'TeqFw_Core_Shared_Util_Codec.binToHex': binToHex,
         TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
         Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
-    }) {
+    }
+) {
     // VARS
     logger.setNamespace(NS);
 

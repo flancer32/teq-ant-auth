@@ -22,7 +22,8 @@ export default class Fl32_Auth_Back_Web_Api_Assert_Validate {
             TeqFw_Db_Back_RDb_IConnect$: conn,
             Fl32_Auth_Back_Mod_PubKey$: modPubKey,
             Fl32_Auth_Back_Mod_Session$: modSess,
-        }) {
+        }
+    ) {
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;

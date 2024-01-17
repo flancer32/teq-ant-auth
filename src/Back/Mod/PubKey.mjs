@@ -18,7 +18,6 @@ export default class Fl32_Auth_Back_Mod_PubKey {
      * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} rdbAssertChl
      * @param {Fl32_Auth_Back_RDb_Schema_Attest} rdbAttest
      * @param {Fl32_Auth_Back_RDb_Schema_Attest_Challenge} rdbAttestChl
-     * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} rdbChallenge
      */
     constructor(
         {
@@ -32,12 +31,12 @@ export default class Fl32_Auth_Back_Mod_PubKey {
             Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbAssertChl,
             Fl32_Auth_Back_RDb_Schema_Attest$: rdbAttest,
             Fl32_Auth_Back_RDb_Schema_Attest_Challenge$: rdbAttestChl,
-            Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbChallenge,
-        }) {
+        }
+    ) {
         // VARS
         logger.setNamespace(this.constructor.name);
         const A_ATTEST = rdbAttest.getAttributes();
-        const A_CHALLENGE = rdbChallenge.getAttributes();
+        const A_CHALLENGE = rdbAssertChl.getAttributes();
 
         // INSTANCE METHODS
 
@@ -81,7 +80,7 @@ export default class Fl32_Auth_Back_Mod_PubKey {
             const clientDataDecoded = decodeClientDataJSON(clientData, true);
             const challenge = b64UrlToBin(clientDataDecoded.challenge);
             /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge.Dto} */
-            const found = await crud.readOne(trx, rdbChallenge, {[A_CHALLENGE.CHALLENGE]: challenge});
+            const found = await crud.readOne(trx, rdbAssertChl, {[A_CHALLENGE.CHALLENGE]: challenge});
             if (found) {
                 const attestBid = found.attest_ref;
                 /** @type {Fl32_Auth_Back_RDb_Schema_Attest.Dto} */

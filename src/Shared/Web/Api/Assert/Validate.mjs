@@ -49,14 +49,13 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Assert_Validate {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      */
     constructor(
         {
-            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
-        }) {
+            TeqFw_Core_Shared_Util_Cast$: util,
+        }
+    ) {
         // INSTANCE METHODS
 
         /**
@@ -67,9 +66,9 @@ export default class Fl32_Auth_Shared_Web_Api_Assert_Validate {
             // create new DTO
             const res = new Request();
             // cast known attributes
-            res.authenticatorData = castString(data?.authenticatorData);
-            res.clientData = castString(data?.clientData);
-            res.signature = castString(data?.signature);
+            res.authenticatorData = util.castString(data?.authenticatorData);
+            res.clientData = util.castString(data?.clientData);
+            res.signature = util.castString(data?.signature);
             return res;
         };
 
@@ -81,7 +80,7 @@ export default class Fl32_Auth_Shared_Web_Api_Assert_Validate {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.success = castBoolean(data?.success);
+            res.success = util.castBoolean(data?.success);
             res.sessionData = structuredClone(data?.sessionData);
             return res;
         };

@@ -27,7 +27,8 @@ export default class Fl32_Auth_Front_Mod_Password {
             Fl32_Auth_Shared_Web_Api_Password_Salt_Read$: apiSaltRead,
             Fl32_Auth_Shared_Web_Api_Password_Validate$: apiValid,
             Fl32_Auth_Front_Mod_Session$: modSess,
-        }) {
+        }
+    ) {
 
         // MAIN
         logger.setNamespace(this.constructor.name);

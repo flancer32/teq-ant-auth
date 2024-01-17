@@ -52,20 +52,17 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
-     * @param {TeqFw_Core_Shared_Util_Cast.castDate|function} castDate
-     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
      */
     constructor(
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
+            TeqFw_Core_Shared_Util_Cast$: util,
             'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
-            'TeqFw_Core_Shared_Util_Cast.castDate': castDate,
-            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
-        }) {
+        }
+    ) {
         // INSTANCE METHODS
         /**
          * @param {Fl32_Auth_Back_RDb_Schema_Password.Dto} [data]
@@ -73,11 +70,11 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.date_updated = castDate(data?.date_updated);
-            res.email = castString(data?.email);
+            res.date_updated = util.castDate(data?.date_updated);
+            res.email = util.castString(data?.email);
             res.hash = castBuffer(data?.hash);
             res.salt = castBuffer(data?.salt);
-            res.user_ref = castInt(data?.user_ref);
+            res.user_ref = util.castInt(data?.user_ref);
             return res;
         };
 

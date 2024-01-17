@@ -41,16 +41,15 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Attest {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      * @param {Fl32_Auth_Shared_Dto_Attest} dtoCred
      */
     constructor(
         {
-            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
+            TeqFw_Core_Shared_Util_Cast$: util,
             Fl32_Auth_Shared_Dto_Attest$: dtoCred,
-        }) {
+        }
+    ) {
         // INSTANCE METHODS
 
         /**
@@ -73,8 +72,8 @@ export default class Fl32_Auth_Shared_Web_Api_Attest {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.attestationId = castString(data?.attestationId);
-            res.publicKeyBid = castInt(data?.publicKeyBid);
+            res.attestationId = util.castString(data?.attestationId);
+            res.publicKeyBid = util.castInt(data?.publicKeyBid);
             res.sessionData = structuredClone(data?.sessionData);
             return res;
         };

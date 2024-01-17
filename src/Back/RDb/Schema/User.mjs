@@ -63,19 +63,13 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
-     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
-     * @param {TeqFw_Core_Shared_Util_Cast.castDate|function} castDate
-     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      */
     constructor(
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
-            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
-            'TeqFw_Core_Shared_Util_Cast.castDate': castDate,
-            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
+            TeqFw_Core_Shared_Util_Cast$: util,
         }
     ) {
         // INSTANCE METHODS
@@ -85,11 +79,11 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.bid = castInt(data?.bid);
-            res.date_created = castDate(data?.date_created);
-            res.enabled = castBoolean(data?.enabled);
-            res.key_pub = castString(data?.key_pub);
-            res.uuid = castString(data?.uuid);
+            res.bid = util.castInt(data?.bid);
+            res.date_created = util.castDate(data?.date_created);
+            res.enabled = util.castBoolean(data?.enabled);
+            res.key_pub = util.castString(data?.key_pub);
+            res.uuid = util.castString(data?.uuid);
             return res;
         };
 

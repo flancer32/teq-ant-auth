@@ -11,7 +11,8 @@ export default class Fl32_Auth_Back_Mod_Session_Front {
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Web_Back_Util_Cookie: cookie,
-        }) {
+        }
+    ) {
         // VARS
 
         // FUNCS

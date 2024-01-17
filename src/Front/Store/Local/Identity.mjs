@@ -11,7 +11,8 @@ export default class Fl32_Auth_Front_Store_Local_Identity {
         {
             Fl32_Auth_Front_Defaults$: DEF,
             Fl32_Auth_Front_Dto_Identity$: dtoIdentity,
-        }) {
+        }
+    ) {
         // VARS
         const KEY = `${DEF.SHARED.NAME}/identity`;
 

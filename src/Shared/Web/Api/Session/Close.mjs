@@ -26,12 +26,13 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Session_Close {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      */
     constructor(
         {
-            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
-        }) {
+            TeqFw_Core_Shared_Util_Cast$: util,
+        }
+    ) {
         // INSTANCE METHODS
 
         /**
@@ -53,7 +54,7 @@ export default class Fl32_Auth_Shared_Web_Api_Session_Close {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.success = castBoolean(data?.success);
+            res.success = util.castBoolean(data?.success);
             return res;
         };
     }

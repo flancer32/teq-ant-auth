@@ -34,12 +34,13 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Password_Salt_Read {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      */
     constructor(
         {
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
-        }) {
+            TeqFw_Core_Shared_Util_Cast$: util,
+        }
+    ) {
         // INSTANCE METHODS
 
         /**
@@ -50,7 +51,7 @@ export default class Fl32_Auth_Shared_Web_Api_Password_Salt_Read {
             // create new DTO
             const res = new Request();
             // cast known attributes
-            res.userRef = castString(data?.userRef);
+            res.userRef = util.castString(data?.userRef);
             return res;
         };
 
@@ -62,7 +63,7 @@ export default class Fl32_Auth_Shared_Web_Api_Password_Salt_Read {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.salt = castString(data?.salt);
+            res.salt = util.castString(data?.salt);
             return res;
         };
     }

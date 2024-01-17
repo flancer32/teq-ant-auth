@@ -29,7 +29,8 @@ export default class Fl32_Auth_Back_Web_Handler_Session_Front {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Fl32_Auth_Back_Mod_Session_Front$: modFront,
-        }) {
+        }
+    ) {
 
         // FUNCS
         /**

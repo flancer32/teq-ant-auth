@@ -36,7 +36,8 @@ export default class Fl32_Auth_Front_Mod_PubKey {
             Fl32_Auth_Shared_Web_Api_Assert_Challenge$: apiAssertChl,
             Fl32_Auth_Shared_Web_Api_Assert_Validate$: apiAssertValid,
             Fl32_Auth_Front_Mod_Session$: modSess,
-        }) {
+        }
+    ) {
         // MAIN
         logger.setNamespace(this.constructor.name);
         const STORE_KEY = `${DEF.SHARED.NAME}/attestation`;

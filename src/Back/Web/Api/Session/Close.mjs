@@ -18,7 +18,8 @@ export default class Fl32_Auth_Back_Web_Api_Session_Close {
             Fl32_Auth_Shared_Web_Api_Session_Close$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             Fl32_Auth_Back_Mod_Session$: modSess,
-        }) {
+        }
+    ) {
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;

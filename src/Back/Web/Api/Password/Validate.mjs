@@ -24,7 +24,8 @@ export default class Fl32_Auth_Back_Web_Api_Password_Validate {
             TeqFw_Db_Back_RDb_IConnect$: conn,
             Fl32_Auth_Back_Mod_Password$: modPass,
             Fl32_Auth_Back_Mod_Session$: modSess,
-        }) {
+        }
+    ) {
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;

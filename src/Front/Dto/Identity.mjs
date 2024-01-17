@@ -32,13 +32,11 @@ class Dto {
  */
 export default class Fl32_Auth_Front_Dto_Identity {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {TeqFw_Core_Shared_Util_Cast} util
      */
     constructor(
         {
-            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
+            TeqFw_Core_Shared_Util_Cast$: util,
         }
     ) {
         /**
@@ -49,9 +47,9 @@ export default class Fl32_Auth_Front_Dto_Identity {
             // create new DTO
             const res = new Dto();
             // cast known attributes
-            res.backUuid = castString(data?.backUuid);
-            res.frontBid = castInt(data?.frontBid);
-            res.frontUuid = castString(data?.frontUuid);
+            res.backUuid = util.castString(data?.backUuid);
+            res.frontBid = util.castInt(data?.frontBid);
+            res.frontUuid = util.castString(data?.frontUuid);
             return res;
         };
     }

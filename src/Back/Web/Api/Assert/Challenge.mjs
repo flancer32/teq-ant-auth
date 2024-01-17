@@ -18,7 +18,8 @@ export default class Fl32_Auth_Back_Web_Api_Assert_Challenge {
             Fl32_Auth_Shared_Web_Api_Assert_Challenge$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             Fl32_Auth_Back_Mod_PubKey$: modPubKey,
-        }) {
+        }
+    ) {
         // INSTANCE METHODS
 
         this.getEndpoint = () => endpoint;

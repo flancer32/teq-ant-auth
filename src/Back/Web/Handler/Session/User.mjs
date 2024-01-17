@@ -29,7 +29,8 @@ export default class Fl32_Auth_Back_Web_Handler_Session_User {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             'TeqFw_Web_Back_Util_Cookie.get': cookieGet,
             Fl32_Auth_Back_Mod_Session$: modSess,
-        }) {
+        }
+    ) {
         // MAIN
         logger.setNamespace(this.constructor.name);
 
