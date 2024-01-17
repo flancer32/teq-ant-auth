@@ -21,7 +21,12 @@ class Dto {
      */
     keys;
     /**
-     * The user UUID
+     * The user session ID if the user is authenticated.
+     * @type {string}
+     */
+    session;
+    /**
+     * This ID is generated on the front and should be registered on the back.
      * @type {string}
      */
     uuid;
@@ -53,6 +58,7 @@ export default class Fl32_Auth_Front_Dto_User {
             // cast known attributes
             res.bid = castInt(data?.bid);
             res.keys = dtoKeys.createDto(data?.keys);
+            res.session = castString(data?.session);
             res.uuid = castString(data?.uuid);
             return res;
         };

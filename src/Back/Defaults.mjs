@@ -6,10 +6,12 @@ export default class Fl32_Auth_Back_Defaults {
     /** @type {TeqFw_Web_Back_Defaults} */
     MOD_WEB;
 
-    REQ_HTTP_SESS_ID = '@flancer32/teq-ant-auth/sessionId';
+    COOKIE_SESSION_FRONT_NAME = 'TEQ_SESSION_FRONT';
+    COOKIE_SESSION_USER_LIFETIME = 31536000000;  // 3600 * 24 * 365 * 1000
+    COOKIE_SESSION_USER_NAME = 'TEQ_SESSION_USER';
 
-    SESSION_COOKIE_LIFETIME = 31536000000;  // 3600 * 24 * 365 * 1000
-    SESSION_COOKIE_NAME = 'TEQ_SESSION_ID';
+    REQ_HTTP_SESSION_FRONT_ID = '@flancer32/teq-ant-auth/frontSessionId';
+    REQ_HTTP_SESSION_USER_ID = '@flancer32/teq-ant-auth/userSessionId';
 
     /** @type {Fl32_Auth_Shared_Defaults} */
     SHARED;

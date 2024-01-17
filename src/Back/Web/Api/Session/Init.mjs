@@ -30,7 +30,7 @@ export default class Fl32_Auth_Back_Web_Api_Session_Init {
          * @returns {Promise<void>}
          */
         this.process = async function (req, res, context) {
-            // load session data from HTTP request (see Fl32_Auth_Back_Web_Handler_Session)
+            // load session data from HTTP request (see Fl32_Auth_Back_Web_Handler_Session_User)
             res.sessionData = modSess.getCachedData({request: context.request});
             res.success = Boolean(res.sessionData);
             logger.info(JSON.stringify(res));

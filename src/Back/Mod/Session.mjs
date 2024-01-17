@@ -12,9 +12,7 @@ export default class Fl32_Auth_Back_Mod_Session {
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
      * @param {Fl32_Auth_Back_Api_Mole} moleApp
-     * @param {Fl32_Auth_Back_Act_Session_Create.act|function} actSessCreate
-     * @param {Fl32_Auth_Back_Act_Session_Plant.act|function} actSessPlant
-     * @param {Fl32_Auth_Back_Act_Session_Clear.act|function} actSessClear
+     * @param {Fl32_Auth_Back_Mod_Cookie} modCookie
      */
     constructor(
         {
@@ -24,12 +22,10 @@ export default class Fl32_Auth_Back_Mod_Session {
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
             Fl32_Auth_Back_Api_Mole$: moleApp,
-            Fl32_Auth_Back_Act_Session_Create$: actSessCreate,
-            Fl32_Auth_Back_Act_Session_Plant$: actSessPlant,
-            Fl32_Auth_Back_Act_Session_Clear$: actSessClear,
+            Fl32_Auth_Back_Mod_Cookie$: modCookie,
         }) {
         // VARS
-        logger.setNamespace(this.constructor.name);
+        const A_SESS = rdbSess.getAttributes();
         /**
          * Internal cache to map session data by session ID.
          * @type {Object<string, Object>}
@@ -47,12 +43,12 @@ export default class Fl32_Auth_Back_Mod_Session {
          */
         this.close = async function ({request, response, trx}) {
             let res = false;
-            const sessionId = request[DEF.REQ_HTTP_SESS_ID];
+            const sessionId = request[DEF.REQ_HTTP_SESSION_USER_ID];
             if (sessionId) {
                 await crud.deleteOne(trx, rdbSess, sessionId);
                 delete _cache[sessionId];
-                delete request[DEF.REQ_HTTP_SESS_ID];
-                actSessClear({request, response});
+                delete request[DEF.REQ_HTTP_SESSION_USER_ID];
+                modCookie.clear({request, response});
                 logger.info(`Session '${sessionId}' is closed.`);
                 res = true;
             }
@@ -61,6 +57,7 @@ export default class Fl32_Auth_Back_Mod_Session {
 
         /**
          * Establish new session for given user:
+         *   - remove existing session for given user/front;
          *   - generate unique ID for new session;
          *   - plant session ID cookie into HTTP response;
          *   - load session data from DB with mole's implementation;
@@ -72,10 +69,10 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @returns {Promise<{sessionId: string, sessionData: Object}>}
          */
         this.establish = async function ({request, response, trx, userBid, frontBid}) {
-            const {code: sessionId} = await actSessCreate({trx, userBid, frontBid});
-            actSessPlant({request, response, sessionId});
+            const {code: sessionId} = await modCookie.create({trx, userBid, frontBid});
+            modCookie.plant({request, response, sessionId});
             const {sessionData} = await moleApp.sessionDataRead({trx, userBid});
-            request[DEF.REQ_HTTP_SESS_ID] = sessionId;
+            request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
             _cache[sessionId] = sessionData;
             return {sessionId, sessionData};
         };
@@ -97,7 +94,7 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @returns {string} sessionId
          */
         this.getId = function ({request}) {
-            return request[DEF.REQ_HTTP_SESS_ID];
+            return request[DEF.REQ_HTTP_SESSION_USER_ID];
         };
 
         /**
@@ -109,18 +106,19 @@ export default class Fl32_Auth_Back_Mod_Session {
         this.putId = async function ({request, sessionId}) {
             if (_cache[sessionId]) {
                 // just put sessionId to request if session data was loaded before
-                request[DEF.REQ_HTTP_SESS_ID] = sessionId;
+                request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
             } else {
                 // validate session existence and load session data
                 const trx = await conn.startTransaction();
                 try {
+                    const where = {[A_SESS.CODE]: sessionId};
                     /** @type {Fl32_Auth_Back_RDb_Schema_Session.Dto} */
-                    const found = await crud.readOne(trx, rdbSess, sessionId);
+                    const found = await crud.readOne(trx, rdbSess, where);
                     if (found?.user_ref) {
                         const {sessionData} = await moleApp.sessionDataRead({trx, userBid: found.user_ref});
                         _cache[sessionId] = sessionData;
                         await trx.commit();
-                        request[DEF.REQ_HTTP_SESS_ID] = sessionId;
+                        request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
                         logger.info(`Session data is cached for session #${sessionId}.`);
                     }
                 } catch (error) {

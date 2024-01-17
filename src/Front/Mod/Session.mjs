@@ -1,5 +1,5 @@
 /**
- * A model for aggregating functionality related to user sessions.
+ * A model for aggregating functionality related to user & front sessions.
  *
  * This model uses identity & user local stores directly (w/o identity & user models).
  */
@@ -45,7 +45,10 @@ export default class Fl32_Auth_Front_Mod_Session {
         async function initFront() {
             // load app identity data (if exists) from the local storage or create new one.
             const res = storeIdentity.get();
-            if (!res.frontUuid) res.frontUuid = self.crypto.randomUUID();
+            if (!res.frontUuid) {
+                res.frontUuid = self.crypto.randomUUID();
+                logger.info(`New front UUID '${res.frontUuid}' is generated and should be registered on the back.`);
+            }
             // register this front on the back (update the connected time)
             const req = apiReg.createReq();
             req.frontUuid = res.frontUuid;
@@ -55,6 +58,9 @@ export default class Fl32_Auth_Front_Mod_Session {
                 res.backUuid = rs.backUuid;
                 res.frontBid = rs.frontBid;
                 storeIdentity.set(res);
+                logger.info(`The front identity is updated in the localStorage: ${JSON.stringify(res)}`);
+            } else {
+                logger.info(`The front identity is already synced with the back.`);
             }
             return res;
         }
@@ -119,6 +125,11 @@ export default class Fl32_Auth_Front_Mod_Session {
          * @return {Fl32_Auth_Front_Dto_User.Dto}
          */
         this.getUser = () => _user;
+
+        /**
+         * @return {string}
+         */
+        this.getUserSessionId = () => _user?.session;
 
         /**
          * @return {string}

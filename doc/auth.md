@@ -1,5 +1,59 @@
 # Authentication basic
 
+## The Front Identity
+
+Every frontend identity has 3 attributes (see `Fl32_Auth_Front_Dto_Identity`):
+
+* `backUuid`: this is the ID of the backend where this front is registered.
+* `frontBid`: this ID is loaded from the back after the registration of the front.
+* `frontUuid`: this ID is generated on the front and should be registered on the back.
+
+The `Fl32_Auth_Back_Web_Api_Front_Register` endpoint registers new fronts or updates the last connection time for
+existing fronts.
+
+## The Front Session
+
+Every API request (`TeqFw_Web_Api_Shared_Defaults.SPACE_SERVICE`) from a front is marked with a session cookie through
+the `Fl32_Auth_Back_Web_Handler_Session_Front`. If the cookie named `TEQ_SESSION_FRONT` is not found in the HTTP request
+to the API, a new `sessionId` is generated and planted as the `sessionCookie` in the browser. The `sessionId` (newly
+generated or extracted from the cookies) is placed into the HTTP request object by the handler.
+
+## The User Identity
+
+Every user identity has 4 attributes (see `Fl32_Auth_Front_Dto_User`):
+
+* `bid`: the backend ID for the user if the user is registered on the backend.
+* `keys`: the asymmetric keys for cryptography.
+* `session`: the user session ID if the user is authenticated.
+* `uuid`: this ID is generated on the frontend and should be registered on the backend.
+
+The `keys` and `uuid` are generated on the frontend and should be registered by the custom backend
+using the `Fl32_Auth_Back_Act_User_Create` action. This plugin does not provide any endpoint to sign up users.
+
+## The Sign-Up
+
+The sign-up endpoint in the custom application should use `Fl32_Auth_Back_Act_User_Create` action to create user record
+in RDB and generate new user session with `Fl32_Auth_Back_Mod_Session.establish`:
+
+```javascript
+const {bid} = await actCreate.act({trx, uuid, keyPub, passHash, passSalt, email, enabled});
+const {sessionId} = await modSess.establish({
+    request: context.request,
+    response: context.response,
+    trx,
+    userBid,
+    frontBid: foundFront.bid,
+});
+```
+
+After
+
+## The Automatic Sign In
+
+## Old text
+
+Use `Fl32_Auth_Front_Mod_Session.init` method to initialize frontend identity and register it on the back.
+
 Session cookie authentication is used in this plugin. Each authenticated instance has a `sessionId` in the session
 cookie, which is added to every request sent to the backend.
 
@@ -41,7 +95,8 @@ const sessData = modSess.getData();
 
 ### On the back
 
-Class `Fl32_Auth_Back_Web_Handler_Session` (`session handler`) is a handler that extracts `sessionId` from HTTP header
+Class `Fl32_Auth_Back_Web_Handler_Session_User` (`session handler`) is a handler that extracts `sessionId` from HTTP
+header
 and saves it with `Fl32_Auth_Back_Mod_Session` (`session manager`) in HTTP request before any API-service is
 processed. Any handler after `session handler` can access session data using `session manager` and HTTP request.
 

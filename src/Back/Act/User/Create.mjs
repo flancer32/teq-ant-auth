@@ -5,6 +5,7 @@
  */
 export default class Fl32_Auth_Back_Act_User_Create {
     /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
@@ -12,6 +13,7 @@ export default class Fl32_Auth_Back_Act_User_Create {
      */
     constructor(
         {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
             'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
@@ -38,6 +40,7 @@ export default class Fl32_Auth_Back_Act_User_Create {
             dtoUser.key_pub = keyPub;
             dtoUser.uuid = uuid;
             const {[ATTR.BID]: bid} = await crud.create(trx, rdbUser, dtoUser);
+            logger.info(`New user is created: ${uuid}/bid.`);
             if (passHash && passSalt) {
                 const dtoPass = rdbPass.createDto();
                 dtoPass.date_updated = new Date();

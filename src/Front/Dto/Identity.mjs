@@ -21,7 +21,7 @@ class Dto {
      */
     frontBid;
     /**
-     * The front UUID
+     * This ID is generated on the front and should be registered on the back.
      * @type {string}
      */
     frontUuid;

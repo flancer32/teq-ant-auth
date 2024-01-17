@@ -8,7 +8,10 @@
   },
   "@teqfw/web": {
     "handlers": {
-      "Fl32_Auth_Back_Web_Handler_Session": {
+      "Fl32_Auth_Back_Web_Handler_Session_Front": {
+        "before": ["Fl32_Auth_Back_Web_Handler_Session_User"]
+      },
+      "Fl32_Auth_Back_Web_Handler_Session_User": {
         "before": ["TeqFw_Web_Api_Back_Web_Handler_Service"]
       }
     },
