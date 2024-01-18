@@ -7,9 +7,10 @@ export default class Fl32_Auth_Front_Mod_Session {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
-     * @param {Fl32_Auth_Shared_Web_Api_Front_Register} apiReg
-     * @param {Fl32_Auth_Shared_Web_Api_Session_Close} apiClose
-     * @param {Fl32_Auth_Shared_Web_Api_Session_Init} apiInit
+     * @param {Fl32_Auth_Shared_Web_Api_Front_Register} endFrontReg
+     * @param {Fl32_Auth_Shared_Web_Api_User_Register} endUserReg
+     * @param {Fl32_Auth_Shared_Web_Api_Session_Close} endClose
+     * @param {Fl32_Auth_Shared_Web_Api_Session_Init} endInit
      * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
      * @param {Fl32_Auth_Front_Store_Local_Identity} storeIdentity
      * @param {Fl32_Auth_Front_Store_Local_User} storeUser
@@ -18,9 +19,10 @@ export default class Fl32_Auth_Front_Mod_Session {
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             TeqFw_Web_Api_Front_Web_Connect$: connApi,
-            Fl32_Auth_Shared_Web_Api_Front_Register$: apiReg,
-            Fl32_Auth_Shared_Web_Api_Session_Close$: apiClose,
-            Fl32_Auth_Shared_Web_Api_Session_Init$: apiInit,
+            Fl32_Auth_Shared_Web_Api_Front_Register$: endFrontReg,
+            Fl32_Auth_Shared_Web_Api_User_Register$: endUserReg,
+            Fl32_Auth_Shared_Web_Api_Session_Close$: endClose,
+            Fl32_Auth_Shared_Web_Api_Session_Init$: endInit,
             Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
             Fl32_Auth_Front_Store_Local_Identity$: storeIdentity,
             Fl32_Auth_Front_Store_Local_User$: storeUser,
@@ -50,9 +52,9 @@ export default class Fl32_Auth_Front_Mod_Session {
                 logger.info(`New front UUID '${res.frontUuid}' is generated and should be registered on the back.`);
             }
             // register this front on the back (update the connected time)
-            const req = apiReg.createReq();
+            const req = endFrontReg.createReq();
             req.frontUuid = res.frontUuid;
-            const rs = await connApi.send(req, apiReg);
+            const rs = await connApi.send(req, endFrontReg);
             if ((res.backUuid !== rs.backUuid) || (res.frontBid !== rs.frontBid)) {
                 // update locally stored data if different
                 res.backUuid = rs.backUuid;
@@ -66,7 +68,8 @@ export default class Fl32_Auth_Front_Mod_Session {
         }
 
         /**
-         * Load user data from local store or create new user, initialize it (UUID & keys) and store locally.
+         * Load user data from local store or create a new user, initialize it (UUID & keys), and store it locally.
+         * Send user data to the server to ensure that the user is signed up on the host.
          * @return {Promise<Fl32_Auth_Front_Dto_User.Dto>}
          */
         async function initUser() {
@@ -75,6 +78,20 @@ export default class Fl32_Auth_Front_Mod_Session {
                 if (!res?.uuid) res.uuid = self.crypto.randomUUID();
                 if (!res?.keys?.public) res.keys = await modKeyMgr.generateAsyncKeys();
                 storeUser.set(res);
+            }
+            const dto = endUserReg.createReq();
+            dto.pubKey = res.keys.public;
+            dto.uuid = res.uuid;
+            /** @type {Fl32_Auth_Shared_Web_Api_User_Register.Response} */
+            const rs = await connApi.send(dto, endUserReg);
+            if (!rs.userBid) {
+                // the user is not registered on the back, throw the error
+                throw new Error(`The current user cannot be registered on the back.`);
+            } else if (rs.userBid !== res.bid) {
+                // this is new registration after RDB cleanup
+                res.bid = rs.userBid;
+                storeUser.set(res);
+                logger.info(`New bid '${res.bid}' is set for the user '${res.uuid}'.`);
             }
             return res;
         }
@@ -87,10 +104,10 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         this.close = async function () {
             try {
-                const req = apiClose.createReq();
+                const req = endClose.createReq();
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Session_Close.Response} */
-                const res = await connApi.send(req, apiClose);
+                const res = await connApi.send(req, endClose);
                 if (res.success) _store = undefined;
                 else logger.error(`Cannot close user session on the backend.`);
                 return res;
@@ -150,11 +167,12 @@ export default class Fl32_Auth_Front_Mod_Session {
                 _front = await initFront();
                 _user = await initUser();
                 if (_user?.bid) {
-                    const req = apiInit.createReq();
+                    // TODO: should we ever use the user session (we have asymmetric encryption)?
+                    const req = endInit.createReq();
                     req.userUuid = _user.uuid;
                     // noinspection JSValidateTypes
                     /** @type {Fl32_Auth_Shared_Web_Api_Session_Init.Response} */
-                    const res = await connApi.send(req, apiInit);
+                    const res = await connApi.send(req, endInit);
                     if (res?.success) {
                         _store = res?.sessionData;
                         logger.info(`User session is initialized.`);
