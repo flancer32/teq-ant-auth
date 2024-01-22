@@ -117,7 +117,12 @@
                 },
                 "enabled": {"type": "boolean", "default": true},
                 "date_created": {
-                  "comment": "UTC date-time for user registration.",
+                  "comment": "UTC date-time for the first user registration.",
+                  "type": "datetime",
+                  "default": "current"
+                },
+                "date_last": {
+                  "comment": "UTC date-time for the last user registration.",
                   "type": "datetime",
                   "default": "current"
                 }

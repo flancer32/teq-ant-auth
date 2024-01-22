@@ -48,7 +48,7 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
                 /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
                 const found = await crud.readOne(trx, rdbUser, {[A_USER.UUID]: userUuid});
                 if (!found) {
-                    // register the new front
+                    // register the new user
                     const dto = rdbUser.createDto();
                     dto.key_encrypt = keyEncrypt;
                     dto.key_verify = keyVerify;
@@ -57,6 +57,9 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
                     res.userBid = bid;
                     logger.info(`New user '${userUuid}' is registered as #${bid}.`);
                 } else {
+                    // update the last date for existing user
+                    found.date_last = new Date();
+                    await crud.updateOne(trx, rdbUser, found);
                     res.userBid = found.bid;
                     logger.info(`The existence of the user '${userUuid}' is confirmed.`);
                 }

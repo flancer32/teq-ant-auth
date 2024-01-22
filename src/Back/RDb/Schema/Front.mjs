@@ -50,13 +50,13 @@ export default class Fl32_Auth_Back_RDb_Schema_Front {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         // INSTANCE METHODS
@@ -66,10 +66,10 @@ export default class Fl32_Auth_Back_RDb_Schema_Front {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.bid = util.castInt(data?.bid);
-            res.date_created = util.castDate(data?.date_created);
-            res.date_last = util.castDate(data?.date_last);
-            res.uuid = util.castString(data?.uuid);
+            res.bid = cast.int(data?.bid);
+            res.date_created = cast.date(data?.date_created);
+            res.date_last = cast.date(data?.date_last);
+            res.uuid = cast.string(data?.uuid);
             return res;
         };
 
