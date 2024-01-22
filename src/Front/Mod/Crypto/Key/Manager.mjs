@@ -4,26 +4,38 @@
  */
 export default class Fl32_Auth_Front_Mod_Crypto_Key_Manager {
     /**
-     * @param {Fl32_Auth_Front_Ext_Nacl.box|function} box
-     * @param {Fl32_Auth_Front_Ext_Nacl.secretbox|function} secretBox
-     * @param {Fl32_Auth_Front_Ext_Nacl.randomBytes|function} randomBytes
+     * @param {Fl32_Auth_Front_Ext_Nacl} nacl
      * @param {TeqFw_Core_Shared_Api_Util_Codec} util
      * @param {Fl32_Auth_Shared_Dto_Identity_Keys} dtoKeys
      */
     constructor(
         {
-            'Fl32_Auth_Front_Ext_Nacl.box': box,
-            'Fl32_Auth_Front_Ext_Nacl.secretbox': secretBox,
-            'Fl32_Auth_Front_Ext_Nacl.randomBytes': randomBytes,
+            Fl32_Auth_Front_Ext_Nacl: nacl,
             TeqFw_Core_Shared_Api_Util_Codec$: util,
             Fl32_Auth_Shared_Dto_Identity_Keys$: dtoKeys,
         }
     ) {
+        // FUNCS
+        const {
+            box,
+            randomBytes,
+            secretBox,
+            sign,
+        } = nacl;
+
         // INSTANCE METHODS
 
-        this.generateAsyncKeys = async function () {
+        this.createKeysToEncrypt = async function () {
             const res = dtoKeys.createDto();
             const keysBuf = box.keyPair();
+            res.secret = util.ab2b64(keysBuf.secretKey);
+            res.public = util.ab2b64(keysBuf.publicKey);
+            return res;
+        };
+
+        this.createKeysToSign = async function () {
+            const res = dtoKeys.createDto();
+            const keysBuf = sign.keyPair();
             res.secret = util.ab2b64(keysBuf.secretKey);
             res.public = util.ab2b64(keysBuf.publicKey);
             return res;

@@ -36,7 +36,7 @@ The sign-up endpoint in the custom application should use `Fl32_Auth_Back_Act_Us
 in RDB and generate new user session with `Fl32_Auth_Back_Mod_Session.establish`:
 
 ```javascript
-const {bid} = await actCreate.act({trx, uuid, keyPub, passHash, passSalt, email, enabled});
+const {bid} = await actCreate.act({trx, uuid, keyEncrypt, keyVerify, passHash, passSalt, email, enabled});
 const {sessionId} = await modSess.establish({
     request: context.request,
     response: context.response,

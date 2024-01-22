@@ -43,7 +43,7 @@ export default class Fl32_Auth_Back_Web_Api_User_ReadKey {
                 /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
                 const found = await crud.readOne(trx, rdbUser, {[A_USER.UUID]: uuid});
                 await trx.commit();
-                if (found) res.publicKey = found.key_pub;
+                if (found) res.publicKey = found.key_encrypt;
                 logger.info(JSON.stringify(res));
             } catch (error) {
                 logger.error(error);

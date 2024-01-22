@@ -107,8 +107,12 @@
               "attr": {
                 "bid": {"type": "id", "comment": "Local ID for the current host."},
                 "uuid": {"type": "string", "comment": "Universal ID among all hosts."},
-                "key_pub": {
-                  "comment": "Public key for encryption and signature verification.",
+                "key_encrypt": {
+                  "comment": "Public key for encryption.",
+                  "type": "string"
+                },
+                "key_verify": {
+                  "comment": "Public key for signature verification.",
                   "type": "string"
                 },
                 "enabled": {"type": "boolean", "default": true},

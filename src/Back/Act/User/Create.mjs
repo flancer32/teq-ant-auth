@@ -27,17 +27,19 @@ export default class Fl32_Auth_Back_Act_User_Create {
         /**
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {string} uuid
-         * @param {string} keyPub
+         * @param {string} keyEncrypt
+         * @param {string} keyVerify
          * @param {string} passHash
          * @param {string} passSalt
          * @param {string} email
          * @param {boolean} enabled
          * @return {Promise<{bid: number}>}
          */
-        this.act = async function ({trx, uuid, keyPub, passHash, passSalt, email, enabled}) {
+        this.act = async function ({trx, uuid, keyEncrypt, keyVerify, passHash, passSalt, email, enabled}) {
             const dtoUser = rdbUser.createDto();
             dtoUser.enabled = enabled;
-            dtoUser.key_pub = keyPub;
+            dtoUser.key_encrypt = keyEncrypt;
+            dtoUser.key_verify = keyVerify;
             dtoUser.uuid = uuid;
             const {[ATTR.BID]: bid} = await crud.create(trx, rdbUser, dtoUser);
             logger.info(`New user is created: ${uuid}/bid.`);

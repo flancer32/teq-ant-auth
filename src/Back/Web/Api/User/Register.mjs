@@ -42,14 +42,16 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
         this.process = async function (req, res, context) {
             const trx = await conn.startTransaction();
             try {
-                const userKey = req.pubKey;
+                const keyEncrypt = req.keyEncrypt;
+                const keyVerify = req.keyVerify;
                 const userUuid = req.uuid;
                 /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
                 const found = await crud.readOne(trx, rdbUser, {[A_USER.UUID]: userUuid});
                 if (!found) {
                     // register the new front
                     const dto = rdbUser.createDto();
-                    dto.key_pub = userKey;
+                    dto.key_encrypt = keyEncrypt;
+                    dto.key_verify = keyVerify;
                     dto.uuid = userUuid;
                     const {[A_USER.BID]: bid} = await crud.create(trx, rdbUser, dto);
                     res.userBid = bid;

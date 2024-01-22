@@ -18,7 +18,8 @@ const ATTR = {
     BID: 'bid',
     DATE_CREATED: 'date_created',
     ENABLED: 'enabled',
-    KEY_PUB: 'key_pub',
+    KEY_ENCRYPT: 'key_encrypt',
+    KEY_VERIFY: 'key_verify',
     UUID: 'uuid',
 };
 Object.freeze(ATTR);
@@ -44,10 +45,15 @@ class Dto {
      */
     enabled;
     /**
-     * Public key for encryption and signature verification.
+     * Public key for encryption.
      * @type {string}
      */
-    key_pub;
+    key_encrypt;
+    /**
+     * Public key for signature verification.
+     * @type {string}
+     */
+    key_verify;
     /**
      * Universal ID among all hosts.
      * @type {string}
@@ -63,13 +69,13 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         // INSTANCE METHODS
@@ -79,11 +85,12 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.bid = util.castInt(data?.bid);
-            res.date_created = util.castDate(data?.date_created);
-            res.enabled = util.castBoolean(data?.enabled);
-            res.key_pub = util.castString(data?.key_pub);
-            res.uuid = util.castString(data?.uuid);
+            res.bid = cast.castInt(data?.bid);
+            res.date_created = cast.date(data?.date_created);
+            res.enabled = cast.boolean(data?.enabled);
+            res.key_encrypt = cast.string(data?.key_encrypt);
+            res.key_verify = cast.string(data?.key_verify);
+            res.uuid = cast.string(data?.uuid);
             return res;
         };
 

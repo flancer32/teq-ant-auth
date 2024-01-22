@@ -74,13 +74,15 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         async function initUser() {
             const res = storeUser.get();
-            if (!res?.uuid || !res?.keys?.public) {
+            if (!res?.uuid || !res?.keysEncrypt?.public || !res?.keysSign?.public) {
                 if (!res?.uuid) res.uuid = self.crypto.randomUUID();
-                if (!res?.keys?.public) res.keys = await modKeyMgr.generateAsyncKeys();
+                if (!res?.keysEncrypt?.public) res.keysEncrypt = await modKeyMgr.createKeysToEncrypt();
+                if (!res?.keysSign?.public) res.keysSign = await modKeyMgr.createKeysToSign();
                 storeUser.set(res);
             }
             const dto = endUserReg.createReq();
-            dto.pubKey = res.keys.public;
+            dto.keyEncrypt = res.keysEncrypt.public;
+            dto.keyVerify = res.keysSign.public;
             dto.uuid = res.uuid;
             /** @type {Fl32_Auth_Shared_Web_Api_User_Register.Response} */
             const rs = await connApi.send(dto, endUserReg);

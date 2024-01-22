@@ -1,5 +1,5 @@
 /**
- * Register the current user on the backend and get the backend ID in the response.
+ * This registers the current user on the backend and retrieves the backend ID in the response.
  * The registration fails if a user with the given UUID already exists.
  */
 // MODULE'S VARS
@@ -11,8 +11,16 @@ const NS = 'Fl32_Auth_Shared_Web_Api_User_Register';
  */
 class Request {
     static namespace = NS;
-    /** @type {string} */
-    pubKey;
+    /**
+     * The user's public key to encrypt data.
+     * @type {string}
+     */
+    keyEncrypt;
+    /**
+     * The user's public key to verify signatures.
+     * @type {string}
+     */
+    keyVerify;
     /** @type {string} */
     uuid;
 }
@@ -23,7 +31,7 @@ class Request {
 class Response {
     static namespace = NS;
     /**
-     * The backend ID for the user if user exists or just registered.
+     * The backend ID for the user if the user exists or has just been registered.
      * @type {number}
      */
     userBid;
@@ -48,10 +56,11 @@ export default class Fl32_Auth_Shared_Web_Api_User_Register {
          * @return {Fl32_Auth_Shared_Web_Api_User_Register.Request}
          */
         this.createReq = function (data) {
-            // create new DTO
+            // create a new DTO
             const res = new Request();
             // cast known attributes
-            res.pubKey = cast.string(data?.pubKey);
+            res.keyEncrypt = cast.string(data?.keyEncrypt);
+            res.keyVerify = cast.string(data?.keyVerify);
             res.uuid = cast.string(data?.uuid);
             return res;
         };
@@ -61,7 +70,7 @@ export default class Fl32_Auth_Shared_Web_Api_User_Register {
          * @returns {Fl32_Auth_Shared_Web_Api_User_Register.Response}
          */
         this.createRes = function (data) {
-            // create new DTO
+            // create a new DTO
             const res = new Response();
             // cast known attributes
             res.userBid = cast.int(data?.userBid);

@@ -16,10 +16,15 @@ class Dto {
      */
     bid;
     /**
-     * The asymmetric keys for cryptography.
+     * The asymmetric keys for encryption.
      * @type {Fl32_Auth_Shared_Dto_Identity_Keys.Dto}
      */
-    keys;
+    keysEncrypt;
+    /**
+     * The asymmetric keys for signing.
+     * @type {Fl32_Auth_Shared_Dto_Identity_Keys.Dto}
+     */
+    keysSign;
     /**
      * The user session ID if the user is authenticated.
      * @type {string}
@@ -37,12 +42,12 @@ class Dto {
  */
 export default class Fl32_Auth_Front_Dto_User {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      *  @param {Fl32_Auth_Shared_Dto_Identity_Keys} dtoKeys
      */
     constructor(
         {
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
             Fl32_Auth_Shared_Dto_Identity_Keys$: dtoKeys,
         }
     ) {
@@ -54,10 +59,11 @@ export default class Fl32_Auth_Front_Dto_User {
             // create new DTO
             const res = new Dto();
             // cast known attributes
-            res.bid = util.castInt(data?.bid);
-            res.keys = dtoKeys.createDto(data?.keys);
-            res.session = util.castString(data?.session);
-            res.uuid = util.castString(data?.uuid);
+            res.bid = cast.int(data?.bid);
+            res.keysEncrypt = dtoKeys.createDto(data?.keysEncrypt);
+            res.keysSign = dtoKeys.createDto(data?.keysSign);
+            res.session = cast.string(data?.session);
+            res.uuid = cast.string(data?.uuid);
             return res;
         };
     }
