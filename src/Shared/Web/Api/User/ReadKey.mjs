@@ -11,6 +11,8 @@ const NS = 'Fl32_Auth_Shared_Web_Api_User_ReadKey';
 class Request {
     static namespace = NS;
     /** @type {string} */
+    host;
+    /** @type {string} */
     uuid;
 }
 
@@ -20,7 +22,9 @@ class Request {
 class Response {
     static namespace = NS;
     /** @type {string} */
-    publicKey;
+    keyEncrypt;
+    /** @type {string} */
+    keyVerify;
 }
 
 /**
@@ -28,11 +32,11 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_User_ReadKey {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         // INSTANCE METHODS
@@ -45,7 +49,8 @@ export default class Fl32_Auth_Shared_Web_Api_User_ReadKey {
             // create new DTO
             const res = new Request();
             // cast known attributes
-            res.uuid = util.castString(data?.uuid);
+            res.host = cast.string(data?.host);
+            res.uuid = cast.string(data?.uuid);
             return res;
         };
 
@@ -57,7 +62,8 @@ export default class Fl32_Auth_Shared_Web_Api_User_ReadKey {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.publicKey = util.castString(data?.publicKey);
+            res.keyEncrypt = cast.string(data?.keyEncrypt);
+            res.keyVerify = cast.string(data?.keyVerify);
             return res;
         };
     }

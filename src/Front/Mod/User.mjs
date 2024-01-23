@@ -17,19 +17,21 @@ export default class Fl32_Auth_Front_Mod_User {
         // INSTANCE METHODS
 
         /**
-         * Get public key for a user using the user UUID.
+         * Get public keys for a user using the user UUID.
          *
-         * @param {string} uuid
-         * @returns {Promise<string|null>}
+         * @param {string} uuid - the user UUID
+         * @param {string} [host] - the host UUID
+         * @return {Promise<{keyVerify: string, keyEncrypt: string}>}
          */
-        this.getPublicKey = async function (uuid) {
+        this.getPublicKeys = async function (uuid, host) {
             try {
                 const req = apiReadKey.createReq();
+                req.host = host;
                 req.uuid = uuid;
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_User_ReadKey.Response} */
-                const res = await connApi.send(req, apiReadKey);
-                return res?.publicKey ?? null;
+                const {keyEncrypt, keyVerify} = await connApi.send(req, apiReadKey);
+                return {keyEncrypt, keyVerify};
             } catch (e) {
                 // timeout or error
                 logger.error(`Cannot get public key for user '${uuid}. Error: ${e?.message}`);
