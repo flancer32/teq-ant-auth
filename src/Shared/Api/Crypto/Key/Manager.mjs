@@ -11,14 +11,14 @@ export default class Fl32_Auth_Shared_Api_Crypto_Key_Manager {
     /**
      * Generate keys pair for asynchronous encryption.
      * Both keys in result  are base64 encoded strings.
-     * @return {Promise<Fl32_Auth_Shared_Dto_Identity_Keys.Dto>}
+     * @return {Promise<Fl32_Auth_Shared_Dto_Crypto_Keys.Dto>}
      */
     async createKeysToEncrypt() {}
 
     /**
      * Generate keys pair to sign/verify data.
      * Both keys in result  are base64 encoded strings.
-     * @return {Promise<Fl32_Auth_Shared_Dto_Identity_Keys.Dto>}
+     * @return {Promise<Fl32_Auth_Shared_Dto_Crypto_Keys.Dto>}
      */
     async createKeysToSign() {}
 

@@ -6,13 +6,13 @@ export default class Fl32_Auth_Front_Mod_Crypto_Key_Manager {
     /**
      * @param {Fl32_Auth_Front_Ext_Nacl} nacl
      * @param {TeqFw_Core_Shared_Api_Util_Codec} util
-     * @param {Fl32_Auth_Shared_Dto_Identity_Keys} dtoKeys
+     * @param {Fl32_Auth_Shared_Dto_Crypto_Keys} dtoKeys
      */
     constructor(
         {
             Fl32_Auth_Front_Ext_Nacl: nacl,
             TeqFw_Core_Shared_Api_Util_Codec$: util,
-            Fl32_Auth_Shared_Dto_Identity_Keys$: dtoKeys,
+            Fl32_Auth_Shared_Dto_Crypto_Keys$: dtoKeys,
         }
     ) {
         // FUNCS

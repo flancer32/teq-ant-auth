@@ -17,12 +17,12 @@ class Dto {
     bid;
     /**
      * The asymmetric keys for encryption.
-     * @type {Fl32_Auth_Shared_Dto_Identity_Keys.Dto}
+     * @type {Fl32_Auth_Shared_Dto_Crypto_Keys.Dto}
      */
     keysEncrypt;
     /**
      * The asymmetric keys for signing.
-     * @type {Fl32_Auth_Shared_Dto_Identity_Keys.Dto}
+     * @type {Fl32_Auth_Shared_Dto_Crypto_Keys.Dto}
      */
     keysSign;
     /**
@@ -43,12 +43,12 @@ class Dto {
 export default class Fl32_Auth_Front_Dto_User {
     /**
      * @param {TeqFw_Core_Shared_Util_Cast} cast
-     *  @param {Fl32_Auth_Shared_Dto_Identity_Keys} dtoKeys
+     *  @param {Fl32_Auth_Shared_Dto_Crypto_Keys} dtoKeys
      */
     constructor(
         {
             TeqFw_Core_Shared_Util_Cast$: cast,
-            Fl32_Auth_Shared_Dto_Identity_Keys$: dtoKeys,
+            Fl32_Auth_Shared_Dto_Crypto_Keys$: dtoKeys,
         }
     ) {
         /**
