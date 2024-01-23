@@ -157,6 +157,7 @@ export default class Fl32_Auth_Front_Mod_Session {
 
         /**
          * @return {boolean}
+         * @deprecated we should define it on the app level
          */
         this.ifSignedUp = () => !!_user?.bid;
 
