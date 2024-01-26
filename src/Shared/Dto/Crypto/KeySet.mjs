@@ -12,7 +12,7 @@ const NS = 'Fl32_Auth_Shared_Dto_Crypto_KeySet';
 class Dto {
     static namespace = NS;
     /**
-     * Base64 encoded public key of the other side.
+     * The base64 encoded public key of the link keys pair on the other side.
      * @type {string}
      */
     otherPub;
