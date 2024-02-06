@@ -82,7 +82,12 @@
                 "date_created": {
                   "type": "datetime",
                   "default": "current",
-                  "comment": "UTC date when user session was established."
+                  "comment": "UTC date when user session was established the first time."
+                },
+                "date_last": {
+                  "type": "datetime",
+                  "default": "current",
+                  "comment": "UTC date when user session was established the last time."
                 }
               },
               "index": {

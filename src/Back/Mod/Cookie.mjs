@@ -58,7 +58,7 @@ export default class Fl32_Auth_Back_Mod_Cookie {
         };
 
         /**
-         * Establish a new session for the given user.
+         * Generate new session code and create new record in the RDB.
          *
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {number} userBid
@@ -67,8 +67,6 @@ export default class Fl32_Auth_Back_Mod_Cookie {
          */
         this.create = async function ({trx, userBid, frontBid}) {
             let code, found;
-            // noinspection JSValidateTypes
-            /** @type {Fl32_Auth_Back_RDb_Schema_Password.Dto} */
             do {
                 code = randomUUID();
                 found = await crud.readOne(trx, rdbSess, {[A_SESS.CODE]: code});

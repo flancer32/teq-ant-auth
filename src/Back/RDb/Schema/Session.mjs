@@ -32,6 +32,8 @@ class Dto {
     code;
     /** @type {Date} */
     date_created;
+    /** @type {Date} */
+    date_last;
     /** @type {number} */
     front_ref;
     /** @type {number} */
@@ -46,13 +48,13 @@ export default class Fl32_Auth_Back_RDb_Schema_Session {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         // INSTANCE METHODS
@@ -62,10 +64,11 @@ export default class Fl32_Auth_Back_RDb_Schema_Session {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.code = util.castString(data?.code);
-            res.date_created = util.castDate(data?.date_created);
-            res.front_ref = util.castInt(data?.front_ref);
-            res.user_ref = util.castInt(data?.user_ref);
+            res.code = cast.string(data?.code);
+            res.date_created = cast.date(data?.date_created);
+            res.date_last = cast.date(data?.date_last);
+            res.front_ref = cast.int(data?.front_ref);
+            res.user_ref = cast.int(data?.user_ref);
             return res;
         };
 
