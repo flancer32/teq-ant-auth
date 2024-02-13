@@ -54,12 +54,14 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
                     dto.key_verify = keyVerify;
                     dto.uuid = userUuid;
                     const {[A_USER.BID]: bid} = await crud.create(trx, rdbUser, dto);
+                    res.isNew = true;
                     res.userBid = bid;
                     logger.info(`New user '${userUuid}' is registered as #${bid}.`);
                 } else {
                     // update the last date for existing user
                     found.date_last = new Date();
                     await crud.updateOne(trx, rdbUser, found);
+                    res.isNew = false;
                     res.userBid = found.bid;
                     logger.info(`The existence of the user '${userUuid}' is confirmed.`);
                 }

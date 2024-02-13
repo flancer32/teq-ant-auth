@@ -31,6 +31,11 @@ class Request {
 class Response {
     static namespace = NS;
     /**
+     * `true` if the user is not found on the back and has been registered.
+     * @type {boolean}
+     */
+    isNew;
+    /**
      * The backend ID for the user if the user exists or has just been registered.
      * @type {number}
      */
@@ -73,6 +78,7 @@ export default class Fl32_Auth_Shared_Web_Api_User_Register {
             // create a new DTO
             const res = new Response();
             // cast known attributes
+            res.isNew = cast.boolean(data?.isNew);
             res.userBid = cast.int(data?.userBid);
             return res;
         };
