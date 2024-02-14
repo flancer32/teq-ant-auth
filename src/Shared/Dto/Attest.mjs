@@ -43,11 +43,11 @@ class Dto {
  */
 export default class Fl32_Auth_Shared_Dto_Attest {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         /**
@@ -58,9 +58,9 @@ export default class Fl32_Auth_Shared_Dto_Attest {
             // create new DTO
             const res = new Dto();
             // cast known attributes
-            res.attestationId = util.castString(data?.attestationId);
-            res.attestationObj = util.castString(data?.attestationObj);
-            res.clientData = util.castString(data?.clientData);
+            res.attestationId = cast.string(data?.attestationId);
+            res.attestationObj = cast.string(data?.attestationObj);
+            res.clientData = cast.string(data?.clientData);
             return res;
         };
     }

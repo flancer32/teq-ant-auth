@@ -91,7 +91,7 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.bid = cast.castInt(data?.bid);
+            res.bid = cast.int(data?.bid);
             res.date_created = cast.date(data?.date_created);
             res.date_last = cast.date(data?.date_last);
             res.enabled = cast.boolean(data?.enabled);
