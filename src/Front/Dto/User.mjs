@@ -13,6 +13,7 @@ class Dto {
     /**
      * The backend ID for the user if user is registered on the back.
      * @type {number}
+     * @deprecated we should not use the backend IDs on the front
      */
     bid;
     /**

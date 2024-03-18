@@ -86,14 +86,9 @@ export default class Fl32_Auth_Front_Mod_Session {
             dto.uuid = res.uuid;
             /** @type {Fl32_Auth_Shared_Web_Api_User_Register.Response} */
             const rs = await connApi.send(dto, endUserReg);
-            if (!rs.userBid) {
+            if (!rs.success) {
                 // the user is not registered on the back, throw the error
                 throw new Error(`The current user cannot be registered on the back.`);
-            } else if (rs.userBid !== res.bid) {
-                // this is new registration after RDB cleanup
-                res.bid = rs.userBid;
-                storeUser.set(res);
-                logger.info(`New bid '${res.bid}' is set for the user '${res.uuid}'.`);
             }
             return res;
         }
@@ -154,12 +149,6 @@ export default class Fl32_Auth_Front_Mod_Session {
          * @return {string}
          */
         this.getUserUuid = () => _user?.uuid;
-
-        /**
-         * @return {boolean}
-         * @deprecated we should define it on the app level
-         */
-        this.ifSignedUp = () => !!_user?.bid;
 
         /**
          * Initialize the frontend & user data then connect to the back to update the session.

@@ -1,5 +1,5 @@
 /**
- * Read the user data from the RDB as a shared DTO.
+ * Read the user data from the RDB as a shared and RDB DTOs.
  *
  * @implements TeqFw_Core_Shared_Api_Act
  */
