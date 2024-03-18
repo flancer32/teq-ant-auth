@@ -1,11 +1,40 @@
-# teq-ant-auth
+# @flancer32/teq-ant-auth
 
-|CAUTION: TeqFW is an unstable project w/o backward compatibility. Use it at your own risk.|
-|---|
+## Disclaimer
+
+This package is a part of the [Tequila Framework](https://flancer32.com/what-is-teqfw-45da7071fdd4) (TeqFW). The TeqFW
+is currently in an early stage of development and should be considered unstable. It may change rapidly, leading to
+breaking changes without prior notice. Use it at your own risk. Please note that contributions to the project are
+welcome, but they should only be made by those who understand and accept the risks of working with an unstable
+framework.
+
+## Overview
 
 Common authentication of the users in Tequila Framework (the `ant` generation).
 
-## Overview
+### Namespace
+
+This plugin uses `Fl32_Auth` namespace.
+
+### Back
+
+#### Web Handlers
+
+* `Fl32_Auth_Back_Web_Handler_Session_Front`: handles the HTTP session stored in the session cookies. It allows tracing
+  all requests from one browser, including anonymous users, to Web API endpoints. On the server side, the session IDs
+  are stored in the HTTP request objects.
+* `Fl32_Auth_Back_Web_Handler_Session_User`: handles the data for authenticated users. On the frontend, the session ID
+  is stored in the local storage. On the backend, the session ID is stored in the RDB (`fl32_auth_session`). The session
+  data for the authenticated user is stored inside the handler itself and added to every HTTP request.
+
+#### Web API Endpoints
+
+* `Fl32_Auth_Shared_Web_Api_Front_Register`: Registers the current frontend UUID on the backend and get identification
+  data in the response.
+* `Fl32_Auth_Shared_Web_Api_User_Register`: Registers the authentication data for current user on the backend (UUID,
+  encryption and signature keys, email and password).
+
+## Usage
 
 Every user creates a pair of asymmetric keys on the frontend or can import saved keys to connect to the host as an
 existing user. The user sends the public key, password (to change the public key), and email (to restore the password)
@@ -16,21 +45,6 @@ reopened.
 TODO: do we really need sessions if we already have asymmetric encryption in place?
 
 
-## Depends on
-
-* @teqfw/db
-* @teqfw/web-api
-
-## Back
-
-### Web Handlers
-
-* `Fl32_Auth_Back_Web_Handler_Session_Front`: handles the HTTP session stored in the session cookies. It allows tracing
-  all requests from one browser, including anonymous users, to Web API endpoints. On the server side, the session IDs
-  are stored in the HTTP request objects.
-* `Fl32_Auth_Back_Web_Handler_Session_User`: handles the data for authenticated users. On the frontend, the session ID
-  is stored in the local storage. On the backend, the session ID is stored in the RDB (`fl32_auth_session`). The session
-  data for the authenticated user is stored inside the handler itself and added to every HTTP request.
 
 ## Front
 

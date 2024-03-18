@@ -39,7 +39,7 @@ export default class Fl32_Auth_Front_Mod_Password {
         // INSTANCE METHODS
 
         /**
-         * Create SHA-256 hash for `password` using `salt` and encode as HEX string.
+         * Create SHA hash for `password` using `salt` and encode as HEX string.
          *
          * @param {string} password plain password
          * @param {string} salt HEX string representation of a salt

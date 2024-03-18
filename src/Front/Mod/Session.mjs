@@ -12,7 +12,7 @@ export default class Fl32_Auth_Front_Mod_Session {
      * @param {Fl32_Auth_Shared_Web_Api_Session_Close} endClose
      * @param {Fl32_Auth_Shared_Web_Api_Session_Init} endInit
      * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
-     * @param {Fl32_Auth_Front_Store_Local_Identity} storeIdentity
+     * @param {Fl32_Auth_Front_Store_Local_Front} storeFront
      * @param {Fl32_Auth_Front_Store_Local_User} storeUser
      */
     constructor(
@@ -24,12 +24,12 @@ export default class Fl32_Auth_Front_Mod_Session {
             Fl32_Auth_Shared_Web_Api_Session_Close$: endClose,
             Fl32_Auth_Shared_Web_Api_Session_Init$: endInit,
             Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
-            Fl32_Auth_Front_Store_Local_Identity$: storeIdentity,
+            Fl32_Auth_Front_Store_Local_Front$: storeFront,
             Fl32_Auth_Front_Store_Local_User$: storeUser,
         }
     ) {
         // MAIN
-        /** @type {Fl32_Auth_Front_Dto_Identity.Dto} */
+        /** @type {Fl32_Auth_Front_Dto_Front.Dto} */
         let _front;
         /**
          * Internal store to cache session data for established session.
@@ -42,11 +42,11 @@ export default class Fl32_Auth_Front_Mod_Session {
         // FUNCS
         /**
          * Initialize front identity on the app startup.
-         * @return {Promise<*|Fl32_Auth_Front_Dto_Identity.Dto>}
+         * @return {Promise<*|Fl32_Auth_Front_Dto_Front.Dto>}
          */
         async function initFront() {
             // load app identity data (if exists) from the local storage or create new one.
-            const res = storeIdentity.get();
+            const res = storeFront.get();
             if (!res.frontUuid) {
                 res.frontUuid = self.crypto.randomUUID();
                 logger.info(`New front UUID '${res.frontUuid}' is generated and should be registered on the back.`);
@@ -59,7 +59,7 @@ export default class Fl32_Auth_Front_Mod_Session {
                 // update locally stored data if different
                 res.backUuid = rs.backUuid;
                 res.frontBid = rs.frontBid;
-                storeIdentity.set(res);
+                storeFront.set(res);
                 logger.info(`The front identity is updated in the localStorage: ${JSON.stringify(res)}`);
             } else {
                 logger.info(`The front identity is already synced with the back.`);

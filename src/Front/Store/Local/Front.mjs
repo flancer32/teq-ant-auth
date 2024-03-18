@@ -1,20 +1,20 @@
 /**
  * The frontend storage for the frontend application identity.
- * Don't use the store directly, use it from `Fl32_Auth_Front_Mod_Session`.
+ * Don't use the store directly, use it from `Fl32_Auth_Front_Mod_Front`.
  */
-export default class Fl32_Auth_Front_Store_Local_Identity {
+export default class Fl32_Auth_Front_Store_Local_Front {
     /**
      * @param {Fl32_Auth_Front_Defaults} DEF
-     * @param {Fl32_Auth_Front_Dto_Identity} dtoIdentity
+     * @param {Fl32_Auth_Front_Dto_Front} dtoIdentity
      */
     constructor(
         {
             Fl32_Auth_Front_Defaults$: DEF,
-            Fl32_Auth_Front_Dto_Identity$: dtoIdentity,
+            Fl32_Auth_Front_Dto_Front$: dtoIdentity,
         }
     ) {
         // VARS
-        const KEY = `${DEF.SHARED.NAME}/identity`;
+        const KEY = `${DEF.SHARED.NAME}/front`;
 
         // INSTANCE METHODS
 
@@ -24,7 +24,7 @@ export default class Fl32_Auth_Front_Store_Local_Identity {
 
         /**
          * Get current configuration from the local storage.
-         * @return {Fl32_Auth_Front_Dto_Identity.Dto}
+         * @return {Fl32_Auth_Front_Dto_Front.Dto}
          */
         this.get = function () {
             const stored = self.window.localStorage.getItem(KEY);
@@ -40,7 +40,7 @@ export default class Fl32_Auth_Front_Store_Local_Identity {
 
         /**
          * Save current configuration into the local storage.
-         * @param {Fl32_Auth_Front_Dto_Identity.Dto} data
+         * @param {Fl32_Auth_Front_Dto_Front.Dto} data
          */
         this.set = function (data) {
             self.window.localStorage.setItem(KEY, JSON.stringify(data));

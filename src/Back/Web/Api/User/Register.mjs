@@ -12,6 +12,7 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
      * @param {Fl32_Auth_Shared_Web_Api_User_Register} endpoint
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
+     * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPassword
      * @param {Fl32_Auth_Back_RDb_Schema_User} rdbUser
      */
     constructor(
@@ -20,6 +21,7 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
             Fl32_Auth_Shared_Web_Api_User_Register$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
+            Fl32_Auth_Back_RDb_Schema_Password$: rdbPassword,
             Fl32_Auth_Back_RDb_Schema_User$: rdbUser,
         }
     ) {
@@ -42,8 +44,11 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
         this.process = async function (req, res, context) {
             const trx = await conn.startTransaction();
             try {
+                const email = req.email;
+                const hash = req.passwordHash;
                 const keyEncrypt = req.keyEncrypt;
                 const keyVerify = req.keyVerify;
+                const salt = req.passwordSalt;
                 const userUuid = req.uuid;
                 /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
                 const found = await crud.readOne(trx, rdbUser, {[A_USER.UUID]: userUuid});
@@ -54,15 +59,24 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
                     dto.key_verify = keyVerify;
                     dto.uuid = userUuid;
                     const {[A_USER.BID]: bid} = await crud.create(trx, rdbUser, dto);
+                    // register password if exists
+                    if (email && hash && salt) {
+                        const dtoPass = rdbPassword.createDto();
+                        dtoPass.email = email;
+                        dtoPass.salt = salt;
+                        dtoPass.hash = hash;
+                        dtoPass.user_ref = bid;
+                        await crud.create(trx, rdbPassword, dtoPass);
+                    }
                     res.isNew = true;
-                    res.userBid = bid;
+                    res.success = true;
                     logger.info(`New user '${userUuid}' is registered as #${bid}.`);
                 } else {
                     // update the last date for existing user
                     found.date_last = new Date();
                     await crud.updateOne(trx, rdbUser, found);
                     res.isNew = false;
-                    res.userBid = found.bid;
+                    res.success = true;
                     logger.info(`The existence of the user '${userUuid}' is confirmed.`);
                 }
                 await trx.commit();

@@ -21,7 +21,10 @@ class Response {
     static namespace = NS;
     /** @type {string} */
     backUuid;
-    /** @type {number} */
+    /**
+     * @type {number}
+     * @deprecated we should not use backend data on the front
+     */
     frontBid;
 }
 

@@ -2,7 +2,7 @@
 
 ## The Front Identity
 
-Every frontend identity has 3 attributes (see `Fl32_Auth_Front_Dto_Identity`):
+Every frontend identity has 3 attributes (see `Fl32_Auth_Front_Dto_Front`):
 
 * `backUuid`: this is the ID of the backend where this front is registered.
 * `frontBid`: this ID is loaded from the back after the registration of the front.
