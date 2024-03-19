@@ -6,19 +6,20 @@
 export default class Fl32_Auth_Front_Mod_Crypto_Scrambler {
     /**
      * @param {TeqFw_Core_Shared_Api_Util_Codec} util
-     * @param {Fl32_Auth_Front_Ext_Nacl} nacl
+     * @param {Fl32_Auth_Front_Ext_Nacl} extNacl
      */
     constructor(
         {
             TeqFw_Core_Shared_Api_Util_Codec$: util,
-            Fl32_Auth_Front_Ext_Nacl: nacl,
+            Fl32_Auth_Front_Ext_Nacl$AS: extNacl,
         }
     ) {
         // VARS
         let _keyShared;
 
         // FUNCS
-        const {box, randomBytes, sign} = nacl;
+        debugger
+        const {box, randomBytes, sign} = extNacl;
 
         // INSTANCE METHODS
         this.decryptAndVerify = function (encrypted) {

@@ -7,8 +7,10 @@
  * @namespace Fl32_Auth_Front_Ext_Nacl
  */
 // MODULE'S IMPORT
-import * as unused from '../../../../tweetnacl/nacl-fast.min.js'; // just load CommonJS module to browser
-const t = unused; // prevent the `import` optimization in IDE
+import {loadUmd} from '../../../web/@teqfw/web/js/loaders.mjs';
+
+// load NaCl library as UMD
+await loadUmd('../../../src/tweetnacl/nacl-fast.min.js');
 
 // MODULE'S MAIN
 
@@ -70,5 +72,6 @@ const Fl32_Auth_Front_Ext_Nacl = {
     secretbox,
     sign,
 };
+Object.freeze(Fl32_Auth_Front_Ext_Nacl);
 
 export default Fl32_Auth_Front_Ext_Nacl;
