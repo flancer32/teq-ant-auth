@@ -4,13 +4,13 @@
  */
 export default class Fl32_Auth_Front_Mod_Crypto_Key_Manager {
     /**
-     * @param {Fl32_Auth_Front_Ext_Nacl} nacl
+     * @param {Fl32_Auth_Front_Ext_Nacl} extNacl
      * @param {TeqFw_Core_Shared_Api_Util_Codec} util
      * @param {Fl32_Auth_Shared_Dto_Crypto_Keys} dtoKeys
      */
     constructor(
         {
-            Fl32_Auth_Front_Ext_Nacl: nacl,
+            Fl32_Auth_Front_Ext_Nacl$AS: extNacl,
             TeqFw_Core_Shared_Api_Util_Codec$: util,
             Fl32_Auth_Shared_Dto_Crypto_Keys$: dtoKeys,
         }
@@ -21,7 +21,7 @@ export default class Fl32_Auth_Front_Mod_Crypto_Key_Manager {
             randomBytes,
             secretBox,
             sign,
-        } = nacl;
+        } = extNacl;
 
         // INSTANCE METHODS
 

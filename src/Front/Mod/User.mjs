@@ -72,6 +72,7 @@ export default class Fl32_Auth_Front_Mod_User {
                 if (!res?.keysSign?.public) res.keysSign = await modKeyMgr.createKeysToSign();
                 storeUser.set(res);
             }
+            logger.info(`User is initialized.`);
             return res;
         };
 
