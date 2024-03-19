@@ -11,8 +11,6 @@ export default class Fl32_Auth_Front_Mod_User {
      * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
      * @param {Fl32_Auth_Shared_Web_Api_User_ReadKey} endReadKey
      * @param {Fl32_Auth_Shared_Web_Api_User_Register} endUserReg
-     * @param {Fl32_Auth_Front_Util_Codec.b64UrlToBin|function} b64UrlToBin
-     * @param {Fl32_Auth_Front_Util_Codec.binToB64Url|function} binToB64Url
      * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
      * @param {Fl32_Auth_Front_Mod_Password} modPassword
      * @param {Fl32_Auth_Front_Store_Local_User} storeUser
@@ -23,8 +21,6 @@ export default class Fl32_Auth_Front_Mod_User {
             TeqFw_Web_Api_Front_Web_Connect$: connApi,
             Fl32_Auth_Shared_Web_Api_User_ReadKey$: endReadKey,
             Fl32_Auth_Shared_Web_Api_User_Register$: endUserReg,
-            'Fl32_Auth_Front_Util_Codec.b64UrlToBin': b64UrlToBin,
-            'Fl32_Auth_Front_Util_Codec.binToB64Url': binToB64Url,
             Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
             Fl32_Auth_Front_Mod_Password$: modPassword,
             Fl32_Auth_Front_Store_Local_User$: storeUser,

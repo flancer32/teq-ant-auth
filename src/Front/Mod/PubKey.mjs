@@ -15,8 +15,7 @@ export default class Fl32_Auth_Front_Mod_PubKey {
     /**
      * @param {Fl32_Auth_Front_Defaults} DEF
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {Fl32_Auth_Front_Util_Codec.b64UrlToBin|function} b64UrlToBin
-     * @param {Fl32_Auth_Front_Util_Codec.binToB64Url|function} binToB64Url
+     * @param {Fl32_Auth_Front_Util_Codec} codec
      * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
      * @param {Fl32_Auth_Shared_Dto_Attest} dtoCred
      * @param {Fl32_Auth_Shared_Web_Api_Attest} apiAttest
@@ -28,8 +27,7 @@ export default class Fl32_Auth_Front_Mod_PubKey {
         {
             Fl32_Auth_Front_Defaults$: DEF,
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            'Fl32_Auth_Front_Util_Codec.b64UrlToBin': b64UrlToBin,
-            'Fl32_Auth_Front_Util_Codec.binToB64Url': binToB64Url,
+            Fl32_Auth_Front_Util_Codec: codec,
             TeqFw_Web_Api_Front_Web_Connect$: connApi,
             Fl32_Auth_Shared_Dto_Attest$: dtoCred,
             Fl32_Auth_Shared_Web_Api_Attest$: apiAttest,
@@ -101,8 +99,8 @@ export default class Fl32_Auth_Front_Mod_PubKey {
                 // prepare API request
                 const cred = dtoCred.createDto();
                 cred.attestationId = attestation.id;
-                cred.attestationObj = binToB64Url(attestationObj);
-                cred.clientData = binToB64Url(clientData);
+                cred.attestationObj = codec.binToB64Url(attestationObj);
+                cred.clientData = codec.binToB64Url(clientData);
                 const req = apiAttest.createReq();
                 req.cred = cred;
                 // noinspection JSValidateTypes
@@ -144,7 +142,7 @@ export default class Fl32_Auth_Front_Mod_PubKey {
                 name: userUuid ? userUuid : userName,
                 displayName: userName,
             };
-            const challengeBin = b64UrlToBin(challenge);
+            const challengeBin = codec.b64UrlToBin(challenge);
             return {
                 // Relying Party:
                 rp: {
@@ -178,8 +176,8 @@ export default class Fl32_Auth_Front_Mod_PubKey {
          * @see https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/get
          */
         this.composeOptPkGet = function ({challenge, attestationId}) {
-            const challengeBin = b64UrlToBin(challenge);
-            const rawId = b64UrlToBin(attestationId);
+            const challengeBin = codec.b64UrlToBin(challenge);
+            const rawId = codec.b64UrlToBin(attestationId);
             return {
                 challenge: challengeBin,
                 allowCredentials: [{
@@ -214,9 +212,9 @@ export default class Fl32_Auth_Front_Mod_PubKey {
         this.validate = async function (assert) {
             try {
                 const req = apiAssertValid.createReq();
-                req.authenticatorData = binToB64Url(assert.authenticatorData);
-                req.clientData = binToB64Url(assert.clientDataJSON);
-                req.signature = binToB64Url(assert.signature);
+                req.authenticatorData = codec.binToB64Url(assert.authenticatorData);
+                req.clientData = codec.binToB64Url(assert.clientDataJSON);
+                req.signature = codec.binToB64Url(assert.signature);
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Assert_Validate.Response} */
                 const res = await connApi.send(req, apiAssertValid);
