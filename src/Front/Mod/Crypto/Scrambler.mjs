@@ -18,7 +18,6 @@ export default class Fl32_Auth_Front_Mod_Crypto_Scrambler {
         let _keyShared;
 
         // FUNCS
-        debugger
         const {box, randomBytes, sign} = extNacl;
 
         // INSTANCE METHODS
