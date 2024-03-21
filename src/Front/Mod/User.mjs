@@ -8,7 +8,7 @@ const SALT_BYTES = 16;
 export default class Fl32_Auth_Front_Mod_User {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
+     * @param {TeqFw_Web_Api_Front_Web_Connect} api
      * @param {Fl32_Auth_Shared_Web_Api_User_ReadKey} endReadKey
      * @param {Fl32_Auth_Shared_Web_Api_User_Register} endUserReg
      * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
@@ -18,7 +18,7 @@ export default class Fl32_Auth_Front_Mod_User {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            TeqFw_Web_Api_Front_Web_Connect$: connApi,
+            TeqFw_Web_Api_Front_Web_Connect$: api,
             Fl32_Auth_Shared_Web_Api_User_ReadKey$: endReadKey,
             Fl32_Auth_Shared_Web_Api_User_Register$: endUserReg,
             Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
@@ -51,7 +51,7 @@ export default class Fl32_Auth_Front_Mod_User {
                 req.uuid = uuid;
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_User_ReadKey.Response} */
-                const {keyEncrypt, keyVerify} = await connApi.send(req, endReadKey);
+                const {keyEncrypt, keyVerify} = await api.send(req, endReadKey);
                 return {keyEncrypt, keyVerify};
             } catch (e) {
                 // timeout or error
@@ -98,7 +98,7 @@ export default class Fl32_Auth_Front_Mod_User {
                 req.passwordSalt = salt;
             }
             /** @type {Fl32_Auth_Shared_Web_Api_User_Register.Response} */
-            const rs = await connApi.send(req, endUserReg);
+            const rs = await api.send(req, endUserReg);
             return rs?.success;
         };
         

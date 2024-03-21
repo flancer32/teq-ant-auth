@@ -1,6 +1,5 @@
 /**
- * Register the current user on the backend and get the backend ID in the response.
- * The registration fails if a user with the given UUID already exists.
+ * Registers the current user on the backend: creates new one or confirms existence.
  */
 // MODULE'S CLASSES
 /**
@@ -87,6 +86,4 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
             }
         };
     }
-
-
 }

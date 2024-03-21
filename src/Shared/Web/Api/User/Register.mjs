@@ -1,8 +1,5 @@
 /**
- * Registers the authentication data for current user on the backend (UUID, encryption and signature keys,
- * email and password).
- *
- * The registration fails if the given UUID already exists.
+ * Registers the current user on the backend: creates new one or confirms existence.
  */
 // MODULE'S VARS
 const NS = 'Fl32_Auth_Shared_Web_Api_User_Register';
