@@ -43,7 +43,7 @@
                 }
               },
               "index": {
-                "name": {"type": "unique", "attrs": ["uuid"]}
+                "uuid": {"type": "unique", "attrs": ["uuid"]}
               }
             },
             "password": {
