@@ -47,20 +47,23 @@ export default class Fl32_Auth_Back_Web_Api_Front_Register {
             const trx = await conn.startTransaction();
             try {
                 const frontUuid = req.frontUuid;
+                const keyEncrypt = req.keyEncrypt;
+                const keyVerify = req.keyVerify;
                 /** @type {Fl32_Auth_Back_RDb_Schema_Front.Dto} */
                 const found = await crud.readOne(trx, rdbFront, {[A_FRONT.UUID]: frontUuid});
                 if (!found) {
                     // register the new front
                     const dto = rdbFront.createDto();
+                    dto.key_encrypt = keyEncrypt;
+                    dto.key_verify = keyVerify;
                     dto.uuid = frontUuid;
                     const {[A_FRONT.BID]: bid} = await crud.create(trx, rdbFront, dto);
-                    res.frontBid = bid;
+                    res.isNew = true;
                     logger.info(`New front '${frontUuid}' is registered as #${bid}.`);
                 } else {
                     // update the last date for existing front
                     found.date_last = new Date();
                     await crud.updateOne(trx, rdbFront, found);
-                    res.frontBid = found.bid;
                     logger.info(`The last connection date is updated for front '${frontUuid}/${found.bid}'.`);
                 }
                 await trx.commit();
@@ -72,6 +75,4 @@ export default class Fl32_Auth_Back_Web_Api_Front_Register {
             }
         };
     }
-
-
 }

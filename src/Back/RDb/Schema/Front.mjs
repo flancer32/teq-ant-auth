@@ -22,6 +22,9 @@ const ATTR = {
     BID: 'bid',
     DATE_CREATED: 'date_created',
     DATE_LAST: 'date_last',
+    ENABLED: 'enabled',
+    KEY_ENCRYPT: 'key_encrypt',
+    KEY_VERIFY: 'key_verify',
     UUID: 'uuid',
 };
 Object.freeze(ATTR);
@@ -38,6 +41,20 @@ class Dto {
     date_created;
     /** @type {Date} */
     date_last;
+    /**
+     * @type {boolean}
+     */
+    enabled;
+    /**
+     * Public key for encryption.
+     * @type {string}
+     */
+    key_encrypt;
+    /**
+     * Public key for signature verification.
+     * @type {string}
+     */
+    key_verify;
     /** @type {string} */
     uuid;
 }
@@ -69,6 +86,9 @@ export default class Fl32_Auth_Back_RDb_Schema_Front {
             res.bid = cast.int(data?.bid);
             res.date_created = cast.date(data?.date_created);
             res.date_last = cast.date(data?.date_last);
+            res.enabled = cast.boolean(data?.enabled);
+            res.key_encrypt = cast.string(data?.key_encrypt);
+            res.key_verify = cast.string(data?.key_verify);
             res.uuid = cast.string(data?.uuid);
             return res;
         };

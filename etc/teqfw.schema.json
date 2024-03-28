@@ -31,6 +31,15 @@
               "attr": {
                 "bid": {"type": "id"},
                 "uuid": {"type": "string", "comment": "Universally Unique Identifier."},
+                "key_encrypt": {
+                  "comment": "Public key for encryption.",
+                  "type": "string"
+                },
+                "key_verify": {
+                  "comment": "Public key for signature verification.",
+                  "type": "string"
+                },
+                "enabled": {"type": "boolean", "default": true},
                 "date_created": {
                   "comment": "UTC date-time for the first front registration.",
                   "type": "datetime",
@@ -113,12 +122,14 @@
                 "bid": {"type": "id", "comment": "Local ID for the current host."},
                 "uuid": {"type": "string", "comment": "Universal ID among all hosts."},
                 "key_encrypt": {
-                  "comment": "Public key for encryption.",
-                  "type": "string"
+                  "comment": "Public key for encryption. Can be empty for partially registered users.",
+                  "type": "string",
+                  "nullable": true
                 },
                 "key_verify": {
-                  "comment": "Public key for signature verification.",
-                  "type": "string"
+                  "comment": "Public key for signature verification. Can be empty for partially registered users.",
+                  "type": "string",
+                  "nullable": true
                 },
                 "enabled": {"type": "boolean", "default": true},
                 "date_created": {

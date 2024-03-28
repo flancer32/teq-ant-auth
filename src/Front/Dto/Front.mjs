@@ -28,6 +28,16 @@ class Dto {
      * @type {string}
      */
     frontUuid;
+    /**
+     * The asymmetric keys for encryption.
+     * @type {Fl32_Auth_Shared_Dto_Crypto_Keys.Dto}
+     */
+    keysEncrypt;
+    /**
+     * The asymmetric keys for signing.
+     * @type {Fl32_Auth_Shared_Dto_Crypto_Keys.Dto}
+     */
+    keysSign;
 }
 
 /**
@@ -36,10 +46,12 @@ class Dto {
 export default class Fl32_Auth_Front_Dto_Front {
     /**
      * @param {TeqFw_Core_Shared_Util_Cast} cast
+     * @param {Fl32_Auth_Shared_Dto_Crypto_Keys} dtoKeys
      */
     constructor(
         {
             TeqFw_Core_Shared_Util_Cast$: cast,
+            Fl32_Auth_Shared_Dto_Crypto_Keys$: dtoKeys,
         }
     ) {
         /**
@@ -53,6 +65,8 @@ export default class Fl32_Auth_Front_Dto_Front {
             res.backUuid = cast.string(data?.backUuid);
             res.frontBid = cast.int(data?.frontBid);
             res.frontUuid = cast.string(data?.frontUuid);
+            res.keysEncrypt = dtoKeys.createDto(data?.keysEncrypt);
+            res.keysSign = dtoKeys.createDto(data?.keysSign);
             return res;
         };
     }

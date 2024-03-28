@@ -6,29 +6,33 @@ export default class Fl32_Auth_Front_Mod_Front {
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
      * @param {Fl32_Auth_Shared_Web_Api_Front_Register} endFrontReg
-     * @param {Fl32_Auth_Front_Store_Local_Front} storeIdentity
+     * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
+     * @param {Fl32_Auth_Front_Store_Local_Front} storeFront
      */
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             TeqFw_Web_Api_Front_Web_Connect$: connApi,
             Fl32_Auth_Shared_Web_Api_Front_Register$: endFrontReg,
-            Fl32_Auth_Front_Store_Local_Front$: storeIdentity,
+            Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
+            Fl32_Auth_Front_Store_Local_Front$: storeFront,
         }
     ) {
         // INSTANCE METHODS
 
         /**
          * Init front data on the frontend. Load the front identity from the localStorage or generate and store new one.
-         * @return {Fl32_Auth_Front_Dto_Front.Dto}
+         * @return {Promise<Fl32_Auth_Front_Dto_Front.Dto>}
          */
-        this.init = function () {
+        this.init = async function () {
             // load app identity data (if exists) from the local storage or create new one.
-            const res = storeIdentity.get();
+            const res = storeFront.get();
             if (!res.frontUuid) {
                 res.frontUuid = self.crypto.randomUUID();
+                res.keysEncrypt = await modKeyMgr.createKeysToEncrypt();
+                res.keysSign = await modKeyMgr.createKeysToSign();
                 logger.info(`New front UUID '${res.frontUuid}' is generated.`);
-                storeIdentity.set(res);
+                storeFront.set(res);
             }
             return res;
         };
@@ -38,13 +42,15 @@ export default class Fl32_Auth_Front_Mod_Front {
          * @return {Promise<Fl32_Auth_Front_Dto_Front.Dto>}
          */
         this.register = async function () {
-            const res = this.init();
+            const res = await this.init();
             const req = endFrontReg.createReq();
             req.frontUuid = res.frontUuid;
+            req.keyEncrypt = res.keysEncrypt?.public;
+            req.keyVerify = res.keysSign?.public;
             const rs = await connApi.send(req, endFrontReg);
             if (res.backUuid !== rs.backUuid) {
                 res.backUuid = rs.backUuid;
-                storeIdentity.set(res);
+                storeFront.set(res);
                 logger.info(`The front identity is updated in the localStorage: ${JSON.stringify(res)}`);
             } else {
                 logger.info(`The front identity is already synced with the back.`);

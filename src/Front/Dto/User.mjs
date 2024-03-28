@@ -44,7 +44,7 @@ class Dto {
 export default class Fl32_Auth_Front_Dto_User {
     /**
      * @param {TeqFw_Core_Shared_Util_Cast} cast
-     *  @param {Fl32_Auth_Shared_Dto_Crypto_Keys} dtoKeys
+     * @param {Fl32_Auth_Shared_Dto_Crypto_Keys} dtoKeys
      */
     constructor(
         {

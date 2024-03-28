@@ -12,6 +12,16 @@ class Request {
     static namespace = NS;
     /** @type {string} */
     frontUuid;
+    /**
+     * The front's public key to encrypt data.
+     * @type {string}
+     */
+    keyEncrypt;
+    /**
+     * The front's public key to verify signatures.
+     * @type {string}
+     */
+    keyVerify;
 }
 
 /**
@@ -22,10 +32,10 @@ class Response {
     /** @type {string} */
     backUuid;
     /**
-     * @type {number}
-     * @deprecated we should not use backend data on the front
+     * 'true' if this is a first-time registration.
+     * @type {boolean}
      */
-    frontBid;
+    isNew;
 }
 
 /**
@@ -33,11 +43,11 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Front_Register {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         // INSTANCE METHODS
@@ -50,7 +60,9 @@ export default class Fl32_Auth_Shared_Web_Api_Front_Register {
             // create new DTO
             const res = new Request();
             // cast known attributes
-            res.frontUuid = util.castString(data?.frontUuid);
+            res.frontUuid = cast.string(data?.frontUuid);
+            res.keyEncrypt = cast.string(data?.keyEncrypt);
+            res.keyVerify = cast.string(data?.keyVerify);
             return res;
         };
 
@@ -62,8 +74,8 @@ export default class Fl32_Auth_Shared_Web_Api_Front_Register {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.backUuid = util.castString(data?.backUuid);
-            res.frontBid = util.castInt(data?.frontBid);
+            res.backUuid = cast.string(data?.backUuid);
+            res.isNew = cast.boolean(data?.isNew);
             return res;
         };
     }
