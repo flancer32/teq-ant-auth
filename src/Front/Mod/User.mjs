@@ -9,6 +9,7 @@ export default class Fl32_Auth_Front_Mod_User {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {TeqFw_Web_Api_Front_Web_Connect} api
+     * @param {Fl32_Auth_Shared_Web_Api_User_Create} endUserCreate
      * @param {Fl32_Auth_Shared_Web_Api_User_ReadKey} endReadKey
      * @param {Fl32_Auth_Shared_Web_Api_User_Register} endUserReg
      * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
@@ -19,6 +20,7 @@ export default class Fl32_Auth_Front_Mod_User {
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             TeqFw_Web_Api_Front_Web_Connect$: api,
+            Fl32_Auth_Shared_Web_Api_User_Create$: endUserCreate,
             Fl32_Auth_Shared_Web_Api_User_ReadKey$: endReadKey,
             Fl32_Auth_Shared_Web_Api_User_Register$: endUserReg,
             Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
@@ -27,6 +29,19 @@ export default class Fl32_Auth_Front_Mod_User {
         }
     ) {
         // INSTANCE METHODS
+
+        /**
+         * Create empty user w/o password (pre-registration).
+         * @param {string} email
+         * @param {string} [uuid]
+         * @return {Promise<Fl32_Auth_Shared_Web_Api_User_Create.Response>}
+         */
+        this.create = async function ({email, uuid}) {
+            const req = endUserCreate.createReq();
+            req.email = email;
+            req.uuid = (uuid) ? uuid : crypto.randomUUID();
+            return await api.send(req, endUserCreate);
+        };
 
         /**
          * Get user data stored in the localStorage.
@@ -101,6 +116,6 @@ export default class Fl32_Auth_Front_Mod_User {
             const rs = await api.send(req, endUserReg);
             return rs?.success;
         };
-        
+
     }
 }

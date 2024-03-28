@@ -60,15 +60,15 @@
               "attr": {
                 "user_ref": {"type": "ref"},
                 "email": {
-                  "type": "string", "comment": "Email to restore the access to the user account.", "nullable": true
+                  "type": "string", "comment": "Email to restore the access to the user account."
                 },
                 "date_updated": {
                   "comment": "Date-time when record was updated.",
                   "type": "datetime",
                   "default": "current"
                 },
-                "hash": {"type": "binary"},
-                "salt": {"type": "binary"}
+                "hash": {"type": "binary", "nullable": true},
+                "salt": {"type": "binary", "nullable": true}
               },
               "index": {
                 "PK": {"type": "primary", "attrs": ["user_ref"]}
