@@ -21,6 +21,12 @@ export default class Fl32_Auth_Front_Mod_Front {
         // INSTANCE METHODS
 
         /**
+         * The wrapper for the stored frontend data.
+         * @return {Fl32_Auth_Front_Dto_Front.Dto}
+         */
+        this.get = () => storeFront.get();
+
+        /**
          * Init front data on the frontend. Load the front identity from the localStorage or generate and store new one.
          * @return {Promise<Fl32_Auth_Front_Dto_Front.Dto>}
          */
