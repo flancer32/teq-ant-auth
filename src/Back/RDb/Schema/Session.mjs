@@ -19,6 +19,7 @@ const ATTR = {
     DATE_CREATED: 'date_created',
     FRONT_REF: 'front_ref',
     USER_REF: 'user_ref',
+    WORD: 'word',
 };
 Object.freeze(ATTR);
 
@@ -28,7 +29,10 @@ Object.freeze(ATTR);
  */
 class Dto {
     static namespace = NS;
-    /** @type {string} */
+    /**
+     * The ID of the session (cookies stored).
+     * @type {string}
+     */
     code;
     /** @type {Date} */
     date_created;
@@ -38,6 +42,11 @@ class Dto {
     front_ref;
     /** @type {number} */
     user_ref;
+    /**
+     * The secret word for the session (locally stored on the front).
+     * @type {string}
+     */
+    word;
 }
 
 // noinspection JSClosureCompilerSyntax
@@ -69,6 +78,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Session {
             res.date_last = cast.date(data?.date_last);
             res.front_ref = cast.int(data?.front_ref);
             res.user_ref = cast.int(data?.user_ref);
+            res.word = cast.string(data?.word);
             return res;
         };
 

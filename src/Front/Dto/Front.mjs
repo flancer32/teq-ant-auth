@@ -26,6 +26,7 @@ class Dto {
     /**
      * This ID is generated on the front and should be registered on the back.
      * @type {string}
+     * TODO: rename to `uuid`
      */
     frontUuid;
     /**

@@ -12,6 +12,8 @@ export default class Fl32_Auth_Front_Mod_Session {
      * @param {Fl32_Auth_Shared_Web_Api_Session_Close} endClose
      * @param {Fl32_Auth_Shared_Web_Api_Session_Init} endInit
      * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
+     * @param {Fl32_Auth_Front_Mod_Front} modFront
+     * @param {Fl32_Auth_Front_Mod_User} modUser
      * @param {Fl32_Auth_Front_Store_Local_Front} storeFront
      * @param {Fl32_Auth_Front_Store_Local_User} storeUser
      */
@@ -24,13 +26,13 @@ export default class Fl32_Auth_Front_Mod_Session {
             Fl32_Auth_Shared_Web_Api_Session_Close$: endClose,
             Fl32_Auth_Shared_Web_Api_Session_Init$: endInit,
             Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
+            Fl32_Auth_Front_Mod_Front$: modFront,
+            Fl32_Auth_Front_Mod_User$: modUser,
             Fl32_Auth_Front_Store_Local_Front$: storeFront,
             Fl32_Auth_Front_Store_Local_User$: storeUser,
         }
     ) {
         // MAIN
-        /** @type {Fl32_Auth_Front_Dto_Front.Dto} */
-        let _front;
         /**
          * Internal store to cache session data for established session.
          * @type {Object}
@@ -43,6 +45,7 @@ export default class Fl32_Auth_Front_Mod_Session {
         /**
          * Initialize front identity on the app startup.
          * @return {Promise<*|Fl32_Auth_Front_Dto_Front.Dto>}
+         * @deprecated use `modFront.init()` instead of this method
          */
         async function initFront() {
             // load app identity data (if exists) from the local storage or create new one.
@@ -71,6 +74,7 @@ export default class Fl32_Auth_Front_Mod_Session {
          * Load user data from local store or create a new user, initialize it (UUID & keys), and store it locally.
          * Send user data to the server to ensure that the user is signed up on the host.
          * @return {Promise<Fl32_Auth_Front_Dto_User.Dto>}
+         * @deprecated use `modUser.init()` instead of this method
          */
         async function initUser() {
             const res = storeUser.get();
@@ -117,7 +121,7 @@ export default class Fl32_Auth_Front_Mod_Session {
         /**
          * @return {string}
          */
-        this.getBackUuid = () => _front?.backUuid;
+        this.getBackUuid = () => modFront.get()?.backUuid;
 
         /**
          * Get session data.
@@ -127,13 +131,14 @@ export default class Fl32_Auth_Front_Mod_Session {
 
         /**
          * @return {number}
+         * @deprecated don't use the backend IDs on the front
          */
-        this.getFrontBid = () => _front?.frontBid;
+        this.getFrontBid = () => modFront.get()?.frontBid;
 
         /**
          * @return {string}
          */
-        this.getFrontUuid = () => _front?.frontUuid;
+        this.getFrontUuid = () => modFront.get()?.frontUuid;
 
         /**
          * @return {Fl32_Auth_Front_Dto_User.Dto}
@@ -143,7 +148,7 @@ export default class Fl32_Auth_Front_Mod_Session {
         /**
          * @return {string}
          */
-        this.getUserSessionId = () => _user?.session;
+        this.getUserSessionId = () => _user?.sessionWord;
 
         /**
          * @return {string}
@@ -156,9 +161,9 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         this.init = async function () {
             try {
-                _front = await initFront();
-                _user = await initUser();
-                if (_user?.bid) {
+                await modFront.init();
+                _user = await modUser.init();
+                if (_user?.sessionWord) {
                     // TODO: should we ever use the user session (we have asymmetric encryption)?
                     const req = endInit.createReq();
                     req.userUuid = _user.uuid;
@@ -188,10 +193,23 @@ export default class Fl32_Auth_Front_Mod_Session {
         /**
          * @param {number} bid
          * @return {Fl32_Auth_Front_Dto_User.Dto}
+         * @deprecated we should not use the backend IDs on the front
          */
         this.setUserBid = function (bid) {
             _user = storeUser.get();
             _user.bid = bid;
+            storeUser.set(_user);
+            return _user;
+        };
+
+        /**
+         * Save the session word locally. This indicates that the user session is established.
+         * @param {string} word
+         * @return {Fl32_Auth_Front_Dto_User.Dto}
+         */
+        this.setSessionWord = function (word) {
+            _user = storeUser.get();
+            _user.sessionWord = word;
             storeUser.set(_user);
             return _user;
         };

@@ -27,10 +27,10 @@ class Dto {
      */
     keysSign;
     /**
-     * The user session ID if the user is authenticated.
+     * The user session word if the user is authenticated.
      * @type {string}
      */
-    session;
+    sessionWord;
     /**
      * This ID is generated on the front and should be registered on the back.
      * @type {string}
@@ -63,7 +63,7 @@ export default class Fl32_Auth_Front_Dto_User {
             res.bid = cast.int(data?.bid);
             res.keysEncrypt = dtoKeys.createDto(data?.keysEncrypt);
             res.keysSign = dtoKeys.createDto(data?.keysSign);
-            res.session = cast.string(data?.session);
+            res.sessionWord = cast.string(data?.sessionWord);
             res.uuid = cast.string(data?.uuid);
             return res;
         };

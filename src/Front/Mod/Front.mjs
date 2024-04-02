@@ -53,6 +53,7 @@ export default class Fl32_Auth_Front_Mod_Front {
             req.frontUuid = res.frontUuid;
             req.keyEncrypt = res.keysEncrypt?.public;
             req.keyVerify = res.keysSign?.public;
+            debugger
             const rs = await connApi.send(req, endFrontReg);
             if (res.backUuid !== rs.backUuid) {
                 res.backUuid = rs.backUuid;

@@ -26,7 +26,7 @@ export default class Fl32_Auth_Front_Mod_Password {
             TeqFw_Web_Api_Front_Web_Connect$: connApi,
             Fl32_Auth_Shared_Web_Api_Password_Salt_Read$: apiSaltRead,
             Fl32_Auth_Shared_Web_Api_Password_Validate$: apiValid,
-            Fl32_Auth_Front_Mod_Session$: modSess,
+            // Fl32_Auth_Front_Mod_Session$: modSess, // TODO circular dependency here
         }
     ) {
 

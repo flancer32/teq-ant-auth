@@ -87,7 +87,8 @@
               "attr": {
                 "user_ref": {"type": "ref", "comment": "Reference to the user."},
                 "front_ref": {"type": "ref", "comment": "Reference to the front."},
-                "code": {"type": "string"},
+                "code": {"type": "string", "comment": "The ID of the session (cookies stored)."},
+                "word": {"type": "string", "comment": "The secret word for the session (locally stored on the front)."},
                 "date_created": {
                   "type": "datetime",
                   "default": "current",

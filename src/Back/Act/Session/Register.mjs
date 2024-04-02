@@ -36,10 +36,10 @@ export default class Fl32_Auth_Back_Act_Session_Register {
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {string} userUuid
          * @param {string} frontUuid
-         * @return {Promise<{code:string}>}
+         * @return {Promise<{code:string, word:string}>}
          */
         this.act = async function ({trx, userUuid, frontUuid}) {
-            let code;
+            let code, word;
             /** @type {Fl32_Auth_Back_RDb_Schema_Front.Dto} */
             const front = await crud.readOne(trx, rdbFront, {[A_FRONT.UUID]: frontUuid});
             /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
@@ -63,14 +63,15 @@ export default class Fl32_Auth_Back_Act_Session_Register {
                     } while (found);
                     // create DTO and save it into the RDB
                     const dto = rdbSess.createDto();
-                    dto.code = code;
+                    dto.code = code; // a cookie stored ID
+                    dto.word = word = randomUUID(); // a secret word for API requests
                     dto.user_ref = user.bid;
                     dto.front_ref = front.bid;
                     await crud.create(trx, rdbSess, dto);
                     logger.info(`New session is registered for user ${user.bid}:${user.uuid} and front ${front.bid}:${front.uuid}`);
                 }
             }
-            return {code};
+            return {code, word};
         };
     }
 
