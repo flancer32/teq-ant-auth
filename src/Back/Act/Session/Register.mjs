@@ -70,6 +70,8 @@ export default class Fl32_Auth_Back_Act_Session_Register {
                     await crud.create(trx, rdbSess, dto);
                     logger.info(`New session is registered for user ${user.bid}:${user.uuid} and front ${front.bid}:${front.uuid}`);
                 }
+                user.date_last = new Date();
+                await crud.updateOne(trx, rdbUser, user);
             }
             return {code, word};
         };

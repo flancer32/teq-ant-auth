@@ -132,16 +132,16 @@
                   "type": "string",
                   "nullable": true
                 },
-                "enabled": {"type": "boolean", "default": true},
+                "enabled": {"type": "boolean", "default": false},
                 "date_created": {
-                  "comment": "UTC date-time for the first user registration.",
+                  "comment": "UTC date-time for the user creation.",
                   "type": "datetime",
                   "default": "current"
                 },
                 "date_last": {
-                  "comment": "UTC date-time for the last user registration.",
+                  "comment": "UTC date-time for the last user sign in. null - if not signed in yet",
                   "type": "datetime",
-                  "default": "current"
+                  "nullable": true
                 }
               },
               "index": {

@@ -35,7 +35,7 @@ export default class Fl32_Auth_Back_Act_User_Read {
         /**
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {string} uuid
-         * @param {boolean} withPass
+         * @param {boolean} [withPass]
          * @return {Promise<ActResult>}
          */
         this.act = async function ({trx, uuid, withPass}) {
