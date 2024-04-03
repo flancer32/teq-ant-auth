@@ -1,5 +1,5 @@
 /**
- * Create a new user on the back end. The admin can create employees w/o passwords, then employee can activate it later.
+ * Create a new user on the backend. The admin can create employees w/o passwords, then employee can activate it later.
  */
 // MODULE'S CLASSES
 /**

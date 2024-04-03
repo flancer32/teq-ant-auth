@@ -117,5 +117,13 @@ export default class Fl32_Auth_Front_Mod_User {
             return rs?.success;
         };
 
+        /**
+         * Update user data stored in the localStore.
+         *
+         * @param {Fl32_Auth_Front_Dto_User.Dto} dto
+         */
+        this.updateStore = function (dto) {
+            storeUser.set(dto);
+        };
     }
 }

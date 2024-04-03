@@ -11,8 +11,9 @@ export default class Fl32_Auth_Back_Web_Api_Front_Register {
      * @param {Fl32_Auth_Shared_Web_Api_Front_Register} endpoint
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {TeqFw_Core_Back_Mod_App_Uuid} modBackUuid
      * @param {Fl32_Auth_Back_RDb_Schema_Front} rdbFront
+     * @param {TeqFw_Core_Back_Mod_App_Uuid} modBackUuid
+     * @param {Fl32_Auth_Back_Act_Front_Create} actCreate
      */
     constructor(
         {
@@ -20,8 +21,9 @@ export default class Fl32_Auth_Back_Web_Api_Front_Register {
             Fl32_Auth_Shared_Web_Api_Front_Register$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            TeqFw_Core_Back_Mod_App_Uuid$: modBackUuid,
             Fl32_Auth_Back_RDb_Schema_Front$: rdbFront,
+            TeqFw_Core_Back_Mod_App_Uuid$: modBackUuid,
+            Fl32_Auth_Back_Act_Front_Create$: actCreate,
         }
     ) {
         // VARS
@@ -46,25 +48,22 @@ export default class Fl32_Auth_Back_Web_Api_Front_Register {
         this.process = async function (req, res, context) {
             const trx = await conn.startTransaction();
             try {
-                const frontUuid = req.frontUuid;
+                const uuid = req.frontUuid;
                 const keyEncrypt = req.keyEncrypt;
                 const keyVerify = req.keyVerify;
                 /** @type {Fl32_Auth_Back_RDb_Schema_Front.Dto} */
-                const found = await crud.readOne(trx, rdbFront, {[A_FRONT.UUID]: frontUuid});
+                const found = await crud.readOne(trx, rdbFront, {[A_FRONT.UUID]: uuid});
                 if (!found) {
                     // register the new front
-                    const dto = rdbFront.createDto();
-                    dto.key_encrypt = keyEncrypt;
-                    dto.key_verify = keyVerify;
-                    dto.uuid = frontUuid;
-                    const {[A_FRONT.BID]: bid} = await crud.create(trx, rdbFront, dto);
+                    const enabled = true;
+                    const {bid} = await actCreate.act({trx, enabled, keyEncrypt, keyVerify, uuid});
                     res.isNew = true;
-                    logger.info(`New front '${frontUuid}' is registered as #${bid}.`);
+                    logger.info(`New front '${uuid}' is registered as #${bid}.`);
                 } else {
                     // update the last date for existing front
                     found.date_last = new Date();
                     await crud.updateOne(trx, rdbFront, found);
-                    logger.info(`The last connection date is updated for front '${frontUuid}/${found.bid}'.`);
+                    logger.info(`The last connection date is updated for front '${uuid}/${found.bid}'.`);
                 }
                 await trx.commit();
                 res.backUuid = _backUuid;

@@ -62,6 +62,7 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
                     if (email && hash && salt) {
                         const dtoPass = rdbPassword.createDto();
                         dtoPass.email = email;
+                        // TODO: incompatible types
                         dtoPass.salt = salt;
                         dtoPass.hash = hash;
                         dtoPass.user_ref = bid;
