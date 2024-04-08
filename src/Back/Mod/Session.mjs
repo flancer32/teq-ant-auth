@@ -46,7 +46,7 @@ export default class Fl32_Auth_Back_Mod_Session {
             let res = false;
             const sessionId = request[DEF.REQ_HTTP_SESSION_USER_ID];
             if (sessionId) {
-                await crud.deleteOne(trx, rdbSess, sessionId);
+                await crud.deleteOne(trx, rdbSess, {[A_SESS.CODE]: sessionId});
                 delete _cache[sessionId];
                 delete request[DEF.REQ_HTTP_SESSION_USER_ID];
                 modCookie.clear({request, response});

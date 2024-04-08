@@ -14,7 +14,7 @@ export default class Fl32_Auth_Back_Web_Api_Password_Salt_Read {
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
-     * @param {Fl32_Auth_Back_Api_Mole} moleUser
+     * @param {Fl32_Auth_Back_Api_Mod_User} modUser
      */
     constructor(
         {
@@ -24,7 +24,7 @@ export default class Fl32_Auth_Back_Web_Api_Password_Salt_Read {
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
-            Fl32_Auth_Back_Api_Mole$: moleUser,
+            Fl32_Auth_Back_Api_Mod_User$: modUser,
         }
     ) {
         // INSTANCE METHODS
@@ -53,7 +53,7 @@ export default class Fl32_Auth_Back_Web_Api_Password_Salt_Read {
                 // get and normalize input data
                 const userRef = req.userRef;
                 //
-                const {userBid} = await moleUser.userRead({trx, userRef});
+                const {bid: userBid} = await modUser.userRead({trx, userRef});
                 res.salt = await readPasswordSalt(trx, userBid);
                 await trx.commit();
                 logger.info(JSON.stringify(res));

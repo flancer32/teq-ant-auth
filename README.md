@@ -18,6 +18,10 @@ This plugin uses `Fl32_Auth` namespace.
 
 ### Back
 
+#### DI Replacements
+
+* `Fl32_Auth_Back_Api_Mod_User`: the model provides application specific methods for the user.
+
 #### Web Handlers
 
 * `Fl32_Auth_Back_Web_Handler_Session_Front`: handles the HTTP session stored in the session cookies. It allows tracing
@@ -43,8 +47,6 @@ frontend/browser on the backend). The session ID is stored in the local storage 
 reopened.
 
 TODO: do we really need sessions if we already have asymmetric encryption in place?
-
-
 
 ## Front
 

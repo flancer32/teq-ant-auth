@@ -10,6 +10,11 @@ const NS = 'Fl32_Auth_Shared_Web_Api_Session_Close';
  */
 class Request {
     static namespace = NS;
+    /**
+     * The session word is stored in the localStorage to indicate that the session is established.
+     * @type {string}
+     */
+    sessionWord;
 }
 
 /**
@@ -26,11 +31,11 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Session_Close {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         // INSTANCE METHODS
@@ -43,6 +48,7 @@ export default class Fl32_Auth_Shared_Web_Api_Session_Close {
             // create new DTO
             const res = new Request();
             // cast known attributes
+            res.sessionWord = cast.string(data?.sessionWord);
             return res;
         };
 
@@ -54,7 +60,7 @@ export default class Fl32_Auth_Shared_Web_Api_Session_Close {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.success = util.castBoolean(data?.success);
+            res.success = cast.boolean(data?.success);
             return res;
         };
     }

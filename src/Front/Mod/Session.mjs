@@ -14,8 +14,6 @@ export default class Fl32_Auth_Front_Mod_Session {
      * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
      * @param {Fl32_Auth_Front_Mod_Front} modFront
      * @param {Fl32_Auth_Front_Mod_User} modUser
-     * @param {Fl32_Auth_Front_Store_Local_Front} storeFront
-     * @param {Fl32_Auth_Front_Store_Local_User} storeUser
      */
     constructor(
         {
@@ -28,17 +26,23 @@ export default class Fl32_Auth_Front_Mod_Session {
             Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
             Fl32_Auth_Front_Mod_Front$: modFront,
             Fl32_Auth_Front_Mod_User$: modUser,
-            Fl32_Auth_Front_Store_Local_Front$: storeFront,
-            Fl32_Auth_Front_Store_Local_User$: storeUser,
         }
     ) {
         // MAIN
+        /**
+         * The private property to cache the front data inside the session model.
+         * @type {Fl32_Auth_Front_Dto_Front.Dto}
+         */
+        let _front;
         /**
          * Internal store to cache session data for established session.
          * @type {Object}
          */
         let _store;
-        /** @type {Fl32_Auth_Front_Dto_User.Dto} */
+        /**
+         * The private property to cache the user data inside the session model.
+         * @type {Fl32_Auth_Front_Dto_User.Dto}
+         */
         let _user;
 
         // FUNCS
@@ -49,7 +53,7 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         async function initFront() {
             // load app identity data (if exists) from the local storage or create new one.
-            const res = storeFront.get();
+            const res = modFront.get();
             if (!res.frontUuid) {
                 res.frontUuid = self.crypto.randomUUID();
                 logger.info(`New front UUID '${res.frontUuid}' is generated and should be registered on the back.`);
@@ -62,7 +66,7 @@ export default class Fl32_Auth_Front_Mod_Session {
                 // update locally stored data if different
                 res.backUuid = rs.backUuid;
                 res.frontBid = rs.frontBid;
-                storeFront.set(res);
+                modFront.updateStore(res);
                 logger.info(`The front identity is updated in the localStorage: ${JSON.stringify(res)}`);
             } else {
                 logger.info(`The front identity is already synced with the back.`);
@@ -77,12 +81,12 @@ export default class Fl32_Auth_Front_Mod_Session {
          * @deprecated use `modUser.init()` instead of this method
          */
         async function initUser() {
-            const res = storeUser.get();
+            const res = modUser.get();
             if (!res?.uuid || !res?.keysEncrypt?.public || !res?.keysSign?.public) {
                 if (!res?.uuid) res.uuid = self.crypto.randomUUID();
                 if (!res?.keysEncrypt?.public) res.keysEncrypt = await modKeyMgr.createKeysToEncrypt();
                 if (!res?.keysSign?.public) res.keysSign = await modKeyMgr.createKeysToSign();
-                storeUser.set(res);
+                modUser.updateStore(res);
             }
             const dto = endUserReg.createReq();
             dto.keyEncrypt = res.keysEncrypt.public;
@@ -105,6 +109,11 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         this.close = async function () {
             try {
+                // remove the session word from the user data stored in the localStorage
+                _user = this.getUser();
+                _user.sessionWord = undefined;
+                modUser.updateStore(_user);
+                // remove the current session from the back
                 const req = endClose.createReq();
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Session_Close.Response} */
@@ -113,8 +122,7 @@ export default class Fl32_Auth_Front_Mod_Session {
                 else logger.error(`Cannot close user session on the backend.`);
                 return res;
             } catch (e) {
-                // timeout or error
-                logger.error(`Cannot close user session. Error: ${e?.message}`);
+                logger.exception(e);
             }
         };
 
@@ -130,6 +138,14 @@ export default class Fl32_Auth_Front_Mod_Session {
         this.getData = () => _store;
 
         /**
+         * @return {Fl32_Auth_Front_Dto_Front.Dto}
+         */
+        this.getFront = function () {
+            if (!_front) _front = modFront.get();
+            return _front;
+        };
+
+        /**
          * @return {number}
          * @deprecated don't use the backend IDs on the front
          */
@@ -138,12 +154,15 @@ export default class Fl32_Auth_Front_Mod_Session {
         /**
          * @return {string}
          */
-        this.getFrontUuid = () => modFront.get()?.frontUuid;
+        this.getFrontUuid = () => this.getFront()?.frontUuid;
 
         /**
          * @return {Fl32_Auth_Front_Dto_User.Dto}
          */
-        this.getUser = () => _user;
+        this.getUser = function () {
+            if (!_user) _user = modUser.get();
+            return _user;
+        };
 
         /**
          * @return {string}
@@ -153,7 +172,7 @@ export default class Fl32_Auth_Front_Mod_Session {
         /**
          * @return {string}
          */
-        this.getUserUuid = () => _user?.uuid;
+        this.getUserUuid = () => this.getUser()?.uuid;
 
         /**
          * Initialize the frontend & user data then connect to the back to update the session.
@@ -184,6 +203,10 @@ export default class Fl32_Auth_Front_Mod_Session {
             }
         };
 
+        this.isAuthenticated = function () {
+            return Boolean(this.getUser()?.sessionWord);
+        };
+
         /**
          * Return 'true' if session data is stored in the model's cache.
          * @returns {boolean}
@@ -196,21 +219,23 @@ export default class Fl32_Auth_Front_Mod_Session {
          * @deprecated we should not use the backend IDs on the front
          */
         this.setUserBid = function (bid) {
-            _user = storeUser.get();
-            _user.bid = bid;
-            storeUser.set(_user);
-            return _user;
+            // _user = storeUser.get();
+            // _user.bid = bid;
+            // storeUser.set(_user);
+            // return _user;
+            throw new Error('This is a deprecated method.');
         };
 
         /**
          * Save the session word locally. This indicates that the user session is established.
          * @param {string} word
          * @return {Fl32_Auth_Front_Dto_User.Dto}
+         * @deprecated use Fl32_Auth_Front_Mod_Session.updateUser
          */
         this.setSessionWord = function (word) {
-            _user = storeUser.get();
+            _user = modUser.get();
             _user.sessionWord = word;
-            storeUser.set(_user);
+            modUser.updateStore(_user);
             return _user;
         };
 
@@ -219,5 +244,16 @@ export default class Fl32_Auth_Front_Mod_Session {
          * @param {Object} data
          */
         this.setData = (data) => _store = data;
+
+        /**
+         * Update the user data in the memory and in the localStorage.
+         * @param {Fl32_Auth_Front_Dto_User.Dto} data
+         * @return {Fl32_Auth_Front_Dto_User.Dto}
+         */
+        this.updateUser = function (data) {
+            _user = data;
+            modUser.updateStore(data);
+            return _user;
+        };
     }
 }

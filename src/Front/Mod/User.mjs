@@ -1,5 +1,6 @@
 /**
  * A model for aggregating functionality related to the frontend user.
+ * The user data is stored in the localStore and is not cached in the model.
  */
 // MODULE'S VARS
 const SALT_BYTES = 16;
@@ -118,7 +119,7 @@ export default class Fl32_Auth_Front_Mod_User {
         };
 
         /**
-         * Update user data stored in the localStore.
+         * Update the user data stored in the localStore.
          *
          * @param {Fl32_Auth_Front_Dto_User.Dto} dto
          */

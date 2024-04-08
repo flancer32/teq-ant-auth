@@ -12,7 +12,7 @@ class Request {
     static namespace = NS;
     /**
      * User identifier (application-specific).
-     * @type {string}
+     * @type {*}
      */
     userRef;
 }
@@ -34,11 +34,11 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Password_Salt_Read {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         // INSTANCE METHODS
@@ -51,7 +51,7 @@ export default class Fl32_Auth_Shared_Web_Api_Password_Salt_Read {
             // create new DTO
             const res = new Request();
             // cast known attributes
-            res.userRef = util.castString(data?.userRef);
+            res.userRef = structuredClone(data?.userRef);
             return res;
         };
 
@@ -63,7 +63,7 @@ export default class Fl32_Auth_Shared_Web_Api_Password_Salt_Read {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.salt = util.castString(data?.salt);
+            res.salt = cast.string(data?.salt);
             return res;
         };
     }

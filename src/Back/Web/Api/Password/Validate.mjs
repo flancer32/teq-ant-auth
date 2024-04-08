@@ -1,6 +1,6 @@
 /**
  * Password base authentication:
- *  - Load user data identified by app specific ID (email, id, uuid, ...) with the mole implementation.
+ *  - Load user data identified by app specific ID (email, id, uuid, ...) with the API implementation.
  *  - Validate password hash.
  *  - Establish new session for authenticated user.
  */

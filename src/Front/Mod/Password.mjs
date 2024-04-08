@@ -53,7 +53,7 @@ export default class Fl32_Auth_Front_Mod_Password {
 
         /**
          * Creates password hash using salt from backend and validates the user's password on the backend.
-         * @param {string} userRef - App-specific identifier for the user.
+         * @param {*} userRef - App-specific identifier for the user.
          * @param {string} password - The plain password.
          * @returns {Promise<Fl32_Auth_Shared_Web_Api_Password_Validate.Response>}
          */
@@ -91,7 +91,7 @@ export default class Fl32_Auth_Front_Mod_Password {
 
         /**
          * Reads the password salt for the given user from the backend.
-         * @param {string} userRef - Application-specific identifier for the user (email, login, UUID, etc.).
+         * @param {*} userRef - Application-specific identifier for the user (email, login, UUID, etc.).
          * @return {Promise<string>} HEX string representation of binary values
          */
         this.saltRead = async function (userRef) {

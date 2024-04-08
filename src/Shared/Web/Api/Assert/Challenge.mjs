@@ -36,11 +36,11 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Assert_Challenge {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      */
     constructor(
         {
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
         }
     ) {
         // INSTANCE METHODS
@@ -53,7 +53,7 @@ export default class Fl32_Auth_Shared_Web_Api_Assert_Challenge {
             // create new DTO
             const res = new Request();
             // cast known attributes
-            res.attestationId = util.castString(data?.attestationId);
+            res.attestationId = cast.string(data?.attestationId);
             return res;
         };
 
@@ -65,8 +65,8 @@ export default class Fl32_Auth_Shared_Web_Api_Assert_Challenge {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.attestationId = util.castString(data?.attestationId);
-            res.challenge = util.castString(data?.challenge);
+            res.attestationId = cast.string(data?.attestationId);
+            res.challenge = cast.string(data?.challenge);
             return res;
         };
     }

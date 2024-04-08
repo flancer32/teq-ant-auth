@@ -2,6 +2,7 @@
  * An interface for an application specific functionality used by this plugin.
  *
  * @interface
+ * @deprecated use 'Spy' instead of 'Mole' and DI replacements `..._Di_Fl32_Auth_Back_Api_Spy`
  */
 export default class Fl32_Auth_Back_Api_Mole {
 

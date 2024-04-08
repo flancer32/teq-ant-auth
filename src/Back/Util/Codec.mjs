@@ -1,5 +1,5 @@
 /**
- * Encoding/decoding utilities for strings and binary data.
+ * Encoding/decoding utilities for strings and binary data that are used in the current plugin.
  * @namespace Fl32_Auth_Back_Util_Codec
  */
 // DEFINE WORKING VARS
@@ -60,4 +60,4 @@ export {
     base64ToB64Url,
     base64ToBin,
     binToB64Url,
-}
+};

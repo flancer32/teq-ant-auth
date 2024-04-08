@@ -41,12 +41,12 @@ class Response {
  */
 export default class Fl32_Auth_Shared_Web_Api_Attest {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast} util
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      * @param {Fl32_Auth_Shared_Dto_Attest} dtoCred
      */
     constructor(
         {
-            TeqFw_Core_Shared_Util_Cast$: util,
+            TeqFw_Core_Shared_Util_Cast$: cast,
             Fl32_Auth_Shared_Dto_Attest$: dtoCred,
         }
     ) {
@@ -72,8 +72,8 @@ export default class Fl32_Auth_Shared_Web_Api_Attest {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.attestationId = util.castString(data?.attestationId);
-            res.publicKeyBid = util.castInt(data?.publicKeyBid);
+            res.attestationId = cast.string(data?.attestationId);
+            res.publicKeyBid = cast.int(data?.publicKeyBid);
             res.sessionData = structuredClone(data?.sessionData);
             return res;
         };

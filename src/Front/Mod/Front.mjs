@@ -1,5 +1,6 @@
 /**
  * A model for aggregating functionality related to the frontend itself.
+ * The front data is stored in the localStore and is not cached in the model.
  */
 export default class Fl32_Auth_Front_Mod_Front {
     /**
@@ -62,6 +63,15 @@ export default class Fl32_Auth_Front_Mod_Front {
                 logger.info(`The front identity is already synced with the back.`);
             }
             return res;
+        };
+
+        /**
+         * Update the front data stored in the localStore.
+         *
+         * @param {Fl32_Auth_Front_Dto_Front.Dto} dto
+         */
+        this.updateStore = function (dto) {
+            storeFront.set(dto);
         };
     }
 }
