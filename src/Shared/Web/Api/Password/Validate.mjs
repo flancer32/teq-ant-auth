@@ -11,12 +11,17 @@ const NS = 'Fl32_Auth_Shared_Web_Api_Password_Validate';
 class Request {
     static namespace = NS;
     /**
-     * HEX string representation of the password's hash.
+     * The front UUID.
+     * @type {string}
+     */
+    frontUuid;
+    /**
+     * The 'base64url' representation of the password's hash.
      * @type {string}
      */
     passwordHash;
     /**
-     * User identifier (application-specific).
+     * The user identifier (application-specific).
      * @type {*}
      */
     userRef;
@@ -28,15 +33,20 @@ class Request {
 class Response {
     static namespace = NS;
     /**
-     * 'true' if user session is successfully established.
-     * @type {boolean}
-     */
-    success;
-    /**
      * App-specific data for the newly established session.
      * @type {Object}
      */
     sessionData;
+    /**
+     * The secret word for the session (locally stored on the front).
+     * @type {string}
+     */
+    sessionWord;
+    /**
+     * 'true' if user session is successfully established.
+     * @type {boolean}
+     */
+    success;
 }
 
 
@@ -62,6 +72,7 @@ export default class Fl32_Auth_Shared_Web_Api_Password_Validate {
             // create new DTO
             const res = new Request();
             // cast known attributes
+            res.frontUuid = cast.string(data?.frontUuid);
             res.passwordHash = cast.string(data?.passwordHash);
             res.userRef = structuredClone(data?.userRef);
             return res;
@@ -75,8 +86,9 @@ export default class Fl32_Auth_Shared_Web_Api_Password_Validate {
             // create new DTO
             const res = new Response();
             // cast known attributes
-            res.success = cast.boolean(data?.success);
             res.sessionData = structuredClone(data?.sessionData);
+            res.sessionWord = cast.string(data?.sessionWord);
+            res.success = cast.boolean(data?.success);
             return res;
         };
     }

@@ -46,7 +46,7 @@ export default class Fl32_Auth_Front_Util_Codec {
 
     /**
      * Convert binary data to base64 string.
-     * @param {ArrayBuffer} data
+     * @param {ArrayBuffer|Uint8Array} data
      * @returns {string}
      * @memberOf Fl32_Auth_Front_Util_Codec
      */
@@ -57,7 +57,7 @@ export default class Fl32_Auth_Front_Util_Codec {
 
     /**
      * Convert binary data to base64url string.
-     * @param {ArrayBuffer} data
+     * @param {ArrayBuffer|Uint8Array} data
      * @returns {string}
      * @memberOf Fl32_Auth_Front_Util_Codec
      */

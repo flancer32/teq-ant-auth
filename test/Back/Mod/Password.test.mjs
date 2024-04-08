@@ -24,10 +24,10 @@ await modBackUuid.init();
 // GET OBJECT FROM CONTAINER AND RUN TESTS
 /** @type {Fl32_Auth_Back_Mod_Password} */
 const mod = await container.get('Fl32_Auth_Back_Mod_Password$');
-/** @type {Fl32_Auth_Shared_Web_Api_Front_Register} */
-const dtoEnd = await container.get('Fl32_Auth_Shared_Web_Api_Front_Register$');
-/** @type {typeof TeqFw_Web_Api_Back_Api_Service_Context} */
-const Context = await container.get('TeqFw_Web_Api_Back_Api_Service_Context#');
+/** @type {Fl32_Auth_Back_Util_Codec} */
+const codec = await container.get('Fl32_Auth_Back_Util_Codec$');
+/** @type {TeqFw_Core_Shared_Util_Cast} */
+const coreCodec = await container.get('TeqFw_Core_Shared_Util_Cast$');
 
 describe('Fl32_Auth_Back_Mod_Password', function () {
     it('can be instantiated', async () => {
@@ -39,33 +39,17 @@ describe('Fl32_Auth_Back_Mod_Password', function () {
         const trx = await connFw.startTransaction();
         try {
             const userBid = 2;
-            await mod.update({trx, userBid, hash: '1234', salt: '4321'});
+            const binHash = coreCodec.bin('passwordHash');
+            const binSalt = coreCodec.bin('salt');
+            const hash = codec.binToB64Url(binHash);
+            const salt = codec.binToB64Url(binSalt);
+            await mod.update({trx, userBid, hash, salt});
+            const {success} = await mod.validateHash({trx, userBid, hash});
+            assert(success);
         } finally {
             await trx.rollback();
             await connFw.disconnect();
         }
-    });
-
-    describe('can process requests', function () {
-        let _bid;
-
-        it('the first registration', async () => {
-            await connFw.init(cfgDb);
-            try {
-                const req = dtoEnd.createReq();
-                req.frontUuid = 'test';
-                const res = dtoEnd.createRes();
-                const context = new Context();
-                await mod.process(req, res, context);
-                assert(typeof res.backUuid === 'string');
-                assert(typeof res.frontBid === 'number');
-                _bid = res.frontBid;
-            } finally {
-                await connFw.disconnect();
-            }
-
-        });
-
     });
 
 });

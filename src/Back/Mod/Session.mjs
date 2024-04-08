@@ -1,3 +1,5 @@
+import {randomUUID} from 'node:crypto';
+
 /**
  * This model allows getting/putting session data from/to an HTTP request. Every session has an ID and contains
  * app-specific data related to the session. The model uses an interface `Fl32_Auth_Back_Api_Mole` to load data
@@ -13,6 +15,7 @@ export default class Fl32_Auth_Back_Mod_Session {
      * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
      * @param {Fl32_Auth_Back_Api_Mole} moleApp
      * @param {Fl32_Auth_Back_Mod_Cookie} modCookie
+     * @param {Fl32_Auth_Back_Act_Front_Read} actFrontRead
      */
     constructor(
         {
@@ -23,6 +26,7 @@ export default class Fl32_Auth_Back_Mod_Session {
             Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
             Fl32_Auth_Back_Api_Mole$: moleApp,
             Fl32_Auth_Back_Mod_Cookie$: modCookie,
+            Fl32_Auth_Back_Act_Front_Read$: actFrontRead,
         }
     ) {
         // VARS
@@ -66,16 +70,58 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} response
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {number} userBid backend ID for related user
-         * @param {number} frontBid
-         * @returns {Promise<{sessionId: string, sessionData: Object}>}
+         * @param {number} [frontBid]
+         * @param {string} [frontUuid]
+         * @returns {Promise<{sessionId: string, sessionWord:string, sessionData: Object}>}
          */
-        this.establish = async function ({request, response, trx, userBid, frontBid}) {
-            const {code: sessionId} = await modCookie.create({trx, userBid, frontBid});
+        this.establish = async function ({request, response, trx, userBid, frontBid, frontUuid}) {
+            // FUNCS
+            /**
+             * Generate new session code & word.
+             * @param {TeqFw_Db_Back_RDb_ITrans} trx
+             * @param {number} userBid
+             * @param {number} frontBid
+             * @return {Promise<{code: string, word: string}>}
+             */
+            async function generateSessionId(trx, userBid, frontBid) {
+                let code, found;
+                const word = randomUUID();
+                do {
+                    code = randomUUID();
+                    found = await crud.readOne(trx, rdbSess, {[A_SESS.CODE]: code});
+                } while (found);
+                const key = {[A_SESS.FRONT_REF]: frontBid, [A_SESS.USER_REF]: userBid};
+                /** @type {Fl32_Auth_Back_RDb_Schema_Session.Dto} */
+                const foundSess = await crud.readOne(trx, rdbSess, key);
+                if (foundSess) {
+                    foundSess.code = code;
+                    foundSess.date_last = new Date();
+                    foundSess.word = word;
+                    await crud.updateOne(trx, rdbSess, foundSess);
+                } else {
+                    const dto = rdbSess.createDto();
+                    dto.code = code;
+                    dto.front_ref = frontBid;
+                    dto.user_ref = userBid;
+                    dto.word = word;
+                    await crud.create(trx, rdbSess, dto);
+                }
+                return {code, word};
+            }
+
+            // MAIN
+            let aFrontBid = frontBid;
+            if (!aFrontBid) {
+                const found = await actFrontRead.act({trx, uuid: frontUuid});
+                aFrontBid = found.bid;
+            }
+            const {code: sessionId, word: sessionWord} = await generateSessionId(trx, userBid, aFrontBid);
             modCookie.plant({request, response, sessionId});
-            const {sessionData} = await moleApp.sessionDataRead({trx, userBid});
+            // const {sessionData} = await moleApp.sessionDataRead({trx, userBid});
+            const sessionData = {};
             request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
             _cache[sessionId] = sessionData;
-            return {sessionId, sessionData};
+            return {sessionId, sessionWord, sessionData};
         };
 
         /**

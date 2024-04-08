@@ -13,6 +13,7 @@ const NS = 'Fl32_Auth_Back_Act_Password_Salt_Read';
  * @param {TeqFw_Core_Shared_Util_Codec.binToHex|function} binToHex
  * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
  * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
+ * @deprecated use Fl32_Auth_Back_Mod_Password.readSalt
  */
 export default function (
     {

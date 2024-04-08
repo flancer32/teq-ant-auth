@@ -64,6 +64,7 @@ export default class Fl32_Auth_Back_Mod_Cookie {
          * @param {number} userBid
          * @param {number} frontBid
          * @return {Promise<{code: string}>}
+         * @deprecated use 'generateSessionId' from 'Fl32_Auth_Back_Mod_Session.establish'
          */
         this.create = async function ({trx, userBid, frontBid}) {
             let code, found;

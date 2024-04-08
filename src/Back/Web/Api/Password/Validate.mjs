@@ -42,20 +42,23 @@ export default class Fl32_Auth_Back_Web_Api_Password_Validate {
             const trx = await conn.startTransaction();
             try {
                 // get and normalize input data
-                const hashHex = req.passwordHash;
+                const frontUuid = req.frontUuid;
+                const hash = req.passwordHash;
                 const userRef = req.userRef;
                 // load user data and validate password's hash
-                const {success, userBid} = await modPass.validateHash({trx, userRef, hashHex});
+                const {success, userBid} = await modPass.validateHash({trx, userRef, hash});
                 if (success) {
-                    const {sessionData} = await modSess.establish({
+                    const {sessionId, sessionWord, sessionData} = await modSess.establish({
                         trx,
                         userBid,
+                        frontUuid,
                         request: context.request,
                         response: context.response
                     });
-                    if (sessionData) {
-                        res.success = true;
+                    if (sessionId) {
                         res.sessionData = sessionData;
+                        res.sessionWord = sessionWord;
+                        res.success = true;
                     }
                 }
                 await trx.commit();

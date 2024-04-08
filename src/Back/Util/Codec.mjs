@@ -37,12 +37,13 @@ export default class Fl32_Auth_Back_Util_Codec {
 
     /**
      * Convert binary data to base64 url encoded string.
-     * @param {Buffer} data
+     * @param {Buffer|Uint8Array} data
      * @returns {string}
      * @memberOf Fl32_Auth_Back_Util_Codec
      */
     binToB64Url(data) {
-        const b64 = data.toString('base64');
+        const buf = (data instanceof Buffer) ? data : Buffer.from(data);
+        const b64 = buf.toString('base64');
         return this.base64ToB64Url(b64);
     };
 }
