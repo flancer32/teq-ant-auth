@@ -9,8 +9,7 @@ import {Buffer} from 'node:buffer';
 export default class Fl32_Auth_Back_Mod_PubKey {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} b64UrlToBin
-     * @param {Fl32_Auth_Back_Util_Codec.binToB64Url|function} binToB64Url
+     * @param {Fl32_Auth_Back_Util_Codec} codec
      * @param {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} decodeClientDataJSON
      * @param {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} asn1toRaw
      * @param {Fl32_Auth_Back_Util_WebAuthn.createChallenge|function} createChallenge
@@ -22,8 +21,7 @@ export default class Fl32_Auth_Back_Mod_PubKey {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            'Fl32_Auth_Back_Util_Codec.b64UrlToBin': b64UrlToBin,
-            'Fl32_Auth_Back_Util_Codec.binToB64Url': binToB64Url,
+            Fl32_Auth_Back_Util_Codec$: codec,
             'Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON': decodeClientDataJSON,
             'Fl32_Auth_Back_Util_WebAuthn.asn1toRaw': asn1toRaw,
             'Fl32_Auth_Back_Util_WebAuthn.createChallenge': createChallenge,
@@ -58,7 +56,7 @@ export default class Fl32_Auth_Back_Mod_PubKey {
                 dto.challenge = bin;
                 dto.attest_ref = found.bid;
                 await crud.create(trx, rdbAssertChl, dto);
-                challenge = binToB64Url(bin);
+                challenge = codec.binToB64Url(bin);
                 logger.info(`New assert challenge '${challenge}' is created for attestation #${found.bid}.`);
             } else {
                 logger.info(`Cannot find attestation '${attestRef}'.`);
@@ -78,7 +76,7 @@ export default class Fl32_Auth_Back_Mod_PubKey {
             let attestation, success = false;
             // load corresponded challenge
             const clientDataDecoded = decodeClientDataJSON(clientData, true);
-            const challenge = b64UrlToBin(clientDataDecoded.challenge);
+            const challenge = codec.b64UrlToBin(clientDataDecoded.challenge);
             /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge.Dto} */
             const found = await crud.readOne(trx, rdbAssertChl, {[A_CHALLENGE.CHALLENGE]: challenge});
             if (found) {
@@ -127,7 +125,7 @@ export default class Fl32_Auth_Back_Mod_PubKey {
             dto.challenge = bin;
             dto.user_ref = userBid;
             await crud.create(trx, rdbAttestChl, dto);
-            const challenge = binToB64Url(bin);
+            const challenge = codec.binToB64Url(bin);
             logger.info(`New attest challenge '${challenge}' is created for user #${userBid}.`);
             return {challenge};
         };

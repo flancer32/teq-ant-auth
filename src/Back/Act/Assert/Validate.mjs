@@ -14,7 +14,7 @@ const NS = 'Fl32_Auth_Back_Act_Assert_Validate';
 // MODULE'S FUNCTIONS
 /**
  * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
- * @param {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} b64UrlToBin
+ * @param {Fl32_Auth_Back_Util_Codec} codec
  * @param {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} asn1toRaw
  * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
  * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} rdbChallenge
@@ -23,7 +23,7 @@ const NS = 'Fl32_Auth_Back_Act_Assert_Validate';
 export default function (
     {
         TeqFw_Core_Shared_Api_Logger$: logger,
-        'Fl32_Auth_Back_Util_Codec.b64UrlToBin': b64UrlToBin,
+        Fl32_Auth_Back_Util_Codec$: codec,
         'Fl32_Auth_Back_Util_WebAuthn.asn1toRaw': asn1toRaw,
         TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
         Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbChallenge,
@@ -48,7 +48,7 @@ export default function (
      */
     async function act({trx, authenticatorData, clientData, signature}) {
         let attestation, success = false;
-        const getClientDataJSON = b64UrlToBin(clientData);
+        const getClientDataJSON = codec.b64UrlToBin(clientData);
         // load corresponded challenge
         const challenge = clientData.challenge;
         /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge.Dto} */

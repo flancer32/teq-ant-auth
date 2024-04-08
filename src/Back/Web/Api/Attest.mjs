@@ -13,8 +13,7 @@ import cosekey from 'parse-cosekey';
 export default class Fl32_Auth_Back_Web_Api_Attest {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} b64UrlToBin
-     * @param {Fl32_Auth_Back_Util_Codec.binToB64Url|function} binToB64Url
+     * @param {Fl32_Auth_Back_Util_Codec} codec
      * @param {Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj|function} decodeAttestationObj
      * @param {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} decodeClientDataJSON
      * @param {Fl32_Auth_Back_Util_WebAuthn.decodeAuthData|function} decodeAuthData
@@ -29,8 +28,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            'Fl32_Auth_Back_Util_Codec.b64UrlToBin': b64UrlToBin,
-            'Fl32_Auth_Back_Util_Codec.binToB64Url': binToB64Url,
+            Fl32_Auth_Back_Util_Codec$: codec,
             'Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj': decodeAttestationObj,
             'Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON': decodeClientDataJSON,
             'Fl32_Auth_Back_Util_WebAuthn.decodeAuthData': decodeAuthData,
@@ -67,7 +65,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
                 const attestationObj = decodeAttestationObj(cred.attestationObj);
                 const clientData = decodeClientDataJSON(cred.clientData);
                 // parse attestation and client data properties
-                const bin = b64UrlToBin(clientData.challenge);
+                const bin = codec.b64UrlToBin(clientData.challenge);
                 const challenge = castBuffer(bin);
                 /** @type {Fl32_Auth_Back_RDb_Schema_Attest_Challenge.Dto} */
                 const found = await crud.readOne(trx, rdbChlng, challenge);
@@ -87,7 +85,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
                     logger.info(`New public key is registered for user #${userBid} and attestation '${cred.attestationId}'.`);
                     // remove used challenge
                     await crud.deleteOne(trx, rdbChlng, found);
-                    logger.info(`Attestation challenge '${binToB64Url(challenge)}' is deleted.`);
+                    logger.info(`Attestation challenge '${codec.binToB64Url(challenge)}' is deleted.`);
                     const {sessionData} = await modSess.establish({
                         trx,
                         userBid,
@@ -96,7 +94,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
                     });
                     if (sessionData) res.sessionData = sessionData;
                 } else {
-                    logger.info(`Cannot find attestation challenge '${binToB64Url(challenge)}.`);
+                    logger.info(`Cannot find attestation challenge '${codec.binToB64Url(challenge)}.`);
                 }
                 await trx.commit();
                 logger.info(JSON.stringify(res));

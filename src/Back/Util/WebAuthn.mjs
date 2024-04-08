@@ -5,11 +5,12 @@
 // MODULE'S IMPORTS
 import {decode} from 'cbor';
 import {randomBytes} from 'node:crypto';
-import {b64UrlToBin} from './Codec.mjs';
+import Codec from './Codec.mjs';
 
 // MODULE'S VARS
 const NS = 'Fl32_Auth_Back_Util_WebAuthn';
 const SIZE_CHALLENGE = 32;
+const codec = new Codec();
 
 // MODULE'S FUNCTIONS
 
@@ -47,7 +48,7 @@ function createChallenge() {
  * @memberOf Fl32_Auth_Back_Util_WebAuthn
  */
 function decodeAttestationObj(b64url) {
-    const cbor = b64UrlToBin(b64url);
+    const cbor = codec.b64UrlToBin(b64url);
     const {fmt, attStmt, authData} = decode(cbor);
     return {fmt, attStmt, authData};
 }
@@ -94,7 +95,7 @@ function decodeAuthData(data) {
  * @memberOf Fl32_Auth_Back_Util_WebAuthn
  */
 function decodeClientDataJSON(data, isBinary = false) {
-    const bin = (isBinary) ? data : b64UrlToBin(data);
+    const bin = (isBinary) ? data : codec.b64UrlToBin(data);
     const str = bin.toString();
     const {type, challenge, origin, tokenBindingId} = JSON.parse(str);
     return {type, challenge, origin, tokenBindingId};

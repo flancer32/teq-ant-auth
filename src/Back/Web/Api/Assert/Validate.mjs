@@ -8,7 +8,7 @@
 export default class Fl32_Auth_Back_Web_Api_Assert_Validate {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {Fl32_Auth_Back_Util_Codec.b64UrlToBin|function} b64UrlToBin
+     * @param {Fl32_Auth_Back_Util_Codec} codec
      * @param {Fl32_Auth_Shared_Web_Api_Assert_Validate} endpoint
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {Fl32_Auth_Back_Mod_PubKey} modPubKey
@@ -17,7 +17,7 @@ export default class Fl32_Auth_Back_Web_Api_Assert_Validate {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            'Fl32_Auth_Back_Util_Codec.b64UrlToBin': b64UrlToBin,
+            Fl32_Auth_Back_Util_Codec$: codec,
             Fl32_Auth_Shared_Web_Api_Assert_Validate$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             Fl32_Auth_Back_Mod_PubKey$: modPubKey,
@@ -40,9 +40,9 @@ export default class Fl32_Auth_Back_Web_Api_Assert_Validate {
             const trx = await conn.startTransaction();
             try {
                 // get and normalize input data
-                const authenticatorData = b64UrlToBin(req.authenticatorData);
-                const clientData = b64UrlToBin(req.clientData);
-                const signature = b64UrlToBin(req.signature);
+                const authenticatorData = codec.b64UrlToBin(req.authenticatorData);
+                const clientData = codec.b64UrlToBin(req.clientData);
+                const signature = codec.b64UrlToBin(req.signature);
                 //
                 // generate challenge and save it to RDb
                 const {attestation, success} = await modPubKey.assertValidate({
