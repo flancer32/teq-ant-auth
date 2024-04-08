@@ -31,19 +31,27 @@ export default class Fl32_Auth_Back_Mod_Password {
 
         // INSTANCE METHODS
         /**
-         * Save new password data (hash and salt) for the user into RDB.
+         * Create a new password record for the given user.
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
-         * @param {number} userBid
-         * @param {Buffer|Uint8Array} hash
-         * @param {Buffer|Uint8Array} salt
-         * @return {Promise<void>}
+         * @param {number} userBid - the reference to the existing user
+         * @param {string} email - the email to restore password
+         * @param {string} [hash] - the base64 encoded binary
+         * @param {string} [salt] - the base64 encoded binary
+         * @return {Promise<Object>}
          */
-        this.create = async function ({trx, userBid, hash, salt}) {
+        this.create = async function ({trx, userBid, email, hash, salt}) {
             const dto = rdbPass.createDto();
             dto.user_ref = userBid;
-            dto.hash = castBuffer(hash);
-            dto.salt = castBuffer(salt);
-            await crud.create(trx, rdbPass, dto);
+            dto.email = email;
+            if (hash) {
+                const binHash = codec.b64UrlToBin(hash);
+                dto.hash = castBuffer(binHash);
+            }
+            if (salt) {
+                const binSalt = codec.b64UrlToBin(salt);
+                dto.salt = castBuffer(binSalt);
+            }
+            return await crud.create(trx, rdbPass, dto);
         };
         /**
          * Read the password salt for the given user.
@@ -96,7 +104,7 @@ export default class Fl32_Auth_Back_Mod_Password {
                 bid = foundBid;
             }
             const {success} = await actPassValid({trx, userBid: bid, hash});
-            return {success, userBid:bid};
+            return {success, userBid: bid};
         };
 
     }
