@@ -32,15 +32,29 @@ export default class Fl32_Auth_Front_Mod_User {
         // INSTANCE METHODS
 
         /**
-         * Create empty user w/o password (pre-registration).
-         * @param {string} email
-         * @param {string} [uuid]
+         * Create base user structures.
+         * @param {string} [email]
+         * @param {string} [password]
+         * @param {string} [uuid] - the user UUID if it is not the current user
          * @return {Promise<Fl32_Auth_Shared_Web_Api_User_Create.Response>}
          */
-        this.create = async function ({email, uuid}) {
+        this.create = async function ({email, password, uuid}) {
+            const stored = storeUser.get();
             const req = endUserCreate.createReq();
             req.email = email;
-            req.uuid = (uuid) ? uuid : crypto.randomUUID();
+            if (uuid) {
+                // create a user w/o password that requires activation
+                req.uuid = uuid;
+            } else {
+                // registry the current user on the back
+                req.keyEncrypt = stored.keysEncrypt.public;
+                req.keyVerify = stored.keysSign.public;
+                req.uuid = stored.uuid;
+            }
+            if (password) {
+                req.passwordSalt = modPassword.saltNew(SALT_BYTES); // base64url
+                req.passwordHash = await modPassword.hashCompose(password, req.passwordSalt); // base64url
+            }
             return await api.send(req, endUserCreate);
         };
 
@@ -107,7 +121,7 @@ export default class Fl32_Auth_Front_Mod_User {
             req.keyVerify = stored.keysSign.public;
             req.uuid = stored.uuid;
             if (email && password) {
-                const salt = modPassword.saltNew(SALT_BYTES); // HEX string
+                const salt = modPassword.saltNew(SALT_BYTES); // base64url
                 const hash = await modPassword.hashCompose(password, salt);
                 req.email = email;
                 req.passwordHash = hash;

@@ -11,10 +11,30 @@ const NS = 'Fl32_Auth_Shared_Web_Api_User_Create';
 class Request {
     static namespace = NS;
     /**
-     * The email to send the activation link.
+     * The email to send the activation link or restore the password.
      * @type {string}
      */
     email;
+    /**
+     * The user's public key to encrypt data.
+     * @type {string}
+     */
+    keyEncrypt;
+    /**
+     * The user's public key to verify signatures.
+     * @type {string}
+     */
+    keyVerify;
+    /**
+     * The base64url encoded hash for the password validation.
+     * @type {string}
+     */
+    passwordHash;
+    /**
+     * The base64url encoded salt for the password validation.
+     * @type {string}
+     */
+    passwordSalt;
     /**
      * The UUID for the new user.
      * @type {string}
@@ -66,6 +86,10 @@ export default class Fl32_Auth_Shared_Web_Api_User_Create {
             const res = new Request();
             // cast known attributes
             res.email = cast.string(data?.email);
+            res.keyEncrypt = cast.string(data?.keyEncrypt);
+            res.keyVerify = cast.string(data?.keyVerify);
+            res.passwordHash = cast.string(data?.passwordHash);
+            res.passwordSalt = cast.string(data?.passwordSalt);
             res.uuid = cast.string(data?.uuid);
             return res;
         };
