@@ -27,7 +27,7 @@ export default class Fl32_Auth_Back_Mod_Password {
         }
     ) {
         // VARS
-        logger.setNamespace(this.constructor.name);
+        const A_PASS = rdbPass.getAttributes();
 
         // INSTANCE METHODS
         /**
@@ -68,6 +68,17 @@ export default class Fl32_Auth_Back_Mod_Password {
                 b64url = codec.binToB64Url(found.salt);
             }
             return {b64url, bin};
+        };
+
+        /**
+         * List all records by given email.
+         * @param {TeqFw_Db_Back_RDb_ITrans} trx
+         * @param {string} email
+         * @return {Promise<Fl32_Auth_Back_RDb_Schema_Password.Dto[]>}
+         */
+        this.listByEmail = async function ({trx, email}) {
+            const where = {[A_PASS.EMAIL]: email.toLowerCase().trim()};
+            return await crud.readSet(trx, rdbPass, where);
         };
 
         /**

@@ -34,24 +34,27 @@ export default class Fl32_Auth_Back_Act_User_Read {
 
         /**
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
-         * @param {string} uuid
+         * @param {number} [bid]
+         * @param {string} [uuid]
          * @param {boolean} [withPass]
          * @return {Promise<ActResult>}
          */
-        this.act = async function ({trx, uuid, withPass}) {
+        this.act = async function ({trx, bid, uuid, withPass}) {
             /** @type {Fl32_Auth_Back_RDb_Schema_Password.Dto} */
             let dbPass;
             /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
             let dbUser;
             /** @type {Fl32_Auth_Shared_Dto_User.Dto} */
             let shared;
-            if (uuid) {
+            if (bid) {
+                dbUser = await crud.readOne(trx, rdbUser, bid);
+            } else if (uuid) {
                 dbUser = await crud.readOne(trx, rdbUser, {[ATTR.UUID]: uuid});
-                if (dbUser) {
-                    shared = convUser.rdb2share(dbUser);
-                    if (withPass) {
-                        dbPass = await crud.readOne(trx, rdbPass, dbUser.bid);
-                    }
+            }
+            if (dbUser) {
+                shared = convUser.rdb2share(dbUser);
+                if (withPass) {
+                    dbPass = await crud.readOne(trx, rdbPass, dbUser.bid);
                 }
             }
             return {shared, rdb: dbUser, dbUser, dbPass};
