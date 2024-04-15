@@ -17,7 +17,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
      * @param {Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj|function} decodeAttestationObj
      * @param {Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON|function} decodeClientDataJSON
      * @param {Fl32_Auth_Back_Util_WebAuthn.decodeAuthData|function} decodeAuthData
-     * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
+     * @param {TeqFw_Core_Back_Util_Cast} cast
      * @param {Fl32_Auth_Shared_Web_Api_Attest} endpoint
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
@@ -32,7 +32,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
             'Fl32_Auth_Back_Util_WebAuthn.decodeAttestationObj': decodeAttestationObj,
             'Fl32_Auth_Back_Util_WebAuthn.decodeClientDataJSON': decodeClientDataJSON,
             'Fl32_Auth_Back_Util_WebAuthn.decodeAuthData': decodeAuthData,
-            'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
+            TeqFw_Core_Back_Util_Cast$: cast,
             Fl32_Auth_Shared_Web_Api_Attest$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
@@ -66,7 +66,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
                 const clientData = decodeClientDataJSON(cred.clientData);
                 // parse attestation and client data properties
                 const bin = codec.b64UrlToBin(clientData.challenge);
-                const challenge = castBuffer(bin);
+                const challenge = cast.buffer(bin);
                 /** @type {Fl32_Auth_Back_RDb_Schema_Attest_Challenge.Dto} */
                 const found = await crud.readOne(trx, rdbChlng, challenge);
                 if (found) {

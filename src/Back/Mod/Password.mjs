@@ -11,7 +11,7 @@ export default class Fl32_Auth_Back_Mod_Password {
      * @param {Fl32_Auth_Back_Util_Codec} codec
      * @param {Fl32_Auth_Back_Act_Password_Validate.act|function} actPassValid
      * @param {Fl32_Auth_Back_Api_Mod_User} modUser
-     * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
+     * @param {TeqFw_Core_Back_Util_Cast} cast
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
      */
@@ -21,7 +21,7 @@ export default class Fl32_Auth_Back_Mod_Password {
             Fl32_Auth_Back_Util_Codec$: codec,
             Fl32_Auth_Back_Act_Password_Validate$: actPassValid,
             Fl32_Auth_Back_Api_Mod_User$: modUser,
-            'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
+            TeqFw_Core_Back_Util_Cast$: cast,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
         }
@@ -45,11 +45,11 @@ export default class Fl32_Auth_Back_Mod_Password {
             dto.email = email;
             if (hash) {
                 const binHash = codec.b64UrlToBin(hash);
-                dto.hash = castBuffer(binHash);
+                dto.hash = cast.buffer(binHash);
             }
             if (salt) {
                 const binSalt = codec.b64UrlToBin(salt);
-                dto.salt = castBuffer(binSalt);
+                dto.salt = cast.buffer(binSalt);
             }
             return await crud.create(trx, rdbPass, dto);
         };
@@ -94,8 +94,8 @@ export default class Fl32_Auth_Back_Mod_Password {
             const binHash = codec.b64UrlToBin(hash);
             const binSalt = codec.b64UrlToBin(salt);
             dto.user_ref = userBid;
-            dto.hash = castBuffer(binHash);
-            dto.salt = castBuffer(binSalt);
+            dto.hash = cast.buffer(binHash);
+            dto.salt = cast.buffer(binSalt);
             return await crud.updateOne(trx, rdbPass, dto);
         };
 

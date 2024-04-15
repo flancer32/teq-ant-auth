@@ -6,7 +6,7 @@
 export default class Fl32_Auth_Back_Act_User_Create {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {TeqFw_Core_Back_Util_Cast.castBuffer|function} castBuffer
+     * @param {TeqFw_Core_Back_Util_Cast} cast
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
      * @param {Fl32_Auth_Back_RDb_Schema_User} rdbUser
@@ -14,7 +14,7 @@ export default class Fl32_Auth_Back_Act_User_Create {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            'TeqFw_Core_Back_Util_Cast.castBuffer': castBuffer,
+            TeqFw_Core_Back_Util_Cast$: cast,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
             Fl32_Auth_Back_RDb_Schema_User$: rdbUser,
@@ -47,8 +47,8 @@ export default class Fl32_Auth_Back_Act_User_Create {
                 const dtoPass = rdbPass.createDto();
                 dtoPass.date_updated = new Date();
                 dtoPass.email = email;
-                dtoPass.hash = castBuffer(passHash);
-                dtoPass.salt = castBuffer(passSalt);
+                dtoPass.hash = cast.buffer(passHash);
+                dtoPass.salt = cast.buffer(passSalt);
                 dtoPass.user_ref = bid;
                 await crud.create(trx, rdbPass, dtoPass);
             }
