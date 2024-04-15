@@ -42,15 +42,16 @@ export default class Fl32_Auth_Back_Act_User_Create {
             dtoUser.key_verify = keyVerify;
             dtoUser.uuid = uuid;
             const {[ATTR.BID]: bid} = await crud.create(trx, rdbUser, dtoUser);
-            logger.info(`New user is created: ${uuid}/bid.`);
-            if (passHash && passSalt) {
+            logger.info(`The new user is created: ${uuid}/bid.`);
+            if (email) {
                 const dtoPass = rdbPass.createDto();
                 dtoPass.date_updated = new Date();
                 dtoPass.email = email;
-                dtoPass.hash = cast.buffer(passHash);
-                dtoPass.salt = cast.buffer(passSalt);
                 dtoPass.user_ref = bid;
+                if (passHash) dtoPass.hash = cast.buffer(passHash);
+                if (passSalt) dtoPass.salt = cast.buffer(passSalt);
                 await crud.create(trx, rdbPass, dtoPass);
+                logger.info(`The password record is created for the new user ${uuid}/bid.`);
             }
             return {bid};
         };

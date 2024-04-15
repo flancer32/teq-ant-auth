@@ -115,21 +115,24 @@ export default class Fl32_Auth_Front_Mod_User {
          * @return {Promise<boolean>}
          */
         this.register = async function ({email, password}) {
-            const stored = storeUser.get();
-            const req = endUserReg.createReq();
-            req.keyEncrypt = stored.keysEncrypt.public;
-            req.keyVerify = stored.keysSign.public;
-            req.uuid = stored.uuid;
-            if (email && password) {
-                const salt = modPassword.saltNew(SALT_BYTES); // base64url
-                const hash = await modPassword.hashCompose(password, salt);
+            try {
+                const stored = storeUser.get();
+                const req = endUserReg.createReq();
+                req.keyEncrypt = stored.keysEncrypt.public;
+                req.keyVerify = stored.keysSign.public;
+                req.uuid = stored.uuid;
                 req.email = email;
-                req.passwordHash = hash;
-                req.passwordSalt = salt;
+                if (password) {
+                    req.passwordSalt = modPassword.saltNew(SALT_BYTES); // base64url
+                    req.passwordHash = await modPassword.hashCompose(password, req.passwordSalt);
+                }
+                /** @type {Fl32_Auth_Shared_Web_Api_User_Register.Response} */
+                const rs = await api.send(req, endUserReg);
+                return Boolean(rs?.success);
+            } catch (e) {
+                logger.exception(e);
             }
-            /** @type {Fl32_Auth_Shared_Web_Api_User_Register.Response} */
-            const rs = await api.send(req, endUserReg);
-            return rs?.success;
+            return false;
         };
 
         /**

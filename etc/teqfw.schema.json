@@ -20,9 +20,8 @@
               "relation": {
                 "user": {
                   "attrs": ["user_ref"],
-                  "ref": {
-                    "path": "/fl32/auth/user", "attrs": ["bid"]
-                  }
+                  "ref": {"path": "/fl32/auth/user", "attrs": ["bid"]},
+                  "action": {"delete": "cascade", "update": "cascade"}
                 }
               }
             },
@@ -76,9 +75,8 @@
               "relation": {
                 "user": {
                   "attrs": ["user_ref"],
-                  "ref": {
-                    "path": "/fl32/auth/user", "attrs": ["bid"]
-                  }
+                  "ref": {"path": "/fl32/auth/user", "attrs": ["bid"]},
+                  "action": {"delete": "cascade", "update": "cascade"}
                 }
               }
             },
@@ -202,9 +200,8 @@
                   "relation": {
                     "user": {
                       "attrs": ["user_ref"],
-                      "ref": {
-                        "path": "/fl32/auth/user", "attrs": ["bid"]
-                      }
+                      "ref": {"path": "/fl32/auth/user", "attrs": ["bid"]},
+                      "action": {"delete": "cascade", "update": "cascade"}
                     }
                   }
                 }

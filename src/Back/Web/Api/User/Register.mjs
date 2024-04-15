@@ -9,6 +9,8 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {Fl32_Auth_Shared_Web_Api_User_Register} endpoint
+     * @param {TeqFw_Core_Back_Util_Cast} cast
+     * @param {Fl32_Auth_Back_Util_Codec} codec
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPassword
@@ -18,6 +20,8 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Fl32_Auth_Shared_Web_Api_User_Register$: endpoint,
+            TeqFw_Core_Back_Util_Cast$: cast,
+            Fl32_Auth_Back_Util_Codec$: codec,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Password$: rdbPassword,
@@ -59,13 +63,18 @@ export default class Fl32_Auth_Back_Web_Api_User_Register {
                     dto.uuid = userUuid;
                     const {[A_USER.BID]: bid} = await crud.create(trx, rdbUser, dto);
                     // register password if exists
-                    if (email && hash && salt) {
+                    if (email) {
                         const dtoPass = rdbPassword.createDto();
                         dtoPass.email = email;
-                        // TODO: incompatible types
-                        dtoPass.salt = salt;
-                        dtoPass.hash = hash;
                         dtoPass.user_ref = bid;
+                        if (hash) {
+                            const binHash = codec.b64UrlToBin(hash);
+                            dtoPass.hash = cast.uint8(binHash);
+                        }
+                        if (salt) {
+                            const binSalt = codec.b64UrlToBin(salt);
+                            dtoPass.salt = cast.uint8(binSalt);
+                        }
                         await crud.create(trx, rdbPassword, dtoPass);
                     }
                     res.isNew = true;
