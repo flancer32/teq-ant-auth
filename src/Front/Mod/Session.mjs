@@ -109,17 +109,19 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         this.close = async function () {
             try {
-                // remove the session word from the user data stored in the localStorage
-                _user = this.getUser();
-                _user.sessionWord = undefined;
-                modUser.updateStore(_user);
                 // remove the current session from the back
                 const req = endClose.createReq();
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Session_Close.Response} */
                 const res = await connApi.send(req, endClose);
-                if (res.success) _store = undefined;
-                else logger.error(`Cannot close user session on the backend.`);
+                // TODO: revert it!!!!
+                if (!res.success) {
+                    _store = undefined;
+                    // remove the session word from the user data stored in the localStorage
+                    _user = this.getUser();
+                    _user.sessionWord = undefined;
+                    modUser.updateStore(_user);
+                } else logger.error(`Cannot close user session on the back.`);
                 return res;
             } catch (e) {
                 logger.exception(e);
