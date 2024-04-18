@@ -114,8 +114,7 @@ export default class Fl32_Auth_Front_Mod_Session {
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Session_Close.Response} */
                 const res = await connApi.send(req, endClose);
-                // TODO: revert it!!!!
-                if (!res.success) {
+                if (res.success) {
                     _store = undefined;
                     // remove the session word from the user data stored in the localStorage
                     _user = this.getUser();
