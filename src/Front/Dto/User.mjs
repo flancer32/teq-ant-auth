@@ -1,5 +1,5 @@
 /**
- * The identity data for the user.
+ * The identity data for the user stored on the front.
  */
 // MODULE'S VARS
 const NS = 'Fl32_Auth_Front_Dto_User';
@@ -11,12 +11,6 @@ const NS = 'Fl32_Auth_Front_Dto_User';
 class Dto {
     static namespace = NS;
     /**
-     * The backend ID for the user if user is registered on the back.
-     * @type {number}
-     * @deprecated we should not use the backend IDs on the front
-     */
-    bid;
-    /**
      * The asymmetric keys for encryption.
      * @type {Fl32_Auth_Shared_Dto_Crypto_Keys.Dto}
      */
@@ -26,6 +20,11 @@ class Dto {
      * @type {Fl32_Auth_Shared_Dto_Crypto_Keys.Dto}
      */
     keysSign;
+    /**
+     * Any application specific data related to the user.
+     * @type {*}
+     */
+    profile;
     /**
      * The user session word if the user is authenticated.
      * @type {string}
@@ -60,9 +59,9 @@ export default class Fl32_Auth_Front_Dto_User {
             // create new DTO
             const res = new Dto();
             // cast known attributes
-            res.bid = cast.int(data?.bid);
             res.keysEncrypt = dtoKeys.createDto(data?.keysEncrypt);
             res.keysSign = dtoKeys.createDto(data?.keysSign);
+            res.profile = structuredClone(data?.profile);
             res.sessionWord = cast.string(data?.sessionWord);
             res.uuid = cast.string(data?.uuid);
             return res;

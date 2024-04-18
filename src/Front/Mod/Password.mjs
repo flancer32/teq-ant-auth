@@ -58,18 +58,20 @@ export default class Fl32_Auth_Front_Mod_Password {
         /**
          * Creates password hash using salt from backend and validates the user's password on the backend.
          * @param {*} userRef - App-specific identifier for the user.
-         * @param {string} frontUuid - The front UUID to bind with user in the authenticated session on the back.
+         * @param {Fl32_Auth_Front_Dto_Front.Dto} front - The front to register on the back if password is valid.
          * @param {string} password - The plain password.
          * @returns {Promise<Fl32_Auth_Shared_Web_Api_Password_Validate.Response>}
          */
-        this.passwordValidate = async function (userRef, frontUuid, password) {
+        this.passwordValidate = async function (userRef, front, password) {
             try {
                 // retrieve the password salt and compose the password's hash
                 const salt = await this.saltRead(userRef);
                 const hash = await this.hashCompose(password, salt);
                 //
                 const req = apiValid.createReq();
-                req.frontUuid = frontUuid;
+                req.frontUuid = front.frontUuid;
+                req.frontKeyEncrypt = front.keysEncrypt.public;
+                req.frontKeyVerify = front.keysSign.public;
                 req.passwordHash = hash;
                 req.userRef = userRef;
                 // noinspection JSValidateTypes

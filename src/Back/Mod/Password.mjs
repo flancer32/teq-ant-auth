@@ -9,7 +9,7 @@ export default class Fl32_Auth_Back_Mod_Password {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {Fl32_Auth_Back_Util_Codec} codec
-     * @param {Fl32_Auth_Back_Act_Password_Validate.act|function} actPassValid
+     * @param {Fl32_Auth_Back_Act_Password_Validate} actPassValid
      * @param {Fl32_Auth_Back_Api_Mod_User} modUser
      * @param {TeqFw_Core_Back_Util_Cast} cast
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
@@ -106,7 +106,7 @@ export default class Fl32_Auth_Back_Mod_Password {
          * @param {number} [userBid] - the backend ID for the user
          * @param {*} [userRef] - the app-specific identifier for the user (email, uuid, ...).
          * @param {string} hash  - the representation of the password hash as 'base64url' string.
-         * @return {Promise<{success: boolean, userBid:number}>}
+         * @return {Promise<{success: boolean, dbPass: Fl32_Auth_Back_RDb_Schema_Password.Dto}>}
          */
         this.validateHash = async function ({trx, userBid, userRef, hash}) {
             let bid = userBid;
@@ -114,8 +114,8 @@ export default class Fl32_Auth_Back_Mod_Password {
                 const {bid: foundBid} = await modUser.userRead({trx, userRef});
                 bid = foundBid;
             }
-            const {success} = await actPassValid({trx, userBid: bid, hash});
-            return {success, userBid: bid};
+            const {success, dbPass} = await actPassValid.act({trx, userBid: bid, hash});
+            return {success, dbPass};
         };
 
     }

@@ -36,19 +36,25 @@ export default class Fl32_Auth_Back_Act_Session_Register {
          * Register a new session or update an existing session in the RDB.
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {number} [userBid]
-         * @param {number} [frontBid]
          * @param {string} [userUuid]
+         * @param {number} [frontBid]
          * @param {string} [frontUuid]
+         * @param {string} frontKeyEncrypt
+         * @param {string} frontKeyVerify
          * @return {Promise<{code:string, word:string}>}
          */
-        this.act = async function ({trx, userBid, frontBid, userUuid, frontUuid}) {
+        this.act = async function (
+            {
+                trx,
+                userBid,
+                userUuid,
+                frontBid,
+                frontUuid,
+                frontKeyEncrypt,
+                frontKeyVerify,
+            }
+        ) {
             let code, word;
-            // get the front record
-            const keyFront = (typeof frontBid === 'number')
-                ? {[A_FRONT.BID]: frontBid}
-                : {[A_FRONT.UUID]: frontUuid};
-            /** @type {Fl32_Auth_Back_RDb_Schema_Front.Dto} */
-            const front = await crud.readOne(trx, rdbFront, keyFront);
             // get the user record
             const keyUser = (typeof userBid === 'number')
                 ? {[A_USER.BID]: userBid}
@@ -56,7 +62,25 @@ export default class Fl32_Auth_Back_Act_Session_Register {
             /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
             const user = await crud.readOne(trx, rdbUser, keyUser);
             // we can create/update the session
-            if (front && user) {
+            if (user) {
+                // get the front record
+                const keyFront = (typeof frontBid === 'number')
+                    ? {[A_FRONT.BID]: frontBid}
+                    : {[A_FRONT.UUID]: frontUuid};
+                /** @type {Fl32_Auth_Back_RDb_Schema_Front.Dto} */
+                let front = await crud.readOne(trx, rdbFront, keyFront);
+                if (!front) {
+                    // create the new front if not found by UUID
+                    front = rdbFront.createDto();
+                    front.enabled = true;
+                    front.key_encrypt = frontKeyEncrypt;
+                    front.key_verify = frontKeyVerify;
+                    front.uuid = frontUuid;
+                    const {[A_FRONT.BID]: bid} = await crud.create(trx, rdbFront, front);
+                    front.bid = bid;
+                } else {
+                    // TODO: should we replace the keys for the front?
+                }
                 // generate a new sessionId (code)
                 let found;
                 do {

@@ -16,6 +16,16 @@ class Request {
      */
     frontUuid;
     /**
+     * The front's public key to encrypt data.
+     * @type {string}
+     */
+    frontKeyEncrypt;
+    /**
+     * The front's public key to verify signatures.
+     * @type {string}
+     */
+    frontKeyVerify;
+    /**
      * The 'base64url' representation of the password's hash.
      * @type {string}
      */
@@ -47,6 +57,11 @@ class Response {
      * @type {boolean}
      */
     success;
+    /**
+     * The UUID that corresponds to the authenticated user.
+     * @type {string}
+     */
+    userUuid;
 }
 
 
@@ -73,6 +88,8 @@ export default class Fl32_Auth_Shared_Web_Api_Password_Validate {
             const res = new Request();
             // cast known attributes
             res.frontUuid = cast.string(data?.frontUuid);
+            res.frontKeyEncrypt = cast.string(data?.frontKeyEncrypt);
+            res.frontKeyVerify = cast.string(data?.frontKeyVerify);
             res.passwordHash = cast.string(data?.passwordHash);
             res.userRef = structuredClone(data?.userRef);
             return res;
@@ -89,6 +106,7 @@ export default class Fl32_Auth_Shared_Web_Api_Password_Validate {
             res.sessionData = structuredClone(data?.sessionData);
             res.sessionWord = cast.string(data?.sessionWord);
             res.success = cast.boolean(data?.success);
+            res.userUuid = cast.string(data?.userUuid);
             return res;
         };
     }

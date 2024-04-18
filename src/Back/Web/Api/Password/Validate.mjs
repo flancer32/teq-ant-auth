@@ -39,29 +39,35 @@ export default class Fl32_Auth_Back_Web_Api_Password_Validate {
          * @returns {Promise<void>}
          */
         this.process = async function (req, res, context) {
+            const rs = endpoint.createRes();
             const trx = await conn.startTransaction();
             try {
                 // get and normalize input data
                 const frontUuid = req.frontUuid;
+                const frontKeyEncrypt = req.frontKeyEncrypt;
+                const frontKeyVerify = req.frontKeyVerify;
                 const hash = req.passwordHash;
                 const userRef = req.userRef;
                 // load user data and validate password's hash
-                const {success, userBid} = await modPass.validateHash({trx, userRef, hash});
+                const {success, dbPass} = await modPass.validateHash({trx, userRef, hash});
                 if (success) {
                     const {sessionId, sessionWord, sessionData} = await modSess.establish({
                         trx,
-                        userBid,
+                        userBid: dbPass.user_ref,
                         frontUuid,
+                        frontKeyEncrypt,
+                        frontKeyVerify,
                         request: context.request,
                         response: context.response
                     });
                     if (sessionId) {
-                        res.sessionData = sessionData;
-                        res.sessionWord = sessionWord;
-                        res.success = true;
+                        rs.sessionData = sessionData;
+                        rs.sessionWord = sessionWord;
+                        rs.success = true;
                     }
                 }
                 await trx.commit();
+                Object.assign(res, rs); // compose the response after the commit
                 logger.info(JSON.stringify(res));
             } catch (error) {
                 logger.error(error);

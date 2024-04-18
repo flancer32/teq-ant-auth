@@ -1,6 +1,6 @@
 /**
  * This model allows getting/putting session data from/to an HTTP request. Every session has an ID and contains
- * app-specific data related to the session. The model uses an interface `Fl32_Auth_Back_Api_Mole` to load data
+ * app-specific data related to the session. The model uses an interface `Fl32_Auth_Back_Api_Mod_User` to load data
  * for the current session by its ID and stores this data internally (in the HTTP request or internal cache).
  */
 // MODULE'S CLASSES
@@ -11,7 +11,7 @@ export default class Fl32_Auth_Back_Mod_Session {
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
-     * @param {Fl32_Auth_Back_Api_Mole} moleApp
+     * @param {Fl32_Auth_Back_Api_Mod_User} modUser
      * @param {Fl32_Auth_Back_Mod_Cookie} modCookie
      * @param {Fl32_Auth_Back_Act_Session_Register} actSessReg
      */
@@ -22,7 +22,7 @@ export default class Fl32_Auth_Back_Mod_Session {
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
-            Fl32_Auth_Back_Api_Mole$: moleApp,
+            Fl32_Auth_Back_Api_Mod_User$: modUser,
             Fl32_Auth_Back_Mod_Cookie$: modCookie,
             Fl32_Auth_Back_Act_Session_Register$: actSessReg,
         }
@@ -70,13 +70,32 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @param {number} userBid backend ID for related user
          * @param {number} [frontBid]
          * @param {string} [frontUuid]
+         * @param {string} frontKeyEncrypt
+         * @param {string} frontKeyVerify
          * @returns {Promise<{sessionId: string, sessionWord:string, sessionData: Object}>}
          */
-        this.establish = async function ({request, response, trx, userBid, frontBid, frontUuid}) {
-            const {code: sessionId, word: sessionWord} = await actSessReg.act({trx, userBid, frontBid, frontUuid});
+        this.establish = async function (
+            {
+                request,
+                response,
+                trx,
+                userBid,
+                frontBid,
+                frontUuid,
+                frontKeyEncrypt,
+                frontKeyVerify,
+            }
+        ) {
+            const {code: sessionId, word: sessionWord} = await actSessReg.act({
+                trx,
+                userBid,
+                frontBid,
+                frontUuid,
+                frontKeyEncrypt,
+                frontKeyVerify
+            });
             modCookie.plant({request, response, sessionId});
-            // const {sessionData} = await moleApp.sessionDataRead({trx, userBid});
-            const sessionData = {};
+            const {sessionData} = await modUser.sessionDataRead({trx, userBid});
             request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
             _cache[sessionId] = sessionData;
             return {sessionId, sessionWord, sessionData};
@@ -120,7 +139,7 @@ export default class Fl32_Auth_Back_Mod_Session {
                     /** @type {Fl32_Auth_Back_RDb_Schema_Session.Dto} */
                     const found = await crud.readOne(trx, rdbSess, where);
                     if (found?.user_ref) {
-                        const {sessionData} = await moleApp.sessionDataRead({trx, userBid: found.user_ref});
+                        const {sessionData} = await modUser.sessionDataRead({trx, userBid: found.user_ref});
                         _cache[sessionId] = sessionData;
                         await trx.commit();
                         request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
