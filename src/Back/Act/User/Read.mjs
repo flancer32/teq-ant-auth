@@ -46,11 +46,8 @@ export default class Fl32_Auth_Back_Act_User_Read {
             let dbUser;
             /** @type {Fl32_Auth_Shared_Dto_User.Dto} */
             let shared;
-            if (bid) {
-                dbUser = await crud.readOne(trx, rdbUser, bid);
-            } else if (uuid) {
-                dbUser = await crud.readOne(trx, rdbUser, {[ATTR.UUID]: uuid});
-            }
+            const key = (bid) ? bid : {[ATTR.UUID]: uuid};
+            dbUser = await crud.readOne(trx, rdbUser, key);
             if (dbUser) {
                 shared = convUser.rdb2share(dbUser);
                 if (withPass) {
