@@ -7,11 +7,13 @@ export default class Fl32_Auth_Back_Defaults {
     MOD_WEB;
 
     COOKIE_SESSION_FRONT_NAME = 'TEQ_SESSION_FRONT';
-    COOKIE_SESSION_USER_LIFETIME = 31536000000;  // 3600 * 24 * 365 * 1000
+    COOKIE_SESSION_USER_LIFETIME = 31536000000;  // 365 * 24 * 60 * 60 * 1000
     COOKIE_SESSION_USER_NAME = 'TEQ_SESSION_USER';
 
     REQ_HTTP_SESSION_FRONT_ID = '@flancer32/teq-ant-auth/frontSessionId';
     REQ_HTTP_SESSION_USER_ID = '@flancer32/teq-ant-auth/userSessionId';
+
+    RESET_CODE_LIFETIME = 600000; // 10 minutes (10 * 60 * 1000)
 
     /** @type {Fl32_Auth_Shared_Defaults} */
     SHARED;

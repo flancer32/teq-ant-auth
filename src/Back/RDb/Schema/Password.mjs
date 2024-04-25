@@ -52,15 +52,15 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
-     * @param {TeqFw_Core_Shared_Util_Cast} util
-     * @param {TeqFw_Core_Back_Util_Cast} cast
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
+     * @param {TeqFw_Core_Back_Util_Cast} castBack
      */
     constructor(
         {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
-            TeqFw_Core_Shared_Util_Cast$: util,
-            TeqFw_Core_Back_Util_Cast$: cast,
+            TeqFw_Core_Shared_Util_Cast$: cast,
+            TeqFw_Core_Back_Util_Cast$: castBack,
         }
     ) {
         // INSTANCE METHODS
@@ -70,11 +70,11 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.date_updated = util.castDate(data?.date_updated);
-            res.email = util.castString(data?.email);
-            res.hash = cast.buffer(data?.hash);
-            res.salt = cast.buffer(data?.salt);
-            res.user_ref = util.castInt(data?.user_ref);
+            res.date_updated = cast.date(data?.date_updated);
+            res.email = cast.string(data?.email);
+            res.hash = castBack.buffer(data?.hash);
+            res.salt = castBack.buffer(data?.salt);
+            res.user_ref = cast.int(data?.user_ref);
             return res;
         };
 

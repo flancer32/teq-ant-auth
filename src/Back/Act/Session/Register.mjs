@@ -41,7 +41,7 @@ export default class Fl32_Auth_Back_Act_Session_Register {
          * @param {string} [frontUuid]
          * @param {string} frontKeyEncrypt
          * @param {string} frontKeyVerify
-         * @return {Promise<{code:string, word:string}>}
+         * @return {Promise<{code:string, word:string, userUuid:string}>}
          */
         this.act = async function (
             {
@@ -114,7 +114,7 @@ export default class Fl32_Auth_Back_Act_Session_Register {
                 user.date_last = new Date();
                 await crud.updateOne(trx, rdbUser, user);
             }
-            return {code, word};
+            return {code, word, userUuid};
         };
     }
 

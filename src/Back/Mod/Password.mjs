@@ -3,6 +3,7 @@
  */
 // MODULE'S IMPORTS
 import {Buffer} from 'node:buffer';
+import {randomUUID} from 'node:crypto';
 
 // MODULE'S CLASSES
 export default class Fl32_Auth_Back_Mod_Password {
@@ -14,6 +15,7 @@ export default class Fl32_Auth_Back_Mod_Password {
      * @param {TeqFw_Core_Back_Util_Cast} cast
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
+     * @param {Fl32_Auth_Back_RDb_Schema_Password_Reset} rdbReset
      */
     constructor(
         {
@@ -24,10 +26,12 @@ export default class Fl32_Auth_Back_Mod_Password {
             TeqFw_Core_Back_Util_Cast$: cast,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
+            Fl32_Auth_Back_RDb_Schema_Password_Reset$: rdbReset,
         }
     ) {
         // VARS
         const A_PASS = rdbPass.getAttributes();
+        const A_RESET = rdbReset.getAttributes();
 
         // INSTANCE METHODS
         /**
@@ -68,6 +72,51 @@ export default class Fl32_Auth_Back_Mod_Password {
                 b64url = codec.binToB64Url(found.salt);
             }
             return {b64url, bin};
+        };
+
+        /**
+         * Create a new reset code in the RDB.
+         * @param {TeqFw_Db_Back_RDb_ITrans} trx
+         * @param {number} userBid
+         * @return {Promise<Fl32_Auth_Back_RDb_Schema_Password_Reset.Dto>}
+         */
+        this.resetCreate = async function ({trx, userBid}) {
+            // clean up the existing reset codes
+            const found = await crud.readOne(trx, rdbReset, userBid);
+            if (found) await crud.deleteOne(trx, rdbReset, found);
+            // generate the new unique code
+            let exist, code;
+            do {
+                code = randomUUID();
+                exist = await crud.readOne(trx, rdbReset, {[A_RESET.CODE]: code});
+            } while (exist);
+            // save the reset code into RDB
+            const dto = rdbReset.createDto();
+            dto.code = code;
+            dto.date_created = new Date();
+            dto.user_ref = userBid;
+            await crud.create(trx, rdbReset, dto);
+            return dto;
+        };
+
+        /**
+         * Delete the password reset record by given code.
+         * @param {TeqFw_Db_Back_RDb_ITrans} trx
+         * @param {string} code
+         * @return {Promise<number>}
+         */
+        this.resetDelete = async function ({trx, code}) {
+            return await crud.deleteOne(trx, rdbReset, {[A_RESET.CODE]: code});
+        };
+
+        /**
+         * Read the password reset record by given code.
+         * @param {TeqFw_Db_Back_RDb_ITrans} trx
+         * @param {string} code
+         * @return {Promise<Fl32_Auth_Back_RDb_Schema_Password_Reset.Dto>}
+         */
+        this.resetRead = async function ({trx, code}) {
+            return await crud.readOne(trx, rdbReset, {[A_RESET.CODE]: code});
         };
 
         /**

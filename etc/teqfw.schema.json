@@ -206,6 +206,36 @@
                   }
                 }
               }
+            },
+            "password": {
+              "entity": {
+                "reset": {
+                  "comment": "References to reset passwords for users.",
+                  "attr": {
+                    "user_ref": {"type": "ref"},
+                    "code": {"type": "string", "comment": "Unique code to access reset functionality."},
+                    "date_created": {
+                      "comment": "UTC date-time for code registration to clean up expired codes.",
+                      "type": "datetime",
+                      "default": "current"
+                    }
+                  },
+                  "index": {
+                    "pk": {"type": "primary", "attrs": ["user_ref"]},
+                    "code": {
+                      "type": "unique",
+                      "attrs": ["code"]
+                    }
+                  },
+                  "relation": {
+                    "user": {
+                      "attrs": ["user_ref"],
+                      "ref": {"path": "/fl32/auth/password", "attrs": ["user_ref"]},
+                      "action": {"delete": "cascade", "update": "cascade"}
+                    }
+                  }
+                }
+              }
             }
           }
         }

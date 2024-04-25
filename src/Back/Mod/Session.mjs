@@ -72,7 +72,7 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @param {string} [frontUuid]
          * @param {string} frontKeyEncrypt
          * @param {string} frontKeyVerify
-         * @returns {Promise<{sessionId: string, sessionWord:string, sessionData: Object}>}
+         * @returns {Promise<{sessionId: string, sessionWord:string, sessionData: Object, userUuid:string}>}
          */
         this.establish = async function (
             {
@@ -86,7 +86,7 @@ export default class Fl32_Auth_Back_Mod_Session {
                 frontKeyVerify,
             }
         ) {
-            const {code: sessionId, word: sessionWord} = await actSessReg.act({
+            const {code: sessionId, word: sessionWord, userId} = await actSessReg.act({
                 trx,
                 userBid,
                 frontBid,
@@ -98,7 +98,7 @@ export default class Fl32_Auth_Back_Mod_Session {
             const {sessionData} = await modUser.sessionDataRead({trx, userBid});
             request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
             _cache[sessionId] = sessionData;
-            return {sessionId, sessionWord, sessionData};
+            return {sessionId, sessionWord, sessionData, userId};
         };
 
         /**

@@ -2,12 +2,9 @@
  * A model for aggregating functionality related to the frontend user.
  * The user data is stored in the localStore and is not cached in the model.
  */
-// MODULE'S VARS
-const SALT_BYTES = 16;
-
-// MODULE'S CLASSES
 export default class Fl32_Auth_Front_Mod_User {
     /**
+     * @param {Fl32_Auth_Front_Defaults} DEF
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {TeqFw_Web_Api_Front_Web_Connect} api
      * @param {Fl32_Auth_Shared_Web_Api_User_Create} endUserCreate
@@ -19,6 +16,7 @@ export default class Fl32_Auth_Front_Mod_User {
      */
     constructor(
         {
+            Fl32_Auth_Front_Defaults$: DEF,
             TeqFw_Core_Shared_Api_Logger$$: logger,
             TeqFw_Web_Api_Front_Web_Connect$: api,
             Fl32_Auth_Shared_Web_Api_User_Create$: endUserCreate,
@@ -52,7 +50,7 @@ export default class Fl32_Auth_Front_Mod_User {
                 req.uuid = stored.uuid;
             }
             if (password) {
-                req.passwordSalt = modPassword.saltNew(SALT_BYTES); // base64url
+                req.passwordSalt = modPassword.saltNew(DEF.SALT_BYTES); // base64url
                 req.passwordHash = await modPassword.hashCompose(password, req.passwordSalt); // base64url
             }
             return await api.send(req, endUserCreate);
@@ -123,7 +121,7 @@ export default class Fl32_Auth_Front_Mod_User {
                 req.uuid = stored.uuid;
                 req.email = email;
                 if (password) {
-                    req.passwordSalt = modPassword.saltNew(SALT_BYTES); // base64url
+                    req.passwordSalt = modPassword.saltNew(DEF.SALT_BYTES); // base64url
                     req.passwordHash = await modPassword.hashCompose(password, req.passwordSalt);
                 }
                 /** @type {Fl32_Auth_Shared_Web_Api_User_Register.Response} */
