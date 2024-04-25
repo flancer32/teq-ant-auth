@@ -6,9 +6,11 @@
       "ext": "mjs"
     },
     "replaces": {
-      "Fl32_Auth_Shared_Api_Crypto_Scrambler": {
-        "back": "Fl32_Auth_Back_Mod_Crypto_Scrambler",
-        "front": "Fl32_Auth_Front_Mod_Crypto_Scrambler"
+      "back": {
+        "Fl32_Auth_Shared_Api_Crypto_Scrambler": "Fl32_Auth_Back_Mod_Crypto_Scrambler"
+      },
+      "front": {
+        "Fl32_Auth_Shared_Api_Crypto_Scrambler": "Fl32_Auth_Front_Mod_Crypto_Scrambler"
       }
     }
   },
