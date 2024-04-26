@@ -12,7 +12,6 @@ export default class Fl32_Auth_Back_Web_Api_Password_Reset_Init {
      * @param {Fl32_Auth_Shared_Web_Api_Password_Reset_Init} endpoint
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {Fl32_Auth_Back_Mod_Password} modPass
-     * @param {Fl32_Auth_Back_Mod_Session} modSess
      */
     constructor(
         {
@@ -20,7 +19,6 @@ export default class Fl32_Auth_Back_Web_Api_Password_Reset_Init {
             Fl32_Auth_Shared_Web_Api_Password_Reset_Init$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             Fl32_Auth_Back_Mod_Password$: modPass,
-            Fl32_Auth_Back_Mod_Session$: modSess,
         }
     ) {
         // INSTANCE METHODS
@@ -44,8 +42,7 @@ export default class Fl32_Auth_Back_Web_Api_Password_Reset_Init {
                 const found = await modPass.listByEmail({trx, email});
                 const [first] = found;
                 if (first) {
-                    const dto = await modPass.resetCreate({trx, userBid: first.user_ref});
-
+                    await modPass.resetCreate({trx, userBid: first.user_ref});
                     rs.success = true;
                 }
                 await trx.commit();
