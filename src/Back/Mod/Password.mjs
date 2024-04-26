@@ -160,7 +160,7 @@ export default class Fl32_Auth_Back_Mod_Password {
         this.validateHash = async function ({trx, userBid, userRef, hash}) {
             let bid = userBid;
             if (!bid) {
-                const {bid: foundBid} = await modUser.userRead({trx, userRef});
+                const {bid: foundBid} = await modUser.read({trx, userRef});
                 bid = foundBid;
             }
             const {success, dbPass} = await actPassValid.act({trx, userBid: bid, hash});

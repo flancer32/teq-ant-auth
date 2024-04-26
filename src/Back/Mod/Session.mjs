@@ -31,7 +31,7 @@ export default class Fl32_Auth_Back_Mod_Session {
         const A_SESS = rdbSess.getAttributes();
         /**
          * Internal cache to map session data by session ID.
-         * @type {Object<string, Object>}
+         * @type {Object<string, Lp_Base_Back_Dto_User_Profile.Dto>}
          */
         const _cache = {};
 
@@ -95,11 +95,12 @@ export default class Fl32_Auth_Back_Mod_Session {
                 frontKeyVerify
             });
             modCookie.plant({request, response, sessionId});
-            const {sessionData} = await modUser.sessionDataRead({trx, userBid});
+            /** @type {{profileFront: Object}} */
+            const {profileBack, profileFront} = await modUser.readProfiles({trx, userBid});
             request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
-            _cache[sessionId] = sessionData;
+            _cache[sessionId] = profileBack;
             logger.info(`The new session is established for user #${userUuid}.`);
-            return {sessionId, sessionWord, sessionData, userUuid};
+            return {sessionId, sessionWord, sessionData: profileFront, userUuid};
         };
 
         /**
@@ -140,8 +141,9 @@ export default class Fl32_Auth_Back_Mod_Session {
                     /** @type {Fl32_Auth_Back_RDb_Schema_Session.Dto} */
                     const found = await crud.readOne(trx, rdbSess, where);
                     if (found?.user_ref) {
-                        const {sessionData} = await modUser.sessionDataRead({trx, userBid: found.user_ref});
-                        _cache[sessionId] = sessionData;
+                        /** @type {{profileBack: Lp_Base_Back_Dto_User_Profile.Dto}} */
+                        const {profileBack} = await modUser.readProfiles({trx, userBid: found.user_ref});
+                        _cache[sessionId] = profileBack;
                         await trx.commit();
                         request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
                         logger.info(`Session data is cached for session #${sessionId}.`);

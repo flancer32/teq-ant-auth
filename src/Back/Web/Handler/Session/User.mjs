@@ -1,5 +1,5 @@
 /**
- * Web server handler to process requests to services (synchronous POST requests with JSON payloads).
+ * Web server handler to add user session data to the requests to the API.
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'node:http2';
@@ -40,8 +40,6 @@ export default class Fl32_Auth_Back_Web_Handler_Session_User {
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          * @memberOf Fl32_Auth_Back_Web_Handler_Session_User
-         *
-         * TODO: do we really need sessions if we already have asymmetric encryption in place?
          */
         async function process(req, res) {
             // FUNCS

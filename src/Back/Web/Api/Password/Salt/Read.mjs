@@ -39,7 +39,7 @@ export default class Fl32_Auth_Back_Web_Api_Password_Salt_Read {
             const trx = await conn.startTransaction();
             try {
                 const userRef = req.userRef;
-                const {bid: userBid} = await modUser.userRead({trx, userRef});
+                const {bid: userBid} = await modUser.read({trx, userRef});
                 const {b64url} = await modPass.readSalt({trx, userBid});
                 await trx.commit();
                 res.salt = b64url;
