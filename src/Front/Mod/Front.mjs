@@ -34,7 +34,7 @@ export default class Fl32_Auth_Front_Mod_Front {
         this.init = async function () {
             // load app identity data (if exists) from the local storage or create new one.
             const res = storeFront.get();
-            if (!res.frontUuid) {
+            if (!res.frontUuid || !res?.keysEncrypt?.secret) {
                 res.frontUuid = self.crypto.randomUUID();
                 res.keysEncrypt = await modKeyMgr.createKeysToEncrypt();
                 res.keysSign = await modKeyMgr.createKeysToSign();
