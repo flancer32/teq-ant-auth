@@ -86,7 +86,7 @@ export default class Fl32_Auth_Back_Mod_Session {
                 frontKeyVerify,
             }
         ) {
-            const {code: sessionId, word: sessionWord, userId} = await actSessReg.act({
+            const {code: sessionId, word: sessionWord, userUuid} = await actSessReg.act({
                 trx,
                 userBid,
                 frontBid,
@@ -98,7 +98,8 @@ export default class Fl32_Auth_Back_Mod_Session {
             const {sessionData} = await modUser.sessionDataRead({trx, userBid});
             request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
             _cache[sessionId] = sessionData;
-            return {sessionId, sessionWord, sessionData, userId};
+            logger.info(`The new session is established for user #${userUuid}.`);
+            return {sessionId, sessionWord, sessionData, userUuid};
         };
 
         /**
