@@ -14,9 +14,9 @@ export default class Fl32_Auth_Back_Mod_PubKey {
      * @param {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} asn1toRaw
      * @param {Fl32_Auth_Back_Util_WebAuthn.createChallenge|function} createChallenge
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} rdbAssertChl
-     * @param {Fl32_Auth_Back_RDb_Schema_Attest} rdbAttest
-     * @param {Fl32_Auth_Back_RDb_Schema_Attest_Challenge} rdbAttestChl
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge} rdbAssertChl
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Attest} rdbAttest
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Attest_Challenge} rdbAttestChl
      */
     constructor(
         {
@@ -26,9 +26,9 @@ export default class Fl32_Auth_Back_Mod_PubKey {
             'Fl32_Auth_Back_Util_WebAuthn.asn1toRaw': asn1toRaw,
             'Fl32_Auth_Back_Util_WebAuthn.createChallenge': createChallenge,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbAssertChl,
-            Fl32_Auth_Back_RDb_Schema_Attest$: rdbAttest,
-            Fl32_Auth_Back_RDb_Schema_Attest_Challenge$: rdbAttestChl,
+            Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge$: rdbAssertChl,
+            Fl32_Auth_Back_Store_RDb_Schema_Attest$: rdbAttest,
+            Fl32_Auth_Back_Store_RDb_Schema_Attest_Challenge$: rdbAttestChl,
         }
     ) {
         // VARS
@@ -47,7 +47,7 @@ export default class Fl32_Auth_Back_Mod_PubKey {
          */
         this.assertChallengeCreate = async function ({trx, attestRef}) {
             let challenge;
-            /** @type {Fl32_Auth_Back_RDb_Schema_Attest.Dto} */
+            /** @type {Fl32_Auth_Back_Store_RDb_Schema_Attest.Dto} */
             const found = await crud.readOne(trx, rdbAttest, {[A_ATTEST.ATTESTATION_ID]: attestRef});
             if (found?.bid) {
                 /** @type {Buffer} */
@@ -70,18 +70,18 @@ export default class Fl32_Auth_Back_Mod_PubKey {
          * @param {Buffer} authenticatorData
          * @param {Buffer} clientData
          * @param {Buffer} signature
-         * @return {Promise<{attestation: Fl32_Auth_Back_RDb_Schema_Attest.Dto, success: boolean}>}
+         * @return {Promise<{attestation: Fl32_Auth_Back_Store_RDb_Schema_Attest.Dto, success: boolean}>}
          */
         this.assertValidate = async function ({trx, authenticatorData, clientData, signature}) {
             let attestation, success = false;
             // load corresponded challenge
             const clientDataDecoded = decodeClientDataJSON(clientData, true);
             const challenge = codec.b64UrlToBin(clientDataDecoded.challenge);
-            /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge.Dto} */
+            /** @type {Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge.Dto} */
             const found = await crud.readOne(trx, rdbAssertChl, {[A_CHALLENGE.CHALLENGE]: challenge});
             if (found) {
                 const attestBid = found.attest_ref;
-                /** @type {Fl32_Auth_Back_RDb_Schema_Attest.Dto} */
+                /** @type {Fl32_Auth_Back_Store_RDb_Schema_Attest.Dto} */
                 const foundAttest = await crud.readOne(trx, rdbAttest, attestBid);
                 const pkeyJwk = JSON.parse(foundAttest.public_key);
                 const publicKey = await subtle.importKey('jwk', pkeyJwk, {

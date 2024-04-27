@@ -1,51 +1,59 @@
 /**
- *  Metadata for RDB entity: public keys to authenticate users (WebAuthn API).
- *  @namespace Fl32_Auth_Back_RDb_Schema_Attest
+ *  Metadata for RDB entity: relations between users and fronts.
+ *  @namespace Fl32_Auth_Back_Store_RDb_Schema_Session
  */
 // MODULE'S VARS
-const NS = 'Fl32_Auth_Back_RDb_Schema_Attest';
+const NS = 'Fl32_Auth_Back_Store_RDb_Schema_Session';
 /**
  * Path to the entity in plugin's DEM.
  * @type {string}
  */
-const ENTITY = '/fl32/auth/attest';
+const ENTITY = '/fl32/auth/session';
 
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_Attest
+ * @memberOf Fl32_Auth_Back_Store_RDb_Schema_Session
  * @type {Object}
  */
 const ATTR = {
-    ATTESTATION_ID: 'attestation_id',
-    BID: 'bid',
+    CODE: 'code',
     DATE_CREATED: 'date_created',
-    PUBLIC_KEY: 'public_key',
+    FRONT_REF: 'front_ref',
     USER_REF: 'user_ref',
+    WORD: 'word',
 };
 Object.freeze(ATTR);
 
 // MODULE'S CLASSES
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_Attest
+ * @memberOf Fl32_Auth_Back_Store_RDb_Schema_Session
  */
 class Dto {
     static namespace = NS;
-    /** @type {string} */
-    attestation_id;
-    /** @type {number} */
-    bid;
+    /**
+     * The ID of the session (cookies stored).
+     * @type {string}
+     */
+    code;
     /** @type {Date} */
     date_created;
-    /** @type {string} */
-    public_key;
+    /** @type {Date} */
+    date_last;
+    /** @type {number} */
+    front_ref;
     /** @type {number} */
     user_ref;
+    /**
+     * The secret word for the session (locally stored on the front).
+     * @type {string}
+     */
+    word;
 }
 
 // noinspection JSClosureCompilerSyntax
 /**
  * @implements TeqFw_Db_Back_RDb_Meta_IEntity
  */
-export default class Fl32_Auth_Back_RDb_Schema_Attest {
+export default class Fl32_Auth_Back_Store_RDb_Schema_Session {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
@@ -60,22 +68,23 @@ export default class Fl32_Auth_Back_RDb_Schema_Attest {
     ) {
         // INSTANCE METHODS
         /**
-         * @param {Fl32_Auth_Back_RDb_Schema_Attest.Dto} [data]
-         * @return {Fl32_Auth_Back_RDb_Schema_Attest.Dto}
+         * @param {Fl32_Auth_Back_Store_RDb_Schema_Session.Dto} [data]
+         * @return {Fl32_Auth_Back_Store_RDb_Schema_Session.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.attestation_id = cast.string(data?.attestation_id);
-            res.bid = cast.int(data?.bid);
-            res.public_key = cast.string(data?.public_key);
+            res.code = cast.string(data?.code);
             res.date_created = cast.date(data?.date_created);
+            res.date_last = cast.date(data?.date_last);
+            res.front_ref = cast.int(data?.front_ref);
             res.user_ref = cast.int(data?.user_ref);
+            res.word = cast.string(data?.word);
             return res;
         };
 
         /**
          * Set JSDoc return type, real code is in `TeqFw_Db_Back_RDb_Schema_EntityBase`.
-         * @return {typeof Fl32_Auth_Back_RDb_Schema_Attest.ATTR}
+         * @return {typeof Fl32_Auth_Back_Store_RDb_Schema_Session.ATTR}
          */
         this.getAttributes = function () {};
 
@@ -83,7 +92,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Attest {
         return base.create(this,
             `${DEF.SHARED.NAME}${ENTITY}`,
             ATTR,
-            [ATTR.BID],
+            [ATTR.USER_REF, ATTR.FRONT_REF],
             Dto
         );
     }

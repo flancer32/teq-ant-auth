@@ -17,8 +17,8 @@ const NS = 'Fl32_Auth_Back_Act_Assert_Validate';
  * @param {Fl32_Auth_Back_Util_Codec} codec
  * @param {Fl32_Auth_Back_Util_WebAuthn.asn1toRaw|function} asn1toRaw
  * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
- * @param {Fl32_Auth_Back_RDb_Schema_Assert_Challenge} rdbChallenge
- * @param {Fl32_Auth_Back_RDb_Schema_Attest} rdbPk
+ * @param {Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge} rdbChallenge
+ * @param {Fl32_Auth_Back_Store_RDb_Schema_Attest} rdbPk
  */
 export default function (
     {
@@ -26,8 +26,8 @@ export default function (
         Fl32_Auth_Back_Util_Codec$: codec,
         'Fl32_Auth_Back_Util_WebAuthn.asn1toRaw': asn1toRaw,
         TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-        Fl32_Auth_Back_RDb_Schema_Assert_Challenge$: rdbChallenge,
-        Fl32_Auth_Back_RDb_Schema_Attest$: rdbPk,
+        Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge$: rdbChallenge,
+        Fl32_Auth_Back_Store_RDb_Schema_Attest$: rdbPk,
     }
 ) {
     // VARS
@@ -43,7 +43,7 @@ export default function (
      * @param {Buffer} authenticatorData
      * @param {Buffer} clientData
      * @param {Buffer} signature
-     * @return {Promise<{attestation: Fl32_Auth_Back_RDb_Schema_Attest.Dto,success: boolean}>}
+     * @return {Promise<{attestation: Fl32_Auth_Back_Store_RDb_Schema_Attest.Dto,success: boolean}>}
      * @memberOf Fl32_Auth_Back_Act_Assert_Validate
      */
     async function act({trx, authenticatorData, clientData, signature}) {
@@ -51,11 +51,11 @@ export default function (
         const getClientDataJSON = codec.b64UrlToBin(clientData);
         // load corresponded challenge
         const challenge = clientData.challenge;
-        /** @type {Fl32_Auth_Back_RDb_Schema_Assert_Challenge.Dto} */
+        /** @type {Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge.Dto} */
         const found = await crud.readOne(trx, rdbChallenge, {[A_CHALLENGE.CHALLENGE]: challenge});
         if (found) {
             const attestBid = found.attest_ref;
-            /** @type {Fl32_Auth_Back_RDb_Schema_Attest.Dto} */
+            /** @type {Fl32_Auth_Back_Store_RDb_Schema_Attest.Dto} */
             const foundAttest = await crud.readOne(trx, rdbPk, attestBid);
             const pkeyJwk = JSON.parse(foundAttest.public_key);
             const publicKey = await subtle.importKey('jwk', pkeyJwk, {

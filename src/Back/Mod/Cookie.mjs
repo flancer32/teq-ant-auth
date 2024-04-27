@@ -10,7 +10,7 @@ export default class Fl32_Auth_Back_Mod_Cookie {
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Web_Back_Util_Cookie} utilCookie
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Session} rdbSess
      * @param {TeqFw_Web_Back_Mod_Address} mAddr
      */
     constructor(
@@ -18,7 +18,7 @@ export default class Fl32_Auth_Back_Mod_Cookie {
             Fl32_Auth_Back_Defaults$: DEF,
             TeqFw_Web_Back_Util_Cookie: utilCookie,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
+            Fl32_Auth_Back_Store_RDb_Schema_Session$: rdbSess,
             TeqFw_Web_Back_Mod_Address$: mAddr,
         }
     ) {

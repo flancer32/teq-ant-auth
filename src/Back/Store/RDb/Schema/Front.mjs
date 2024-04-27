@@ -4,10 +4,10 @@
  * The front is a separate browser's space with a local stores (localStorage, cache, IDB).
  * The front can or cannot be bound to a user.
  *
- * @namespace Fl32_Auth_Back_RDb_Schema_Front
+ * @namespace Fl32_Auth_Back_Store_RDb_Schema_Front
  */
 // MODULE'S VARS
-const NS = 'Fl32_Auth_Back_RDb_Schema_Front';
+const NS = 'Fl32_Auth_Back_Store_RDb_Schema_Front';
 /**
  * Path to the entity in plugin's DEM.
  * @type {string}
@@ -15,7 +15,7 @@ const NS = 'Fl32_Auth_Back_RDb_Schema_Front';
 const ENTITY = '/fl32/auth/front';
 
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_Front
+ * @memberOf Fl32_Auth_Back_Store_RDb_Schema_Front
  * @type {Object}
  */
 const ATTR = {
@@ -31,7 +31,7 @@ Object.freeze(ATTR);
 
 // MODULE'S CLASSES
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_Front
+ * @memberOf Fl32_Auth_Back_Store_RDb_Schema_Front
  */
 class Dto {
     static namespace = NS;
@@ -63,7 +63,7 @@ class Dto {
 /**
  * @implements TeqFw_Db_Back_RDb_Meta_IEntity
  */
-export default class Fl32_Auth_Back_RDb_Schema_Front {
+export default class Fl32_Auth_Back_Store_RDb_Schema_Front {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
@@ -78,8 +78,8 @@ export default class Fl32_Auth_Back_RDb_Schema_Front {
     ) {
         // INSTANCE METHODS
         /**
-         * @param {Fl32_Auth_Back_RDb_Schema_Front.Dto} [data]
-         * @return {Fl32_Auth_Back_RDb_Schema_Front.Dto}
+         * @param {Fl32_Auth_Back_Store_RDb_Schema_Front.Dto} [data]
+         * @return {Fl32_Auth_Back_Store_RDb_Schema_Front.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();
@@ -95,7 +95,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Front {
 
         /**
          * Set JSDoc return type, real code is in `TeqFw_Db_Back_RDb_Schema_EntityBase`.
-         * @return {typeof Fl32_Auth_Back_RDb_Schema_Front.ATTR}
+         * @return {typeof Fl32_Auth_Back_Store_RDb_Schema_Front.ATTR}
          */
         this.getAttributes = function () {};
 

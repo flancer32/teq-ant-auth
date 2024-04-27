@@ -14,8 +14,8 @@ export default class Fl32_Auth_Back_Mod_Password {
      * @param {Fl32_Auth_Back_Api_Mod_User} modUser
      * @param {TeqFw_Core_Back_Util_Cast} cast
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Password} rdbPass
-     * @param {Fl32_Auth_Back_RDb_Schema_Password_Reset} rdbReset
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Password} rdbPass
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Password_Reset} rdbReset
      */
     constructor(
         {
@@ -25,8 +25,8 @@ export default class Fl32_Auth_Back_Mod_Password {
             Fl32_Auth_Back_Api_Mod_User$: modUser,
             TeqFw_Core_Back_Util_Cast$: cast,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Password$: rdbPass,
-            Fl32_Auth_Back_RDb_Schema_Password_Reset$: rdbReset,
+            Fl32_Auth_Back_Store_RDb_Schema_Password$: rdbPass,
+            Fl32_Auth_Back_Store_RDb_Schema_Password_Reset$: rdbReset,
         }
     ) {
         // VARS
@@ -65,7 +65,7 @@ export default class Fl32_Auth_Back_Mod_Password {
          */
         this.readSalt = async function ({trx, userBid}) {
             let b64url, bin;
-            /** @type {Fl32_Auth_Back_RDb_Schema_Password.Dto} */
+            /** @type {Fl32_Auth_Back_Store_RDb_Schema_Password.Dto} */
             const found = await crud.readOne(trx, rdbPass, userBid);
             if (found?.salt) {
                 bin = found.salt;
@@ -78,7 +78,7 @@ export default class Fl32_Auth_Back_Mod_Password {
          * Create a new reset code in the RDB.
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {number} userBid
-         * @return {Promise<Fl32_Auth_Back_RDb_Schema_Password_Reset.Dto>}
+         * @return {Promise<Fl32_Auth_Back_Store_RDb_Schema_Password_Reset.Dto>}
          */
         this.resetCreate = async function ({trx, userBid}) {
             // clean up the existing reset codes
@@ -113,7 +113,7 @@ export default class Fl32_Auth_Back_Mod_Password {
          * Read the password reset record by given code.
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {string} code
-         * @return {Promise<Fl32_Auth_Back_RDb_Schema_Password_Reset.Dto>}
+         * @return {Promise<Fl32_Auth_Back_Store_RDb_Schema_Password_Reset.Dto>}
          */
         this.resetRead = async function ({trx, code}) {
             return await crud.readOne(trx, rdbReset, {[A_RESET.CODE]: code});
@@ -123,7 +123,7 @@ export default class Fl32_Auth_Back_Mod_Password {
          * List all records by given email.
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {string} email
-         * @return {Promise<Fl32_Auth_Back_RDb_Schema_Password.Dto[]>}
+         * @return {Promise<Fl32_Auth_Back_Store_RDb_Schema_Password.Dto[]>}
          */
         this.listByEmail = async function ({trx, email}) {
             const where = {[A_PASS.EMAIL]: email.toLowerCase().trim()};
@@ -155,7 +155,7 @@ export default class Fl32_Auth_Back_Mod_Password {
          * @param {number} [userBid] - the backend ID for the user
          * @param {*} [userRef] - the app-specific identifier for the user (email, uuid, ...).
          * @param {string} hash  - the representation of the password hash as 'base64url' string.
-         * @return {Promise<{success: boolean, dbPass: Fl32_Auth_Back_RDb_Schema_Password.Dto}>}
+         * @return {Promise<{success: boolean, dbPass: Fl32_Auth_Back_Store_RDb_Schema_Password.Dto}>}
          */
         this.validateHash = async function ({trx, userBid, userRef, hash}) {
             let bid = userBid;

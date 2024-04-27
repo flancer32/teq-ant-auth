@@ -6,12 +6,12 @@
 export default class Fl32_Auth_Back_Act_Front_Create {
     /**
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Front} rdbFront
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Front} rdbFront
      */
     constructor(
         {
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Front$: rdbFront,
+            Fl32_Auth_Back_Store_RDb_Schema_Front$: rdbFront,
         }
     ) {
         // VARS

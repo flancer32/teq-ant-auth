@@ -5,19 +5,19 @@ export default class Fl32_Auth_Back_Convert_User {
     /**
      * @param {TeqFw_Core_Shared_Util_Cast} cast
      * @param {Fl32_Auth_Shared_Dto_User} shared
-     * @param {Fl32_Auth_Back_RDb_Schema_User} rdb
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_User} rdb
      */
     constructor(
         {
             TeqFw_Core_Shared_Util_Cast$: cast,
             Fl32_Auth_Shared_Dto_User$: shared,
-            Fl32_Auth_Back_RDb_Schema_User$: rdb,
+            Fl32_Auth_Back_Store_RDb_Schema_User$: rdb,
         }
     ) {
         // INSTANCE METHODS
 
         /**
-         * @param {Fl32_Auth_Back_RDb_Schema_User.Dto} [data]
+         * @param {Fl32_Auth_Back_Store_RDb_Schema_User.Dto} [data]
          * @returns {Fl32_Auth_Shared_Dto_User.Dto}
          */
         this.rdb2share = function (data) {
@@ -33,7 +33,7 @@ export default class Fl32_Auth_Back_Convert_User {
 
         /**
          * @param {Fl32_Auth_Shared_Dto_User.Dto} [data]
-         * @returns {Fl32_Auth_Back_RDb_Schema_User.Dto}
+         * @returns {Fl32_Auth_Back_Store_RDb_Schema_User.Dto}
          */
         this.shared2rdb = function (data) {
             const res = rdb.createDto();

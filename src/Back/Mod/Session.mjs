@@ -10,7 +10,7 @@ export default class Fl32_Auth_Back_Mod_Session {
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Session} rdbSess
      * @param {Fl32_Auth_Back_Api_Mod_User} modUser
      * @param {Fl32_Auth_Back_Mod_Cookie} modCookie
      * @param {Fl32_Auth_Back_Act_Session_Register} actSessReg
@@ -21,7 +21,7 @@ export default class Fl32_Auth_Back_Mod_Session {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
+            Fl32_Auth_Back_Store_RDb_Schema_Session$: rdbSess,
             Fl32_Auth_Back_Api_Mod_User$: modUser,
             Fl32_Auth_Back_Mod_Cookie$: modCookie,
             Fl32_Auth_Back_Act_Session_Register$: actSessReg,
@@ -138,7 +138,7 @@ export default class Fl32_Auth_Back_Mod_Session {
                 const trx = await conn.startTransaction();
                 try {
                     const where = {[A_SESS.CODE]: sessionId};
-                    /** @type {Fl32_Auth_Back_RDb_Schema_Session.Dto} */
+                    /** @type {Fl32_Auth_Back_Store_RDb_Schema_Session.Dto} */
                     const found = await crud.readOne(trx, rdbSess, where);
                     if (found?.user_ref) {
                         /** @type {{profileBack: Lp_Base_Back_Dto_User_Profile.Dto}} */

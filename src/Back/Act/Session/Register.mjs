@@ -13,17 +13,17 @@ export default class Fl32_Auth_Back_Act_Session_Register {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Front} rdbFront
-     * @param {Fl32_Auth_Back_RDb_Schema_Session} rdbSess
-     * @param {Fl32_Auth_Back_RDb_Schema_User} rdbUser
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Front} rdbFront
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Session} rdbSess
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_User} rdbUser
      */
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Front$: rdbFront,
-            Fl32_Auth_Back_RDb_Schema_Session$: rdbSess,
-            Fl32_Auth_Back_RDb_Schema_User$: rdbUser,
+            Fl32_Auth_Back_Store_RDb_Schema_Front$: rdbFront,
+            Fl32_Auth_Back_Store_RDb_Schema_Session$: rdbSess,
+            Fl32_Auth_Back_Store_RDb_Schema_User$: rdbUser,
         }
     ) {
         // VARS
@@ -59,7 +59,7 @@ export default class Fl32_Auth_Back_Act_Session_Register {
             const keyUser = (typeof userBid === 'number')
                 ? {[A_USER.BID]: userBid}
                 : {[A_USER.UUID]: userUuid};
-            /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
+            /** @type {Fl32_Auth_Back_Store_RDb_Schema_User.Dto} */
             const user = await crud.readOne(trx, rdbUser, keyUser);
             // we can create/update the session
             if (user) {
@@ -67,7 +67,7 @@ export default class Fl32_Auth_Back_Act_Session_Register {
                 const keyFront = (typeof frontBid === 'number')
                     ? {[A_FRONT.BID]: frontBid}
                     : {[A_FRONT.UUID]: frontUuid};
-                /** @type {Fl32_Auth_Back_RDb_Schema_Front.Dto} */
+                /** @type {Fl32_Auth_Back_Store_RDb_Schema_Front.Dto} */
                 let front = await crud.readOne(trx, rdbFront, keyFront);
                 if (!front) {
                     // create the new front if not found by UUID
@@ -89,7 +89,7 @@ export default class Fl32_Auth_Back_Act_Session_Register {
                 } while (found);
                 word = randomUUID(); // a secret word for API requests
                 // create new or update existing?
-                /** @type {Fl32_Auth_Back_RDb_Schema_Session.Dto} */
+                /** @type {Fl32_Auth_Back_Store_RDb_Schema_Session.Dto} */
                 const session = await crud.readOne(trx, rdbSess, {
                     [A_SESS.USER_REF]: user.bid,
                     [A_SESS.FRONT_REF]: front.bid,

@@ -1,54 +1,45 @@
 /**
- *  Metadata for RDB entity: passwords to authenticate users.
- *  @namespace Fl32_Auth_Back_RDb_Schema_Password
+ *  Metadata for RDB entity: challenge to authenticate a user.
+ *  @namespace Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge
  */
 // MODULE'S VARS
-const NS = 'Fl32_Auth_Back_RDb_Schema_Password';
+const NS = 'Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge';
 /**
  * Path to the entity in plugin's DEM.
  * @type {string}
  */
-const ENTITY = '/fl32/auth/password';
+const ENTITY = '/fl32/auth/assert/challenge';
 
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_Password
+ * @memberOf Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge
  * @type {Object}
  */
 const ATTR = {
-    DATE_UPDATED: 'date_updated',
-    EMAIL: 'email',
-    HASH: 'hash',
-    SALT: 'salt',
-    USER_REF: 'user_ref',
+    ATTEST_REF: 'attest_ref',
+    CHALLENGE: 'challenge',
+    DATE_CREATED: 'date_created',
 };
 Object.freeze(ATTR);
 
 // MODULE'S CLASSES
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_Password
+ * @memberOf Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge
  */
 class Dto {
     static namespace = NS;
-    /** @type {Date} */
-    date_updated;
-    /**
-     * Email to restore the access to the user account.
-     * @type {string}
-     */
-    email;
-    /** @type {Uint8Array} */
-    hash;
-    /** @type {Uint8Array} */
-    salt;
     /** @type {number} */
-    user_ref;
+    attest_ref;
+    /** @type {Buffer} */
+    challenge;
+    /** @type {Date} */
+    date_created;
 }
 
 // noinspection JSClosureCompilerSyntax
 /**
  * @implements TeqFw_Db_Back_RDb_Meta_IEntity
  */
-export default class Fl32_Auth_Back_RDb_Schema_Password {
+export default class Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
@@ -65,22 +56,20 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
     ) {
         // INSTANCE METHODS
         /**
-         * @param {Fl32_Auth_Back_RDb_Schema_Password.Dto} [data]
-         * @return {Fl32_Auth_Back_RDb_Schema_Password.Dto}
+         * @param {Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge.Dto} [data]
+         * @return {Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();
-            res.date_updated = cast.date(data?.date_updated);
-            res.email = cast.string(data?.email);
-            res.hash = castBack.buffer(data?.hash);
-            res.salt = castBack.buffer(data?.salt);
-            res.user_ref = cast.int(data?.user_ref);
+            res.attest_ref = cast.int(data?.attest_ref);
+            res.challenge = castBack.buffer(data?.challenge);
+            res.date_created = cast.date(data?.date_created);
             return res;
         };
 
         /**
          * Set JSDoc return type, real code is in `TeqFw_Db_Back_RDb_Schema_EntityBase`.
-         * @return {typeof Fl32_Auth_Back_RDb_Schema_Password.ATTR}
+         * @return {typeof Fl32_Auth_Back_Store_RDb_Schema_Assert_Challenge.ATTR}
          */
         this.getAttributes = function () {};
 
@@ -88,7 +77,7 @@ export default class Fl32_Auth_Back_RDb_Schema_Password {
         return base.create(this,
             `${DEF.SHARED.NAME}${ENTITY}`,
             ATTR,
-            [ATTR.USER_REF],
+            [ATTR.CHALLENGE],
             Dto
         );
     }

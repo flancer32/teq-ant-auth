@@ -21,8 +21,8 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
      * @param {Fl32_Auth_Shared_Web_Api_Attest} endpoint
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Attest_Challenge} rdbChlng
-     * @param {Fl32_Auth_Back_RDb_Schema_Attest} rdbPk
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Attest_Challenge} rdbChlng
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Attest} rdbPk
      * @param {Fl32_Auth_Back_Mod_Session} modSess
      */
     constructor(
@@ -36,8 +36,8 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
             Fl32_Auth_Shared_Web_Api_Attest$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Attest_Challenge$: rdbChlng,
-            Fl32_Auth_Back_RDb_Schema_Attest$: rdbPk,
+            Fl32_Auth_Back_Store_RDb_Schema_Attest_Challenge$: rdbChlng,
+            Fl32_Auth_Back_Store_RDb_Schema_Attest$: rdbPk,
             Fl32_Auth_Back_Mod_Session$: modSess,
         }
     ) {
@@ -67,7 +67,7 @@ export default class Fl32_Auth_Back_Web_Api_Attest {
                 // parse attestation and client data properties
                 const bin = codec.b64UrlToBin(clientData.challenge);
                 const challenge = cast.buffer(bin);
-                /** @type {Fl32_Auth_Back_RDb_Schema_Attest_Challenge.Dto} */
+                /** @type {Fl32_Auth_Back_Store_RDb_Schema_Attest_Challenge.Dto} */
                 const found = await crud.readOne(trx, rdbChlng, challenge);
                 if (found) {
                     const userBid = found.user_ref;

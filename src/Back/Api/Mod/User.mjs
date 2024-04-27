@@ -20,7 +20,7 @@ export default class Fl32_Auth_Back_Api_Mod_User {
      * Load app specific user data from a storage (RDb, ...).
      * @param {TeqFw_Db_Back_RDb_ITrans} [trx]
      * @param {*} userRef - app-specific identifier for the user (email, uuid, ...) or some object
-     * @returns {Promise<{bid:number, dbUser: Fl32_Auth_Back_RDb_Schema_User.Dto}>}
+     * @returns {Promise<{bid:number, dbUser: Fl32_Auth_Back_Store_RDb_Schema_User.Dto}>}
      */
     async read({trx, userRef}) {
         throw new Error(`Please, implement 'Fl32_Auth_Back_Api_Mod_User'.`);

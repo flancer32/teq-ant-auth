@@ -12,7 +12,7 @@ export default class Fl32_Auth_Back_Web_Api_User_Create {
      * @param {Fl32_Auth_Shared_Web_Api_User_Create} endpoint
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_User} rdbUser
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_User} rdbUser
      * @param {Fl32_Auth_Back_Mod_Password} modPass
      */
     constructor(
@@ -21,7 +21,7 @@ export default class Fl32_Auth_Back_Web_Api_User_Create {
             Fl32_Auth_Shared_Web_Api_User_Create$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_User$: rdbUser,
+            Fl32_Auth_Back_Store_RDb_Schema_User$: rdbUser,
             Fl32_Auth_Back_Mod_Password$: modPass,
         }
     ) {
@@ -50,7 +50,7 @@ export default class Fl32_Auth_Back_Web_Api_User_Create {
                 const passwordHash = req.passwordHash;
                 const passwordSalt = req.passwordSalt;
                 const uuid = req.uuid;
-                /** @type {Fl32_Auth_Back_RDb_Schema_User.Dto} */
+                /** @type {Fl32_Auth_Back_Store_RDb_Schema_User.Dto} */
                 const found = await crud.readOne(trx, rdbUser, {[A_USER.UUID]: uuid});
                 if (!found) {
                     // register the new user

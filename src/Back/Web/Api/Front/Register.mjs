@@ -11,7 +11,7 @@ export default class Fl32_Auth_Back_Web_Api_Front_Register {
      * @param {Fl32_Auth_Shared_Web_Api_Front_Register} endpoint
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Front} rdbFront
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Front} rdbFront
      * @param {TeqFw_Core_Back_Mod_App_Uuid} modBackUuid
      * @param {Fl32_Auth_Back_Act_Front_Create} actCreate
      */
@@ -21,7 +21,7 @@ export default class Fl32_Auth_Back_Web_Api_Front_Register {
             Fl32_Auth_Shared_Web_Api_Front_Register$: endpoint,
             TeqFw_Db_Back_RDb_IConnect$: conn,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Front$: rdbFront,
+            Fl32_Auth_Back_Store_RDb_Schema_Front$: rdbFront,
             TeqFw_Core_Back_Mod_App_Uuid$: modBackUuid,
             Fl32_Auth_Back_Act_Front_Create$: actCreate,
         }
@@ -51,7 +51,7 @@ export default class Fl32_Auth_Back_Web_Api_Front_Register {
                 const uuid = req.frontUuid;
                 const keyEncrypt = req.keyEncrypt;
                 const keyVerify = req.keyVerify;
-                /** @type {Fl32_Auth_Back_RDb_Schema_Front.Dto} */
+                /** @type {Fl32_Auth_Back_Store_RDb_Schema_Front.Dto} */
                 const found = await crud.readOne(trx, rdbFront, {[A_FRONT.UUID]: uuid});
                 if (!found) {
                     // register the new front

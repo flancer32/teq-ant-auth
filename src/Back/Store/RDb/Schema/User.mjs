@@ -1,9 +1,9 @@
 /**
  *  Metadata for RDB entity: the user registry.
- *  @namespace Fl32_Auth_Back_RDb_Schema_User
+ *  @namespace Fl32_Auth_Back_Store_RDb_Schema_User
  */
 // MODULE'S VARS
-const NS = 'Fl32_Auth_Back_RDb_Schema_User';
+const NS = 'Fl32_Auth_Back_Store_RDb_Schema_User';
 /**
  * Path to the entity in plugin's DEM.
  * @type {string}
@@ -11,7 +11,7 @@ const NS = 'Fl32_Auth_Back_RDb_Schema_User';
 const ENTITY = '/fl32/auth/user';
 
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_User
+ * @memberOf Fl32_Auth_Back_Store_RDb_Schema_User
  * @type {Object}
  */
 const ATTR = {
@@ -27,7 +27,7 @@ Object.freeze(ATTR);
 
 // MODULE'S CLASSES
 /**
- * @memberOf Fl32_Auth_Back_RDb_Schema_User
+ * @memberOf Fl32_Auth_Back_Store_RDb_Schema_User
  */
 class Dto {
     static namespace = NS;
@@ -71,7 +71,7 @@ class Dto {
 /**
  * @implements TeqFw_Db_Back_RDb_Meta_IEntity
  */
-export default class Fl32_Auth_Back_RDb_Schema_User {
+export default class Fl32_Auth_Back_Store_RDb_Schema_User {
     /**
      * @param {Fl32_Auth_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
@@ -86,8 +86,8 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
     ) {
         // INSTANCE METHODS
         /**
-         * @param {Fl32_Auth_Back_RDb_Schema_User.Dto} [data]
-         * @return {Fl32_Auth_Back_RDb_Schema_User.Dto}
+         * @param {Fl32_Auth_Back_Store_RDb_Schema_User.Dto} [data]
+         * @return {Fl32_Auth_Back_Store_RDb_Schema_User.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();
@@ -103,7 +103,7 @@ export default class Fl32_Auth_Back_RDb_Schema_User {
 
         /**
          * Set JSDoc return type, real code is in `TeqFw_Db_Back_RDb_Schema_EntityBase`.
-         * @return {typeof Fl32_Auth_Back_RDb_Schema_User.ATTR}
+         * @return {typeof Fl32_Auth_Back_Store_RDb_Schema_User.ATTR}
          */
         this.getAttributes = function () {};
 

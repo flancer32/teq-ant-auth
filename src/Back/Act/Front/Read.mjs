@@ -6,12 +6,12 @@
 export default class Fl32_Auth_Back_Act_Front_Read {
     /**
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
-     * @param {Fl32_Auth_Back_RDb_Schema_Front} rdbFront
+     * @param {Fl32_Auth_Back_Store_RDb_Schema_Front} rdbFront
      */
     constructor(
         {
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
-            Fl32_Auth_Back_RDb_Schema_Front$: rdbFront,
+            Fl32_Auth_Back_Store_RDb_Schema_Front$: rdbFront,
         }
     ) {
         // VARS
@@ -21,7 +21,7 @@ export default class Fl32_Auth_Back_Act_Front_Read {
         /**
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {string} [uuid]
-         * @return {Promise<Fl32_Auth_Back_RDb_Schema_Front.Dto>}
+         * @return {Promise<Fl32_Auth_Back_Store_RDb_Schema_Front.Dto>}
          */
         this.act = async function ({trx, uuid}) {
             if (uuid) {
