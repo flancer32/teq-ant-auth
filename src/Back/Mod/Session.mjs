@@ -141,6 +141,7 @@ export default class Fl32_Auth_Back_Mod_Session {
                     /** @type {Fl32_Auth_Back_Store_RDb_Schema_Session.Dto} */
                     const found = await crud.readOne(trx, rdbSess, where);
                     if (found?.user_ref) {
+                        // TODO: remove reference to the LP plugin
                         /** @type {{profileBack: Lp_Base_Back_Dto_User_Profile.Dto}} */
                         const {profileBack} = await modUser.readProfiles({trx, userBid: found.user_ref});
                         _cache[sessionId] = profileBack;
