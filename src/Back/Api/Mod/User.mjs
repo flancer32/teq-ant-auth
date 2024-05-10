@@ -1,5 +1,6 @@
 /**
  * An interface for an application specific model of the user.
+ * This interface is used by `Fl32_Auth_Back_Mod_Session` to retrieve the app specific user profile.
  *
  * @interface
  */
