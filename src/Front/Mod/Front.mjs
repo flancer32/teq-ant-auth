@@ -58,7 +58,7 @@ export default class Fl32_Auth_Front_Mod_Front {
             if (res.backUuid !== rs.backUuid) {
                 res.backUuid = rs.backUuid;
                 storeFront.set(res);
-                logger.info(`The front identity is updated in the localStorage: ${JSON.stringify(res)}`);
+                logger.info(`The front identity is updated in the localStorage: ${res.frontUuid}/${res.backUuid}`);
             } else {
                 logger.info(`The front identity is already synced with the back.`);
             }

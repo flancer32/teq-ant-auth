@@ -45,62 +45,6 @@ export default class Fl32_Auth_Front_Mod_Session {
          */
         let _user;
 
-        // FUNCS
-        /**
-         * Initialize front identity on the app startup.
-         * @return {Promise<*|Fl32_Auth_Front_Dto_Front.Dto>}
-         * @deprecated use `modFront.init()` instead of this method
-         */
-        async function initFront() {
-            // load app identity data (if exists) from the local storage or create new one.
-            const res = modFront.get();
-            if (!res.frontUuid) {
-                res.frontUuid = self.crypto.randomUUID();
-                logger.info(`New front UUID '${res.frontUuid}' is generated and should be registered on the back.`);
-            }
-            // register this front on the back (update the connected time)
-            const req = endFrontReg.createReq();
-            req.frontUuid = res.frontUuid;
-            const rs = await connApi.send(req, endFrontReg);
-            if ((res.backUuid !== rs.backUuid) || (res.frontBid !== rs.frontBid)) {
-                // update locally stored data if different
-                res.backUuid = rs.backUuid;
-                res.frontBid = rs.frontBid;
-                modFront.updateStore(res);
-                logger.info(`The front identity is updated in the localStorage: ${JSON.stringify(res)}`);
-            } else {
-                logger.info(`The front identity is already synced with the back.`);
-            }
-            return res;
-        }
-
-        /**
-         * Load user data from local store or create a new user, initialize it (UUID & keys), and store it locally.
-         * Send user data to the server to ensure that the user is signed up on the host.
-         * @return {Promise<Fl32_Auth_Front_Dto_User.Dto>}
-         * @deprecated use `modUser.init()` instead of this method
-         */
-        async function initUser() {
-            const res = modUser.get();
-            if (!res?.uuid || !res?.keysEncrypt?.public || !res?.keysSign?.public) {
-                if (!res?.uuid) res.uuid = self.crypto.randomUUID();
-                if (!res?.keysEncrypt?.public) res.keysEncrypt = await modKeyMgr.createKeysToEncrypt();
-                if (!res?.keysSign?.public) res.keysSign = await modKeyMgr.createKeysToSign();
-                modUser.updateStore(res);
-            }
-            const dto = endUserReg.createReq();
-            dto.keyEncrypt = res.keysEncrypt.public;
-            dto.keyVerify = res.keysSign.public;
-            dto.uuid = res.uuid;
-            /** @type {Fl32_Auth_Shared_Web_Api_User_Register.Response} */
-            const rs = await connApi.send(dto, endUserReg);
-            if (!rs.success) {
-                // the user is not registered on the back, throw the error
-                throw new Error(`The current user cannot be registered on the back.`);
-            }
-            return res;
-        }
-
         // INSTANCE METHODS
 
         /**
