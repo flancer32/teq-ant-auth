@@ -35,8 +35,13 @@ export default class Fl32_Auth_Back_Web_Api_Session_Close {
         this.process = async function (req, res, context) {
             const trx = await conn.startTransaction();
             try {
-                res.success = await modSess.close({trx, request: context.request, response: context.response});
+                const {closed, notFound} = await modSess.close({
+                    trx,
+                    request: context.request,
+                    response: context.response
+                });
                 await trx.commit();
+                res.success = (closed || notFound);
                 logger.info(JSON.stringify(res));
             } catch (error) {
                 logger.error(error);

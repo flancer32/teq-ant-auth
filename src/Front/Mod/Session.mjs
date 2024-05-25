@@ -55,6 +55,7 @@ export default class Fl32_Auth_Front_Mod_Session {
             try {
                 // remove the current session from the back
                 const req = endClose.createReq();
+                req.sessionWord = modUser.get()?.sessionWord;
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Session_Close.Response} */
                 const res = await connApi.send(req, endClose);

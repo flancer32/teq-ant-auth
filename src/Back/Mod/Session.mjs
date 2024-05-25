@@ -42,10 +42,11 @@ export default class Fl32_Auth_Back_Mod_Session {
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} request
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} response
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
-         * @returns {Promise<boolean>}
+         * @return {Promise<{closed: boolean, notFound: boolean}>}
          */
         this.close = async function ({request, response, trx}) {
-            let res = false;
+            let closed = false;
+            let notFound = false;
             const sessionId = request[DEF.REQ_HTTP_SESSION_USER_ID];
             if (sessionId) {
                 await crud.deleteOne(trx, rdbSess, {[A_SESS.CODE]: sessionId});
@@ -53,9 +54,11 @@ export default class Fl32_Auth_Back_Mod_Session {
                 delete request[DEF.REQ_HTTP_SESSION_USER_ID];
                 modCookie.clear({request, response});
                 logger.info(`Session '${sessionId}' is closed.`);
-                res = true;
+                closed = true;
+            } else {
+                notFound = true;
             }
-            return res;
+            return {closed, notFound};
         };
 
         /**
@@ -124,7 +127,7 @@ export default class Fl32_Auth_Back_Mod_Session {
         };
 
         /**
-         * Save session ID to an HTTP request and load session data from RDb to internal cache.
+         * Save the user session ID to the HTTP request and load session data from RDb to internal cache.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} request
          * @param {string} sessionId
          * @returns {Promise<void>}
@@ -141,8 +144,6 @@ export default class Fl32_Auth_Back_Mod_Session {
                     /** @type {Fl32_Auth_Back_Store_RDb_Schema_Session.Dto} */
                     const found = await crud.readOne(trx, rdbSess, where);
                     if (found?.user_ref) {
-                        // TODO: remove reference to the LP plugin
-                        /** @type {{profileBack: Lp_Base_Back_Dto_User_Profile.Dto}} */
                         const {profileBack} = await modUser.readProfiles({trx, userBid: found.user_ref});
                         _cache[sessionId] = profileBack;
                         await trx.commit();
