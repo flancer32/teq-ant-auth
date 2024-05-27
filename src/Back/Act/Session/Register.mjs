@@ -54,7 +54,7 @@ export default class Fl32_Auth_Back_Act_Session_Register {
                 frontKeyVerify,
             }
         ) {
-            let code, word;
+            let code, word, uuid;
             // get the user record
             const keyUser = (typeof userBid === 'number')
                 ? {[A_USER.BID]: userBid}
@@ -63,6 +63,7 @@ export default class Fl32_Auth_Back_Act_Session_Register {
             const user = await crud.readOne(trx, rdbUser, keyUser);
             // we can create/update the session
             if (user) {
+                uuid = user.uuid;
                 // get the front record
                 const keyFront = (typeof frontBid === 'number')
                     ? {[A_FRONT.BID]: frontBid}
@@ -114,7 +115,7 @@ export default class Fl32_Auth_Back_Act_Session_Register {
                 user.date_last = new Date();
                 await crud.updateOne(trx, rdbUser, user);
             }
-            return {code, word, userUuid};
+            return {code, word, userUuid: uuid};
         };
     }
 

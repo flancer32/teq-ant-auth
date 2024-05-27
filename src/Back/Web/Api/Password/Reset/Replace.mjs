@@ -12,7 +12,6 @@ export default class Fl32_Auth_Back_Web_Api_Password_Reset_Replace {
      * @param {TeqFw_Db_Back_RDb_IConnect} conn
      * @param {Fl32_Auth_Back_Mod_Password} modPass
      * @param {Fl32_Auth_Back_Mod_Session} modSess
-     * @param {Fl32_Auth_Back_Act_User_Read} actRead
      */
     constructor(
         {
@@ -23,7 +22,6 @@ export default class Fl32_Auth_Back_Web_Api_Password_Reset_Replace {
             TeqFw_Db_Back_RDb_IConnect$: conn,
             Fl32_Auth_Back_Mod_Password$: modPass,
             Fl32_Auth_Back_Mod_Session$: modSess,
-            Fl32_Auth_Back_Act_User_Read$: actRead,
         }
     ) {
         // INSTANCE METHODS
