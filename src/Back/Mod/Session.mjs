@@ -31,7 +31,7 @@ export default class Fl32_Auth_Back_Mod_Session {
         const A_SESS = rdbSess.getAttributes();
         /**
          * Internal cache to map session data by session ID.
-         * @type {Object<string, Lp_Base_Back_Dto_User_Profile.Dto>}
+         * @type {Object<string, *>}
          */
         const _cache = {};
 
