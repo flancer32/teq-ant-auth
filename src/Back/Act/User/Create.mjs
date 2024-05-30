@@ -27,17 +27,17 @@ export default class Fl32_Auth_Back_Act_User_Create {
         /**
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {string} uuid
-         * @param {string} keyEncrypt
-         * @param {string} keyVerify
-         * @param {string} passHash
-         * @param {string} passSalt
-         * @param {string} email
-         * @param {boolean} enabled
+         * @param {string} [email]
+         * @param {string} [keyEncrypt]
+         * @param {string} [keyVerify]
+         * @param {string} [passHash]
+         * @param {string} [passSalt]
+         * @param {boolean} [enabled]
          * @return {Promise<{bid: number}>}
          */
-        this.act = async function ({trx, uuid, keyEncrypt, keyVerify, passHash, passSalt, email, enabled}) {
+        this.act = async function ({trx, uuid, email, keyEncrypt, keyVerify, passHash, passSalt, enabled}) {
             const dtoUser = rdbUser.createDto();
-            dtoUser.enabled = enabled;
+            dtoUser.enabled = enabled ?? false;
             dtoUser.key_encrypt = keyEncrypt;
             dtoUser.key_verify = keyVerify;
             dtoUser.uuid = uuid;
