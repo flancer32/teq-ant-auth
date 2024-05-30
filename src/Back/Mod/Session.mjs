@@ -149,6 +149,8 @@ export default class Fl32_Auth_Back_Mod_Session {
                         await trx.commit();
                         request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
                         logger.info(`Session data is cached for session #${sessionId}.`);
+                    } else {
+                        await trx.commit();
                     }
                 } catch (error) {
                     logger.error(error);
