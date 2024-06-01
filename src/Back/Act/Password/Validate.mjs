@@ -6,14 +6,12 @@
 export default class Fl32_Auth_Back_Act_Password_Validate {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {Fl32_Auth_Back_Util_Codec} codec
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_Store_RDb_Schema_Password} rdbPass
      */
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$: logger,
-            Fl32_Auth_Back_Util_Codec$: codec,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_Store_RDb_Schema_Password$: rdbPass,
         }
@@ -30,7 +28,7 @@ export default class Fl32_Auth_Back_Act_Password_Validate {
             /** @type {Fl32_Auth_Back_Store_RDb_Schema_Password.Dto} */
             const dbPass = await crud.readOne(trx, rdbPass, userBid);
             if (dbPass) {
-                const hashFound = codec.binToB64Url(dbPass.hash);
+                const hashFound = dbPass.hash.toString();
                 success = (hashFound === hash);
             }
             return {success, dbPass};

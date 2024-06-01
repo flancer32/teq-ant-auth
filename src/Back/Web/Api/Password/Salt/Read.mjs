@@ -40,9 +40,9 @@ export default class Fl32_Auth_Back_Web_Api_Password_Salt_Read {
             try {
                 const userRef = req.userRef;
                 const {bid: userBid} = await modUser.read({trx, userRef});
-                const {b64url} = await modPass.readSalt({trx, userBid});
+                const {bin} = await modPass.readSalt({trx, userBid});
                 await trx.commit();
-                res.salt = b64url;
+                res.salt = bin.toString();
                 logger.info(JSON.stringify(res));
             } catch (error) {
                 logger.error(error);
