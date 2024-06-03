@@ -8,6 +8,7 @@ All data is encoded as base64url before transferring to/from the backend.
 ## Use Cases
 
 * Registration of a new user.
+* Activation of a pre-created user (password setup).
 * Authentication of a user (opening a new session).
 * User authorization on the backend (session handling).
 * Logout process.
