@@ -37,7 +37,6 @@ export default class Fl32_Auth_Front_Mod_PubKey {
         }
     ) {
         // MAIN
-        logger.setNamespace(this.constructor.name);
         const STORE_KEY = `${DEF.SHARED.NAME}/attestation`;
 
         // FUNCS

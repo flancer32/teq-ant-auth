@@ -66,8 +66,8 @@
                   "type": "datetime",
                   "default": "current"
                 },
-                "hash": {"type": "binary", "nullable": true},
-                "salt": {"type": "binary", "nullable": true}
+                "hash": {"type": "string", "nullable": true},
+                "salt": {"type": "string", "nullable": true}
               },
               "index": {
                 "PK": {"type": "primary", "attrs": ["user_ref"]}

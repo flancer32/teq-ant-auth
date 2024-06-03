@@ -32,7 +32,6 @@ export default class Fl32_Auth_Back_Mod_PubKey {
         }
     ) {
         // VARS
-        logger.setNamespace(this.constructor.name);
         const A_ATTEST = rdbAttest.getAttributes();
         const A_CHALLENGE = rdbAssertChl.getAttributes();
 

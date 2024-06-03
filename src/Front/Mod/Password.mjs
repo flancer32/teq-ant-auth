@@ -37,11 +37,8 @@ export default class Fl32_Auth_Front_Mod_Password {
         }
     ) {
 
-        // MAIN
-        logger.setNamespace(this.constructor.name);
+        // VARS
         const encoder = new TextEncoder();
-
-        // FUNCS
 
         // INSTANCE METHODS
 
@@ -99,7 +96,7 @@ export default class Fl32_Auth_Front_Mod_Password {
         /**
          * Replace the current password with a new one.
          * @param {string} code
-         * @param {string} password
+         * @param {string} password - the plain password
          * @param {Fl32_Auth_Front_Dto_User.Dto} user
          * @param {Fl32_Auth_Front_Dto_Front.Dto} front - The front to establish a new session on the back if password is replaced.
          * @return {Promise<Fl32_Auth_Shared_Web_Api_Password_Reset_Replace.Response>}

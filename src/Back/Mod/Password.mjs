@@ -2,17 +2,14 @@
  * The password authentication model.
  */
 // MODULE'S IMPORTS
-import {Buffer} from 'node:buffer';
 import {randomUUID} from 'node:crypto';
 
 // MODULE'S CLASSES
 export default class Fl32_Auth_Back_Mod_Password {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {Fl32_Auth_Back_Util_Codec} codec
      * @param {Fl32_Auth_Back_Act_Password_Validate} actPassValid
      * @param {Fl32_Auth_Back_Api_Mod_User} modUser
-     * @param {TeqFw_Core_Back_Util_Cast} cast
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_Store_RDb_Schema_Password} rdbPass
      * @param {Fl32_Auth_Back_Store_RDb_Schema_Password_Reset} rdbReset
@@ -20,10 +17,8 @@ export default class Fl32_Auth_Back_Mod_Password {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            Fl32_Auth_Back_Util_Codec$: codec,
             Fl32_Auth_Back_Act_Password_Validate$: actPassValid,
             Fl32_Auth_Back_Api_Mod_User$: modUser,
-            TeqFw_Core_Back_Util_Cast$: cast,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_Store_RDb_Schema_Password$: rdbPass,
             Fl32_Auth_Back_Store_RDb_Schema_Password_Reset$: rdbReset,
@@ -47,31 +42,21 @@ export default class Fl32_Auth_Back_Mod_Password {
             const dto = rdbPass.createDto();
             dto.user_ref = userBid;
             dto.email = email;
-            if (hash) {
-                const binHash = codec.b64UrlToBin(hash);
-                dto.hash = cast.buffer(binHash);
-            }
-            if (salt) {
-                const binSalt = codec.b64UrlToBin(salt);
-                dto.salt = cast.buffer(binSalt);
-            }
+            if (hash) dto.hash = hash;
+            if (salt) dto.salt = salt;
             return await crud.create(trx, rdbPass, dto);
         };
         /**
          * Read the password salt for the given user.
          * @param {TeqFw_Db_Back_RDb_ITrans} trx
          * @param {number} userBid
-         * @return {Promise<{b64url:string, bin:Buffer}>}
+         * @return {Promise<{salt:string}>}
          */
         this.readSalt = async function ({trx, userBid}) {
-            let b64url, bin;
             /** @type {Fl32_Auth_Back_Store_RDb_Schema_Password.Dto} */
             const found = await crud.readOne(trx, rdbPass, userBid);
-            if (found?.salt) {
-                bin = found.salt;
-                b64url = codec.binToB64Url(found.salt);
-            }
-            return {b64url, bin};
+            if (found?.salt) return {salt: found.salt};
+            return {salt: ''};
         };
 
         /**
@@ -140,11 +125,9 @@ export default class Fl32_Auth_Back_Mod_Password {
          */
         this.update = async function ({trx, userBid, hash, salt}) {
             const dto = rdbPass.createDto();
-            const binHash = codec.b64UrlToBin(hash);
-            const binSalt = codec.b64UrlToBin(salt);
             dto.user_ref = userBid;
-            dto.hash = cast.buffer(binHash);
-            dto.salt = cast.buffer(binSalt);
+            dto.hash = hash;
+            dto.salt = salt;
             return await crud.updateOne(trx, rdbPass, dto);
         };
 

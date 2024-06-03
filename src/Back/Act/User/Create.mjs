@@ -6,7 +6,6 @@
 export default class Fl32_Auth_Back_Act_User_Create {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {TeqFw_Core_Back_Util_Cast} cast
      * @param {TeqFw_Db_Back_Api_RDb_CrudEngine} crud
      * @param {Fl32_Auth_Back_Store_RDb_Schema_Password} rdbPass
      * @param {Fl32_Auth_Back_Store_RDb_Schema_User} rdbUser
@@ -14,7 +13,6 @@ export default class Fl32_Auth_Back_Act_User_Create {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            TeqFw_Core_Back_Util_Cast$: cast,
             TeqFw_Db_Back_Api_RDb_CrudEngine$: crud,
             Fl32_Auth_Back_Store_RDb_Schema_Password$: rdbPass,
             Fl32_Auth_Back_Store_RDb_Schema_User$: rdbUser,
@@ -30,8 +28,8 @@ export default class Fl32_Auth_Back_Act_User_Create {
          * @param {string} [email]
          * @param {string} [keyEncrypt]
          * @param {string} [keyVerify]
-         * @param {string} [passHash]
-         * @param {string} [passSalt]
+         * @param {string} [passHash] - b64url string
+         * @param {string} [passSalt] - b64url string
          * @param {boolean} [enabled]
          * @return {Promise<{bid: number}>}
          */
@@ -48,8 +46,8 @@ export default class Fl32_Auth_Back_Act_User_Create {
                 dtoPass.date_updated = new Date();
                 dtoPass.email = email;
                 dtoPass.user_ref = bid;
-                if (passHash) dtoPass.hash = cast.buffer(passHash);
-                if (passSalt) dtoPass.salt = cast.buffer(passSalt);
+                if (passHash) dtoPass.hash = passHash;
+                if (passSalt) dtoPass.salt = passSalt;
                 await crud.create(trx, rdbPass, dtoPass);
                 logger.info(`The password record is created for the new user ${uuid}/bid.`);
             }
