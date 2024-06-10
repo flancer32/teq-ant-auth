@@ -98,9 +98,10 @@ export default class Fl32_Auth_Back_Mod_Session {
                 frontKeyVerify
             });
             modCookie.plant({request, response, sessionId});
-            /** @type {{profileFront: Object}} */
+            /** @type {{profileBack: Object, profileFront: Object}} */
             const {profileBack, profileFront} = await modUser.readProfiles({trx, userBid});
             request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
+            request[DEF.REQ_HTTP_USER_AUTH] = profileBack;
             _cache[sessionId] = profileBack;
             logger.info(`The new session is established for user #${userUuid}.`);
             return {sessionId, sessionWord, sessionData: profileFront, userUuid};
@@ -136,6 +137,7 @@ export default class Fl32_Auth_Back_Mod_Session {
             if (_cache[sessionId]) {
                 // just put sessionId to request if session data was loaded before
                 request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
+                request[DEF.REQ_HTTP_USER_AUTH] = _cache[sessionId];
             } else {
                 // validate session existence and load session data
                 const trx = await conn.startTransaction();
@@ -148,6 +150,7 @@ export default class Fl32_Auth_Back_Mod_Session {
                         _cache[sessionId] = profileBack;
                         await trx.commit();
                         request[DEF.REQ_HTTP_SESSION_USER_ID] = sessionId;
+                        request[DEF.REQ_HTTP_USER_AUTH] = profileBack;
                         logger.info(`Session data is cached for session #${sessionId}.`);
                     } else {
                         await trx.commit();

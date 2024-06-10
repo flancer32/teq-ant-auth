@@ -10,8 +10,10 @@ export default class Fl32_Auth_Back_Defaults {
     COOKIE_SESSION_USER_LIFETIME = 31536000000;  // 365 * 24 * 60 * 60 * 1000
     COOKIE_SESSION_USER_NAME = 'TEQ_SESSION_USER';
 
-    REQ_HTTP_SESSION_FRONT_ID = '@flancer32/teq-ant-auth/frontSessionId';
-    REQ_HTTP_SESSION_USER_ID = '@flancer32/teq-ant-auth/userSessionId';
+    /* The objects are stored in every HTTP request. */
+    REQ_HTTP_SESSION_FRONT_ID;
+    REQ_HTTP_SESSION_USER_ID;
+    REQ_HTTP_USER_AUTH;
 
     RESET_CODE_LIFETIME = 600000; // 10 minutes (10 * 60 * 1000)
 
@@ -31,6 +33,10 @@ export default class Fl32_Auth_Back_Defaults {
         // DEPS
         this.MOD_WEB = MOD_WEB;
         this.SHARED = SHARED;
+
+        this.REQ_HTTP_SESSION_FRONT_ID = `${SHARED.NAME}/sessionFrontId`;
+        this.REQ_HTTP_SESSION_USER_ID = `${SHARED.NAME}/sessionUserId`;
+        this.REQ_HTTP_USER_AUTH = `${SHARED.NAME}/userAuth`;
         // MAIN
         Object.freeze(this);
     }
