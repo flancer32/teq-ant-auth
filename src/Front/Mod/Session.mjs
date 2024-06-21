@@ -6,7 +6,7 @@
 export default class Fl32_Auth_Front_Mod_Session {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
+     * @param {TeqFw_Web_Api_Front_Web_Connect} api
      * @param {Fl32_Auth_Shared_Web_Api_Front_Register} endFrontReg
      * @param {Fl32_Auth_Shared_Web_Api_User_Register} endUserReg
      * @param {Fl32_Auth_Shared_Web_Api_Session_Close} endClose
@@ -18,7 +18,7 @@ export default class Fl32_Auth_Front_Mod_Session {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            TeqFw_Web_Api_Front_Web_Connect$: connApi,
+            TeqFw_Web_Api_Front_Web_Connect$: api,
             Fl32_Auth_Shared_Web_Api_Front_Register$: endFrontReg,
             Fl32_Auth_Shared_Web_Api_User_Register$: endUserReg,
             Fl32_Auth_Shared_Web_Api_Session_Close$: endClose,
@@ -58,7 +58,7 @@ export default class Fl32_Auth_Front_Mod_Session {
                 req.sessionWord = modUser.get()?.sessionWord;
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Session_Close.Response} */
-                const res = await connApi.send(req, endClose);
+                const res = await api.send(req, endClose);
                 if (res.success) {
                     _store = undefined;
                     // remove the session word from the user data stored in the localStorage
@@ -134,7 +134,7 @@ export default class Fl32_Auth_Front_Mod_Session {
                     req.userUuid = _user.uuid;
                     // noinspection JSValidateTypes
                     /** @type {Fl32_Auth_Shared_Web_Api_Session_Init.Response} */
-                    const res = await connApi.send(req, endInit);
+                    const res = await api.send(req, endInit);
                     if (res?.success) {
                         _store = res?.sessionData;
                         logger.info(`User session is initialized.`);

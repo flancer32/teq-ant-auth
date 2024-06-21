@@ -5,7 +5,7 @@
 export default class Fl32_Auth_Front_Mod_Front {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
+     * @param {TeqFw_Web_Api_Front_Web_Connect} api
      * @param {Fl32_Auth_Shared_Web_Api_Front_Register} endFrontReg
      * @param {Fl32_Auth_Front_Mod_Crypto_Key_Manager} modKeyMgr
      * @param {Fl32_Auth_Front_Store_Local_Front} storeFront
@@ -13,7 +13,7 @@ export default class Fl32_Auth_Front_Mod_Front {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            TeqFw_Web_Api_Front_Web_Connect$: connApi,
+            TeqFw_Web_Api_Front_Web_Connect$: api,
             Fl32_Auth_Shared_Web_Api_Front_Register$: endFrontReg,
             Fl32_Auth_Front_Mod_Crypto_Key_Manager$: modKeyMgr,
             Fl32_Auth_Front_Store_Local_Front$: storeFront,
@@ -54,7 +54,7 @@ export default class Fl32_Auth_Front_Mod_Front {
             req.frontUuid = res.frontUuid;
             req.keyEncrypt = res.keysEncrypt?.public;
             req.keyVerify = res.keysSign?.public;
-            const rs = await connApi.send(req, endFrontReg);
+            const rs = await api.send(req, endFrontReg);
             if (res.backUuid !== rs.backUuid) {
                 res.backUuid = rs.backUuid;
                 storeFront.set(res);

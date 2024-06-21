@@ -16,11 +16,11 @@ export default class Fl32_Auth_Front_Mod_PubKey {
      * @param {Fl32_Auth_Front_Defaults} DEF
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {Fl32_Auth_Front_Util_Codec} codec
-     * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
+     * @param {TeqFw_Web_Api_Front_Web_Connect} api
      * @param {Fl32_Auth_Shared_Dto_Attest} dtoCred
-     * @param {Fl32_Auth_Shared_Web_Api_Attest} apiAttest
-     * @param {Fl32_Auth_Shared_Web_Api_Assert_Challenge} apiAssertChl
-     * @param {Fl32_Auth_Shared_Web_Api_Assert_Validate} apiAssertValid
+     * @param {Fl32_Auth_Shared_Web_Api_Attest} endAttest
+     * @param {Fl32_Auth_Shared_Web_Api_Assert_Challenge} endAssertChl
+     * @param {Fl32_Auth_Shared_Web_Api_Assert_Validate} endAssertValid
      * @param {Fl32_Auth_Front_Mod_Session} modSess
      */
     constructor(
@@ -28,11 +28,11 @@ export default class Fl32_Auth_Front_Mod_PubKey {
             Fl32_Auth_Front_Defaults$: DEF,
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Fl32_Auth_Front_Util_Codec: codec,
-            TeqFw_Web_Api_Front_Web_Connect$: connApi,
+            TeqFw_Web_Api_Front_Web_Connect$: api,
             Fl32_Auth_Shared_Dto_Attest$: dtoCred,
-            Fl32_Auth_Shared_Web_Api_Attest$: apiAttest,
-            Fl32_Auth_Shared_Web_Api_Assert_Challenge$: apiAssertChl,
-            Fl32_Auth_Shared_Web_Api_Assert_Validate$: apiAssertValid,
+            Fl32_Auth_Shared_Web_Api_Attest$: endAttest,
+            Fl32_Auth_Shared_Web_Api_Assert_Challenge$: endAssertChl,
+            Fl32_Auth_Shared_Web_Api_Assert_Validate$: endAssertValid,
             Fl32_Auth_Front_Mod_Session$: modSess,
         }
     ) {
@@ -70,10 +70,10 @@ export default class Fl32_Auth_Front_Mod_PubKey {
         this.assertChallenge = async function () {
             try {
                 // parse input data
-                const req = apiAssertChl.createReq();
+                const req = endAssertChl.createReq();
                 req.attestationId = attestIdRead();
                 // noinspection JSValidateTypes
-                return await connApi.send(req, apiAssertChl);
+                return await api.send(req, endAssertChl);
             } catch (e) {
                 // timeout or error
                 logger.error(`Cannot create a new assertion challenge on the backend. Error: ${e?.message}`);
@@ -100,11 +100,11 @@ export default class Fl32_Auth_Front_Mod_PubKey {
                 cred.attestationId = attestation.id;
                 cred.attestationObj = codec.binToB64Url(attestationObj);
                 cred.clientData = codec.binToB64Url(clientData);
-                const req = apiAttest.createReq();
+                const req = endAttest.createReq();
                 req.cred = cred;
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Attest.Response} */
-                const res = await connApi.send(req, apiAttest);
+                const res = await api.send(req, endAttest);
                 if (res?.attestationId) attestIdWrite(res.attestationId);
                 if (res?.sessionData) modSess.setData(res?.sessionData);
                 return res;
@@ -210,13 +210,13 @@ export default class Fl32_Auth_Front_Mod_PubKey {
          */
         this.validate = async function (assert) {
             try {
-                const req = apiAssertValid.createReq();
+                const req = endAssertValid.createReq();
                 req.authenticatorData = codec.binToB64Url(assert.authenticatorData);
                 req.clientData = codec.binToB64Url(assert.clientDataJSON);
                 req.signature = codec.binToB64Url(assert.signature);
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Assert_Validate.Response} */
-                const res = await connApi.send(req, apiAssertValid);
+                const res = await api.send(req, endAssertValid);
                 // set session data to the session model
                 if (res?.success) modSess.setData(res?.sessionData);
                 return res;

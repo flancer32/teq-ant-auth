@@ -15,24 +15,26 @@ export default class Fl32_Auth_Front_Mod_Password {
      * @param {Fl32_Auth_Front_Defaults} DEF
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {Fl32_Auth_Front_Util_Codec} codec
-     * @param {TeqFw_Web_Api_Front_Web_Connect} connApi
-     * @param {Fl32_Auth_Shared_Web_Api_Password_Salt_Read} apiSaltRead
-     * @param {Fl32_Auth_Shared_Web_Api_Password_Reset_Check} apiResetCheck
-     * @param {Fl32_Auth_Shared_Web_Api_Password_Reset_Init} apiResetInit
-     * @param {Fl32_Auth_Shared_Web_Api_Password_Reset_Replace} apiResetReplace
-     * @param {Fl32_Auth_Shared_Web_Api_Password_Validate} apiValid
+     * @param {TeqFw_Web_Api_Front_Web_Connect} api
+     * @param {Fl32_Auth_Shared_Web_Api_Password_Salt_Read} endSaltRead
+     * @param {Fl32_Auth_Shared_Web_Api_Password_Reset_Check} endResetCheck
+     * @param {Fl32_Auth_Shared_Web_Api_Password_Reset_Init} endResetInit
+     * @param {Fl32_Auth_Shared_Web_Api_Password_Reset_Replace} endResetReplace
+     * @param {Fl32_Auth_Shared_Web_Api_Password_Validate} endValid
+     * @param {Fl32_Auth_Shared_Web_Api_Email_Check} endEmailCheck
      */
     constructor(
         {
             Fl32_Auth_Front_Defaults$: DEF,
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Fl32_Auth_Front_Util_Codec$: codec,
-            TeqFw_Web_Api_Front_Web_Connect$: connApi,
-            Fl32_Auth_Shared_Web_Api_Password_Salt_Read$: apiSaltRead,
-            Fl32_Auth_Shared_Web_Api_Password_Reset_Check$: apiResetCheck,
-            Fl32_Auth_Shared_Web_Api_Password_Reset_Init$: apiResetInit,
-            Fl32_Auth_Shared_Web_Api_Password_Reset_Replace$: apiResetReplace,
-            Fl32_Auth_Shared_Web_Api_Password_Validate$: apiValid,
+            TeqFw_Web_Api_Front_Web_Connect$: api,
+            Fl32_Auth_Shared_Web_Api_Password_Salt_Read$: endSaltRead,
+            Fl32_Auth_Shared_Web_Api_Password_Reset_Check$: endResetCheck,
+            Fl32_Auth_Shared_Web_Api_Password_Reset_Init$: endResetInit,
+            Fl32_Auth_Shared_Web_Api_Password_Reset_Replace$: endResetReplace,
+            Fl32_Auth_Shared_Web_Api_Password_Validate$: endValid,
+            Fl32_Auth_Shared_Web_Api_Email_Check$: endEmailCheck,
             // Fl32_Auth_Front_Mod_Session$: modSess, // TODO circular dependency here
         }
     ) {
@@ -61,58 +63,18 @@ export default class Fl32_Auth_Front_Mod_Password {
         };
 
         /**
-         * Check the code existence and lLoad the user data to set the new password.
-         * @param {string} code
-         * @return {Promise<Fl32_Auth_Shared_Web_Api_Password_Reset_Check.Response>}
-         */
-        this.resetCheck = async function (code) {
-            try {
-                const req = apiResetCheck.createReq();
-                req.code = code;
-                return await connApi.send(req, apiResetCheck);
-            } catch (e) {
-                logger.exception(e);
-            }
-        };
-
-        /**
-         * Request the back to send email with reset link.
+         * Check the existence of the given email on the back.
          * @param {string} email
          * @return {Promise<boolean>}
          */
-        this.resetInit = async function (email) {
+        this.isEmailUnique = async function ({email}) {
             try {
-                const req = apiResetInit.createReq();
+                const req = endEmailCheck.createReq();
                 req.email = email;
                 // noinspection JSValidateTypes
-                /** @type {Fl32_Auth_Shared_Web_Api_Password_Reset_Init.Response} */
-                const rs = await connApi.send(req, apiResetInit);
-                return rs?.success;
-            } catch (e) {
-                logger.exception(e);
-            }
-        };
-
-        /**
-         * Replace the current password with a new one.
-         * @param {string} code
-         * @param {string} password - the plain password
-         * @param {Fl32_Auth_Front_Dto_User.Dto} user
-         * @param {Fl32_Auth_Front_Dto_Front.Dto} front - The front to establish a new session on the back if password is replaced.
-         * @return {Promise<Fl32_Auth_Shared_Web_Api_Password_Reset_Replace.Response>}
-         */
-        this.resetReplace = async function (code, password, user, front) {
-            try {
-                const req = apiResetReplace.createReq();
-                req.code = code;
-                req.frontKeyEncrypt = front.keysEncrypt.public;
-                req.frontKeyVerify = front.keysSign.public;
-                req.frontUuid = front.frontUuid;
-                req.keyEncrypt = user.keysEncrypt.public;
-                req.keyVerify = user.keysSign.public;
-                req.passwordSalt = this.saltNew(DEF.SALT_BYTES);
-                req.passwordHash = await this.hashCompose(password, req.passwordSalt);
-                return await connApi.send(req, apiResetReplace);
+                /** @type {Fl32_Auth_Shared_Web_Api_Email_Check.Response} */
+                const res = await api.send(req, endEmailCheck);
+                return res?.isUnique;
             } catch (e) {
                 logger.exception(e);
             }
@@ -131,7 +93,7 @@ export default class Fl32_Auth_Front_Mod_Password {
                 const salt = await this.saltRead(userRef);
                 const hash = await this.hashCompose(password, salt);
                 //
-                const req = apiValid.createReq();
+                const req = endValid.createReq();
                 req.frontUuid = front.frontUuid;
                 req.frontKeyEncrypt = front.keysEncrypt.public;
                 req.frontKeyVerify = front.keysSign.public;
@@ -139,7 +101,65 @@ export default class Fl32_Auth_Front_Mod_Password {
                 req.userRef = userRef;
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Password_Validate.Response} */
-                return await connApi.send(req, apiValid);
+                return await api.send(req, endValid);
+            } catch (e) {
+                logger.exception(e);
+            }
+        };
+
+        /**
+         * Check the code existence and lLoad the user data to set the new password.
+         * @param {string} code
+         * @return {Promise<Fl32_Auth_Shared_Web_Api_Password_Reset_Check.Response>}
+         */
+        this.resetCheck = async function (code) {
+            try {
+                const req = endResetCheck.createReq();
+                req.code = code;
+                return await api.send(req, endResetCheck);
+            } catch (e) {
+                logger.exception(e);
+            }
+        };
+
+        /**
+         * Request the back to send email with reset link.
+         * @param {string} email
+         * @return {Promise<boolean>}
+         */
+        this.resetInit = async function (email) {
+            try {
+                const req = endResetInit.createReq();
+                req.email = email;
+                // noinspection JSValidateTypes
+                /** @type {Fl32_Auth_Shared_Web_Api_Password_Reset_Init.Response} */
+                const rs = await api.send(req, endResetInit);
+                return rs?.success;
+            } catch (e) {
+                logger.exception(e);
+            }
+        };
+
+        /**
+         * Replace the current password with a new one.
+         * @param {string} code
+         * @param {string} password - the plain password
+         * @param {Fl32_Auth_Front_Dto_User.Dto} user
+         * @param {Fl32_Auth_Front_Dto_Front.Dto} front - The front to establish a new session on the back if password is replaced.
+         * @return {Promise<Fl32_Auth_Shared_Web_Api_Password_Reset_Replace.Response>}
+         */
+        this.resetReplace = async function (code, password, user, front) {
+            try {
+                const req = endResetReplace.createReq();
+                req.code = code;
+                req.frontKeyEncrypt = front.keysEncrypt.public;
+                req.frontKeyVerify = front.keysSign.public;
+                req.frontUuid = front.frontUuid;
+                req.keyEncrypt = user.keysEncrypt.public;
+                req.keyVerify = user.keysSign.public;
+                req.passwordSalt = this.saltNew(DEF.SALT_BYTES);
+                req.passwordHash = await this.hashCompose(password, req.passwordSalt);
+                return await api.send(req, endResetReplace);
             } catch (e) {
                 logger.exception(e);
             }
@@ -163,11 +183,11 @@ export default class Fl32_Auth_Front_Mod_Password {
          */
         this.saltRead = async function (userRef) {
             try {
-                const req = apiSaltRead.createReq();
+                const req = endSaltRead.createReq();
                 req.userRef = userRef;
                 // noinspection JSValidateTypes
                 /** @type {Fl32_Auth_Shared_Web_Api_Password_Salt_Read.Response} */
-                const res = await connApi.send(req, apiSaltRead);
+                const res = await api.send(req, endSaltRead);
                 if (res?.salt) return res?.salt;
             } catch (e) {
                 logger.exception(e);

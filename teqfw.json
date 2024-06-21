@@ -32,6 +32,7 @@
       "Fl32_Auth_Back_Web_Api_Assert_Challenge",
       "Fl32_Auth_Back_Web_Api_Assert_Validate",
       "Fl32_Auth_Back_Web_Api_Attest",
+      "Fl32_Auth_Back_Web_Api_Email_Check",
       "Fl32_Auth_Back_Web_Api_Front_Register",
       "Fl32_Auth_Back_Web_Api_Password_Reset_Check",
       "Fl32_Auth_Back_Web_Api_Password_Reset_Init",
