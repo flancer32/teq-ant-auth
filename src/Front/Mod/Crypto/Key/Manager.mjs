@@ -10,7 +10,7 @@ export default class Fl32_Auth_Front_Mod_Crypto_Key_Manager {
      */
     constructor(
         {
-            Fl32_Auth_Front_Ext_Nacl$AS: extNacl,
+            'Fl32_Auth_Front_Ext_Nacl.default': extNacl,
             TeqFw_Core_Shared_Api_Util_Codec$: util,
             Fl32_Auth_Shared_Dto_Crypto_Keys$: dtoKeys,
         }
